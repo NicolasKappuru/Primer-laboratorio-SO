@@ -1,0 +1,100 @@
+/* memoria.css
+   Representación visual de la memoria (bloques proporcionales)
+   - Header fijo arriba (HEX / DEC / PID / TAM Partición)
+   - Cuerpo con bloques (flex) y S.O. forzado abajo
+*/
+
+/* ===== contenedor completo de la "tabla" ===== */
+.memoria-wrapper {
+  max-width: 480px;   /* más angosta */
+  margin: 0 auto;     /* centrada dentro del panel */
+}
+
+
+/* ===== encabezado (siempre visible, verde) ===== */
+.memoria-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columnas iguales */
+  background: #4CAF50; /* verde */
+  color: #fff;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 8px;
+  border-radius: 6px 6px 0 0;
+  align-items: center;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04) inset;
+}
+
+/* celdas del header (alineación) */
+.memoria-header > div {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.memoria-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;   /* 🔥 todos los bloques pegados al fondo */
+  height: 320px;
+  border: 2px solid #4CAF50;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+
+/* cada bloque es un "renglón" visual; usaremos flex-grow (desde JS) para tamaño proporcional */
+.bloque {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr; /* mostrar los 4 valores dentro del bloque */
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding: 4px 6px;
+  font-size: 11px;
+  color: #222;
+  min-height: 18px;        /* evita que queden renglones invisibles */
+  flex-basis: 0;           /* importante: para que el flex-grow funcione proporcionalmente */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* orden: libre arriba (order:0) -> ocupado (order:1) -> SO abajo (order:2) */
+.bloque.libre  { order: 0; background: #fff; }
+.bloque.ocupado{ order: 1; background: #C8E6C9; }  /* verde claro para procesos con PID */
+.bloque.so     { order: 2; background: #FFEB3B; font-weight: 700; } /* S.O. siempre abajo */
+
+/* colores más marcados para bloques con PID no vacíos (si quieres un verde más vivo) */
+.bloque.ocupado.pid-lleno {
+  background: linear-gradient(90deg, #C8E6C9, #A5D6A7);
+}
+
+/* cuando el bloque tenga poco alto, ocultar parte del texto de forma elegante */
+.bloque > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 4px;
+  text-align: center;
+}
+
+/* hover ligero */
+.bloque:hover {
+  filter: brightness(0.98);
+}
+
+/* scrollbar pequeño para el contenedor (si es necesario scroll vertical) */
+.memoria-body::-webkit-scrollbar { width: 6px; }
+.memoria-body::-webkit-scrollbar-thumb { background: #cfcfcf; border-radius: 4px; }
+.memoria-body::-webkit-scrollbar-thumb:hover { background: #ababab; }
+
+/* responsive: si el panel es muy angosto baja la altura */
+@media (max-width: 900px) {
+  .memoria-body { height: 260px; }
+  .memoria-header { font-size: 11px; padding: 5px 6px; }
+  .bloque { font-size: 10px; padding: 3px 4px; }
+}

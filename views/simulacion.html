@@ -5,6 +5,7 @@
   <title>Simulación</title>
     <link rel="stylesheet" href="../styles/simulacion.css">
     <link rel="stylesheet" href="../styles/instalacion.css">
+    <link rel="stylesheet" href="../styles/memoria.css">
 
   
 </head>
@@ -41,24 +42,63 @@
       </div>
 
       <!-- Panel de simulación -->
-      <!-- Panel Estática fija -->
-        <div id="estatica_fija" class="panel" style="display: none;">
+      
+        <!-- Panel de Estatica fija -->
+        <div id="estatica_fija" class="panel active">
           <h2>Memoria Estática Fija</h2>
-          <div id="tabla-estatica"></div>
+          <div class="memoria-wrapper">
+            <div class="memoria-header">
+              <div>HEX</div>
+              <div>DEC</div>
+              <div>PID</div>
+              <div>TAM Partición</div>
+            </div>
+            <div class="memoria-body" id="memoria-estatica-fija"></div>
+          </div>
         </div>
 
+        <!-- Panel 2: Estática variable -->
         <div id="estatica_variable" class="panel">
-          <h2>Panel de Simulación 2</h2>
-          <p>Contenido del segundo panel.</p>
+          <h2>Memoria Estática Variable</h2>
+          <div class="memoria-wrapper">
+            <div class="memoria-header">
+              <div>HEX</div>
+              <div>DEC</div>
+              <div>PID</div>
+              <div>TAM Partición</div>
+            </div>
+            <div class="memoria-body" id="memoria-estatica-variable"></div>
+          </div>
         </div>
+
+        <!-- Panel 3: Dinámica sin compactación -->
         <div id="dinamica_sin_compactacion" class="panel">
-          <h2>Panel de Simulación 3</h2>
-          <p>Contenido del tercer panel.</p>
+          <h2>Memoria Dinámica (sin compactación)</h2>
+          <div class="memoria-wrapper">
+            <div class="memoria-header">
+              <div>HEX</div>
+              <div>DEC</div>
+              <div>PID</div>
+              <div>TAM Partición</div>
+            </div>
+            <div class="memoria-body" id="memoria-dinamica-sin"></div>
+          </div>
         </div>
+
+        <!-- Panel 4: Dinámica con compactación -->
         <div id="dinamica_con_compactacion" class="panel">
-          <h2>Panel de Simulación 4</h2>
-          <p>Contenido del cuarto panel.</p>
+          <h2>Memoria Dinámica (con compactación)</h2>
+          <div class="memoria-wrapper">
+            <div class="memoria-header">
+              <div>HEX</div>
+              <div>DEC</div>
+              <div>PID</div>
+              <div>TAM Partición</div>
+            </div>
+            <div class="memoria-body" id="memoria-dinamica-con"></div>
+          </div>
         </div>
+
       </div>
     </div>
   </div>
