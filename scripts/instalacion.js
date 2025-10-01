@@ -1,4 +1,8 @@
 /* instalacion.js */
+
+// contador global de PID
+window.nextPID = window.nextPID || 1;
+
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.getElementById("dialog-instalar");
   const btnInstalar = document.getElementById("btn-instalar");
@@ -9,13 +13,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // abrir modal
   btnInstalar.addEventListener("click", () => {
-    // reset inputs antes de mostrar
-    form.reset();
-    // showModal si está soportado
+    form.reset(); // limpiar antes de mostrar
     if (typeof dialog.showModal === "function") {
       dialog.showModal();
     } else {
-      // fallback: hacerlo visible (si no hay soporte)
       dialog.setAttribute("open", "");
     }
   });
@@ -31,12 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const nuevaApp = {
+      pid: window.nextPID++, // ✅ asigna PID secuencial
       nombre: document.getElementById("nombre").value.trim(),
       codigo: Number(document.getElementById("codigo").value) || 0,
       datosIni: Number(document.getElementById("datosIni").value) || 0,
       datosNoIni: Number(document.getElementById("datosNoIni").value) || 0,
       estado: false // inicia inactiva
     };
+
     // guardar en arreglo global
     window.aplicaciones.push(nuevaApp);
 

@@ -30,6 +30,13 @@ function renderTabla() {
   aplicaciones.forEach((app, index) => {
     const row = document.createElement("tr");
 
+    // Antes de Nombre
+    const colPID = document.createElement("td");
+    colPID.textContent = app.pid;
+    row.appendChild(colPID);
+
+
+
     // Nombre
     const colNombre = document.createElement("td");
     colNombre.textContent = app.nombre;

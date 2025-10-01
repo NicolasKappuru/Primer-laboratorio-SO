@@ -1,15 +1,19 @@
-/* Tabla de aplicaciones */
+/* ===========================
+   Tabla de aplicaciones
+   =========================== */
 #tabla-aplicaciones {
   width: 100%;
-  margin-top: 15px;
+  margin-top: 10px;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 12px; /* más compacto */
   font-family: "Segoe UI", Tahoma, sans-serif;
+  table-layout: fixed; /* fuerza ancho fijo */
+  word-break: break-word;
 }
 
 #tabla-aplicaciones th,
 #tabla-aplicaciones td {
-  padding: 10px;
+  padding: 6px; /* menos espacio */
   text-align: center;
 }
 
@@ -28,19 +32,35 @@
   background-color: #f1f1f1;
 }
 
+/* Columna PID */
+#tabla-aplicaciones th:first-child,
+#tabla-aplicaciones td:first-child {
+  width: 45px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Acciones más compactas */
+#tabla-aplicaciones td:last-child {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
 /* Botones dentro de la tabla */
 #tabla-aplicaciones button {
-  padding: 6px 12px;
+  padding: 4px 8px; /* más pequeños */
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 13px;
-  margin: 0 3px;
-  transition: background 0.2s;
+  font-size: 11px;
+  transition: background 0.2s, transform 0.1s;
 }
 
 #tabla-aplicaciones button:hover {
-  opacity: 0.85;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 #tabla-aplicaciones button[title="Iniciar"] {
@@ -58,14 +78,35 @@
   color: #fff;
 }
 
-/* Modal (dialog) */
+/* ===========================
+   Botón instalar en el panel
+   =========================== */
+#btn-instalar {
+  margin-top: 6px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  background: #2196F3;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#btn-instalar:hover {
+  background: #1976D2;
+}
+
+/* ===========================
+   Modal (dialog)
+   =========================== */
 dialog.dialog {
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 0;
-  max-width: 420px;
+  max-width: 380px;
   width: 90%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
@@ -73,58 +114,64 @@ dialog::backdrop {
   background: rgba(0, 0, 0, 0.55);
 }
 
-/* Formulario dentro del modal */
+/* ===========================
+   Formulario dentro del modal
+   =========================== */
 #form-instalar {
-  padding: 22px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
 }
 
 #form-instalar h3 {
   text-align: center;
-  margin: 0 0 8px;
-  font-size: 18px;
+  margin: 0 0 6px;
+  font-size: 16px;
   font-weight: 600;
   color: #333;
 }
 
 #form-instalar label {
-  font-size: 14px;
+  font-size: 12px;
   color: #444;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #form-instalar input {
-  padding: 8px;
-  margin-top: 6px;
-  font-size: 14px;
+  flex: 1;
+  padding: 6px;
+  margin-left: 8px;
+  font-size: 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 5px;
   outline: none;
   transition: border 0.2s, box-shadow 0.2s;
 }
 
 #form-instalar input:focus {
   border: 1px solid #4CAF50;
-  box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 3px rgba(76, 175, 80, 0.4);
 }
 
-/* Botones del modal */
+/* ===========================
+   Botones del modal
+   =========================== */
 .dialog-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 8px;
+  margin-top: 4px;
 }
 
 .dialog-buttons button {
-  padding: 8px 14px;
+  padding: 6px 10px;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 5px;
   border: none;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   transition: background 0.2s;
 }
@@ -147,7 +194,9 @@ dialog::backdrop {
   background: #45a049;
 }
 
-/* Botón activo de la toolbar */
+/* ===========================
+   Botón activo de la toolbar
+   =========================== */
 .toolbar button.active-btn {
   background-color: #2196F3;
   color: #fff;
