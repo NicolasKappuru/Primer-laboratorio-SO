@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulación</title>
+    <link rel="stylesheet" href="../styles/simulacion.css">
+  
+</head>
+<body>
+  <div class="container">
+    <!-- Panel izquierdo -->
+    <div class="sidebar">
+      <h2>Aplicaciones</h2>
+      <button id="btn-instalar">Instalar</button>
+
+      <!-- Tabla de aplicaciones -->
+      <table id="tabla-aplicaciones">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Se llenará dinámicamente -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Panel derecho -->
+    <div class="main">
+      <!-- Barra superior con botones -->
+      <div class="toolbar">
+        <button onclick="showPanel('estatica_fija')">Estatica fija</button>
+        <button onclick="showPanel('estatica_variable')">Estatica variable</button>
+        <button onclick="showPanel('dinamica_sin_compactacion')">Dinamica sin compactacion</button>
+        <button onclick="showPanel('dinamica_con_compactacion')">Dinamica con compactacion</button>
+      </div>
+
+      <!-- Panel de simulación -->
+      <!-- Panel Estática fija -->
+        <div id="estatica_fija" class="panel" style="display: none;">
+          <h2>Memoria Estática Fija</h2>
+          <div id="tabla-estatica"></div>
+        </div>
+
+        <div id="estatica_variable" class="panel">
+          <h2>Panel de Simulación 2</h2>
+          <p>Contenido del segundo panel.</p>
+        </div>
+        <div id="dinamica_sin_compactacion" class="panel">
+          <h2>Panel de Simulación 3</h2>
+          <p>Contenido del tercer panel.</p>
+        </div>
+        <div id="dinamica_con_compactacion" class="panel">
+          <h2>Panel de Simulación 4</h2>
+          <p>Contenido del cuarto panel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Modal con <dialog> -->
+  <dialog id="dialog-instalar" class="dialog">
+    <form id="form-instalar">
+      <h3>Instalar aplicación</h3>
+
+      <label>Nombre aplicación:
+        <input type="text" id="nombre" required>
+      </label>
+
+      <label>Tamaño código:
+        <input type="number" id="codigo" min="0" required>
+      </label>
+
+      <label>Tamaño datos inicializados:
+        <input type="number" id="datosIni" min="0" required>
+      </label>
+
+      <label>Tamaño datos sin inicializar:
+        <input type="number" id="datosNoIni" min="0" required>
+      </label>
+
+      <div class="dialog-buttons">
+        <button type="button" id="btn-cancelar">Cancelar</button>
+        <button type="submit">Aceptar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../scripts/simulacion.js"></script>
+  <script src="../scripts/instalacion.js"></script>
+</body>
+</html>

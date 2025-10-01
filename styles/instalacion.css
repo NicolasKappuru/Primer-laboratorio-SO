@@ -1,0 +1,154 @@
+/* Tabla de aplicaciones */
+#tabla-aplicaciones {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+#tabla-aplicaciones th,
+#tabla-aplicaciones td {
+  padding: 10px;
+  text-align: center;
+}
+
+#tabla-aplicaciones th {
+  background: #4CAF50;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+}
+
+#tabla-aplicaciones tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tabla-aplicaciones tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Botones dentro de la tabla */
+#tabla-aplicaciones button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  margin: 0 3px;
+  transition: background 0.2s;
+}
+
+#tabla-aplicaciones button:hover {
+  opacity: 0.85;
+}
+
+#tabla-aplicaciones button[title="Iniciar"] {
+  background: #4CAF50;
+  color: #fff;
+}
+
+#tabla-aplicaciones button[title="Parar"] {
+  background: #f44336;
+  color: #fff;
+}
+
+#tabla-aplicaciones button:last-child {
+  background: #9e9e9e;
+  color: #fff;
+}
+
+/* Modal (dialog) */
+dialog.dialog {
+  border: none;
+  border-radius: 10px;
+  padding: 0;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+/* Formulario dentro del modal */
+#form-instalar {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#form-instalar h3 {
+  text-align: center;
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+#form-instalar label {
+  font-size: 14px;
+  color: #444;
+  display: flex;
+  flex-direction: column;
+}
+
+#form-instalar input {
+  padding: 8px;
+  margin-top: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+#form-instalar input:focus {
+  border: 1px solid #4CAF50;
+  box-shadow: 0 0 4px rgba(76, 175, 80, 0.5);
+}
+
+/* Botones del modal */
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.dialog-buttons button {
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+#btn-cancelar {
+  background: #ddd;
+  color: #333;
+}
+
+#btn-cancelar:hover {
+  background: #bbb;
+}
+
+.dialog-buttons button[type="submit"] {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.dialog-buttons button[type="submit"]:hover {
+  background: #45a049;
+}
+
+/* Botón activo de la toolbar */
+.toolbar button.active-btn {
+  background-color: #2196F3;
+  color: #fff;
+}
