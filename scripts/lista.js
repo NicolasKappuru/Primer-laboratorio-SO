@@ -3,9 +3,9 @@ class Nodo {
   constructor(disponible, hex, dec, pid, size) {
     this.hex = hex;
     this.dec = dec;
-    this.disponible = disponible; //Disponible, ocupado
+    this.estado = disponible; //Disponible, ocupado
     this.pid = pid;
-    this.size = size;
+    this.size = size; //Tamaño de la particion
     this.previous = null;
     this.next = null;
   }
@@ -28,30 +28,30 @@ class ListaEnlazada {
       return;
     }
     let nuevo = new Nodo(disponible, hex, dec, pid, size);
-    this.ultimo.next = this.nuevo;
+    this.ultimo.next = nuevo;
     this.ultimo = nuevo;
   }
 
   insertarProcesoFijo(pid, tamproceso, algoritmo){
-    this.apuntador = this.head;
+    let apuntador = this.head;
     let bloques = [];
     switch(algoritmo){
       case "PrimerOrden":
-        while(this.apuntador != null){
-          if(this.apuntador.estado == "Disponible" && this.apuntador.size >= tamproceso){
-              this.apuntador.estado = "Ocupado";
-              this.apuntador.pid = pid;
+        while(apuntador != null){
+          if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
+              apuntador.estado = "Ocupado";
+              apuntador.pid = pid;
               break;
           }
-          this.apuntador = this.apuntador.next;
+          apuntador = apuntador.next;
         }
       break;
       case "MejorAjuste":
-        while(this.apuntador != null){
-          if (this.apuntador.estado == "Disponible") {
-            bloques.push(this.apuntador);
+        while(apuntador != null){
+          if (apuntador.estado == "Disponible") {
+            bloques.push(apuntador);
           }
-          this.apuntador = this.apuntador.next;
+          apuntador = apuntador.next;
         }
         bloques.sort((a, b) => a.size - b.size);
         for (let bloque of bloques) {
@@ -63,11 +63,11 @@ class ListaEnlazada {
         }
       break;
       case "PeorAjuste":
-        while(this.apuntador != null){
-          if (this.apuntador.estado == "Disponible") {
-            bloques.push(this.apuntador);
+        while(apuntador != null){
+          if (apuntador.estado == "Disponible") {
+            bloques.push(apuntador);
           }
-          this.apuntador = this.apuntador.next;
+          apuntador = apuntador.next;
         }
         bloques.sort((a, b) => b.size - a.size);
         for (let bloque of bloques) {
@@ -85,32 +85,32 @@ class ListaEnlazada {
   }
 
   insertarProcesoDinamico(pid, tamproceso, algoritmo){
-    this.apuntador = this.head;
+    let apuntador = this.head;
     let bloques = [];
     switch(algoritmo){
       case "PrimerOrden":
-        while(this.apuntador != null){
-          if(this.apuntador.estado == "Disponible" && this.apuntador.size >= tamproceso){
-              this.auxiliar = new Nodo("Disponible", (this.apuntador.dec - tamproceso).toString(16).toUpperCase(), this.apuntador.dec - tamproceso, null, this.apuntador.size - tamproceso);
-              this.apuntador.estado = "Ocupado";
-              this.apuntador.hex = (tamproceso).toString(16).toUpperCase();
-              this.apuntador.dec = tamproceso;
-              this.apuntador.size = tamproceso;
-              this.apuntador.pid = pid;
-              this.auxiliar.next = this.apuntador.next;
-              this.apuntador.next = this.auxiliar;
+        while(apuntador != null){
+          if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
+              this.auxiliar = new Nodo("Disponible", (apuntador.dec - tamproceso).toString(16).toUpperCase(), apuntador.dec - tamproceso, null, apuntador.size - tamproceso);
+              apuntador.estado = "Ocupado";
+              apuntador.hex = (tamproceso).toString(16).toUpperCase();
+              apuntador.dec = tamproceso;
+              apuntador.size = tamproceso;
+              apuntador.pid = pid;
+              this.auxiliar.next = apuntador.next;
+              apuntador.next = this.auxiliar;
               if(this.auxiliar.next == null){
                 this.ultimo = this.auxiliar;
               }
               break;
           }
-          this.apuntador = this.apuntador.next;
+          apuntador = apuntador.next;
         }
       break;
       case "MejorAjuste":
-        while(this.apuntador != null){
-          bloques.push(this.apuntador);
-          this.apuntador = this.apuntador.next;
+        while(apuntador != null){
+          bloques.push(apuntador);
+          apuntador = apuntador.next;
         }
         bloques.sort((a, b) => a.size - b.size);
         for (let bloque of bloques) {
@@ -131,9 +131,9 @@ class ListaEnlazada {
         }
       break;
       case "PeorAjuste":
-        while(this.apuntador != null){
-          bloques.push(this.apuntador);
-          this.apuntador = this.apuntador.next;
+        while(apuntador != null){
+          bloques.push(apuntador);
+          apuntador = apuntador.next;
         }
         bloques.sort((a, b) => b.size - a.size);
         for (let bloque of bloques) {
@@ -159,63 +159,68 @@ class ListaEnlazada {
   }
 
   eliminarFijo(pid) {
-    this.apuntador = this.head;
-    while(this.apuntador != null){
-        if(this.apuntador.pid == pid){
-            this.apuntador.estado = "Disponible";
-            this.apuntador.pid = null;
+    let apuntador = this.head;
+    while(apuntador != null){
+        if(apuntador.pid == pid){
+            apuntador.estado = "Disponible";
+            apuntador.pid = null;
             break;
         }
-        this.apuntador = this.apuntador.next;
+        apuntador = apuntador.next;
     }
     return "Error: El proceso no existe";
   }
 
 
   eliminarDinamicoSinCompactacion(pid){
-    this.apuntador = this.head.next;
-    this.anterior = this.head;
-    while(this.apuntador != null){
-      if(this.apuntador.pid == pid){
-        if(this.apuntador.next != null && this.apuntador.next.estado == "Disponible"){
-          this.apuntador.size += this.apuntador.next.size;
-          this.apuntador.next = this.apuntador.next.next;
+    let apuntador = this.head.next;
+    let anterior = this.head;
+    while(apuntador != null){
+      if(apuntador.pid == pid){
+        if(apuntador.next != null && apuntador.next.estado == "Disponible"){
+          apuntador.size += apuntador.next.size;
+          apuntador.next = apuntador.next.next;
 
         }
-        if(this.anterior.estado == "Disponible"){
-          this.anterior.size += this.apuntador.size;
-          this.anterior.next = this.apuntador.next;
+        if(anterior.estado == "Disponible"){
+          anterior.size += apuntador.size;
+          anterior.next = apuntador.next;
           break;
         }
-        this.apuntador.pid = null;
-        this.apuntador.estado = "Disponible";
+        apuntador.pid = null;
+        apuntador.estado = "Disponible";
         break;
       }
-      this.anterior = this.apuntador;
-      this.apuntador = this.apuntador.next;
+      anterior = apuntador;
+      apuntador = apuntador.next;
     }
   }
   
   eliminarDinamicoConCompactacion(pid){
-    this.apuntador = this.head.next;
-    this.anterior = this.head;
-    while(this.apuntador != null){
-      if(this.apuntador.pid == pid){
-        this.anterior.next = this.apuntador.next;
+    let apuntador = this.head.next;
+    let anterior = this.head;
+    while(apuntador != null){
+      if(apuntador.pid == pid){
+        anterior.next = apuntador.next;
         if(this.ultimo.estado == "Disponible"){
-          this.ultimo.size += this.apuntador.size;
+          this.ultimo.size += apuntador.size;
 
         } 
         else{
-          this.ultimo.next = this.apuntador;
-          this.ultimo = this.apuntador;
+          this.ultimo.next = apuntador;
+          this.ultimo = apuntador;
         }
-        this.apuntador.pid = null;
-        this.apuntador.estado = "Disponible";
+        apuntador.pid = null;
+        apuntador.estado = "Disponible";
         break;
       }
-      this.anterior = this.apuntador;
-      this.apuntador = this.apuntador.next;
+      anterior = apuntador;
+      apuntador = apuntador.next;
     }
   }
 }
+
+console.log("📌 Definición de las clases ListaEnlazada y Nodo cargadas.");
+
+
+

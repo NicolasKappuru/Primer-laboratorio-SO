@@ -1,7 +1,25 @@
 /* instalacion.js */
 
+
 // contador global de PID
 window.nextPID = window.nextPID || 1;
+
+
+function imprimirLista(lista) {
+  let actual = lista.head;
+  let i = 0;
+  while (actual) {
+    console.log(`Bloque ${i}:`, {
+      disponible: actual.estado,
+      hex: actual.hex,
+      dec: actual.dec,
+      pid: actual.pid,
+      size: actual.size
+    });
+    actual = actual.next;
+    i++;
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.getElementById("dialog-instalar");
@@ -39,6 +57,25 @@ document.addEventListener("DOMContentLoaded", () => {
       datosNoIni: Number(document.getElementById("datosNoIni").value) || 0,
       estado: false // inicia inactiva
     };
+
+    const tamProceso = nuevaApp.codigo + nuevaApp.datosIni + nuevaApp.datosNoIni;
+    
+    window.memoria_estatica_fija.insertarProcesoFijo(
+    nuevaApp.pid,
+    tamProceso,
+    "PrimerOrden" 
+    );
+
+    console.log("Resultado de insertar en memoria:", tamProceso);
+
+
+    // Llamada para mostrar tu memoria
+    imprimirLista(window.memoria_estatica_fija);
+
+
+
+
+
 
     // guardar en arreglo global
     window.aplicaciones.push(nuevaApp);
