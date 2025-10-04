@@ -99,6 +99,9 @@ function renderTabla() {
     };
     colAcciones.appendChild(btnBorrar);
 
+    if(!app.estado) btnBorrar.disabled = false;
+    else btnBorrar.disabled = true;
+
     row.appendChild(colAcciones);
     tbody.appendChild(row);
   });
