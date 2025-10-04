@@ -2,7 +2,7 @@
 
 
 // contador global de PID
-window.nextPID = window.nextPID || 1;
+window.nextPID = window.nextPID || 9; // empieza en 9 porque hay 8 apps por defecto
 
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.getElementById("dialog-instalar");
