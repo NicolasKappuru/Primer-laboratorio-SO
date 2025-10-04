@@ -53,6 +53,8 @@ function renderTabla() {
         console.log("Se oprimió desactivar", app.nombre);
         cambiarEstado(index, false);
         eliminarProceso(colPID.textContent);
+        actualizarVistaMemoriaFija();
+
       };
 
     } else {
@@ -63,6 +65,8 @@ function renderTabla() {
         console.log(colPID.textContent)
         console.log("Se oprimio en activar", app.nombre);
         iniciarProceso(colPID.textContent);
+        actualizarVistaMemoriaFija();
+
       }
     }
     colAcciones.appendChild(btnEstado);
@@ -126,16 +130,10 @@ function crearBloque(container, { hex, dec, pid, tam }) {
 // Ejemplo dinámico SOLO en estática fija
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
-  const memoria = document.getElementById("memoria-estatica-fija");
-  if (memoria) {
-    memoria.innerHTML = "";
-
-    // valores de prueba — cámbialos y verás cómo se ajusta la proporción
-    crearBloque(memoria, { hex: "0x000000", dec: 0, pid: "", tam: 8388608 });        // 8 MB libre
-    crearBloque(memoria, { hex: "0x800000", dec: 14000000, pid: 1, tam: 20000000 });   // 7 MB ocupado
-    crearBloque(memoria, { hex: "0xF00000", dec: 15728640, pid: "S.O", tam: 1048576 }); // 1 MB SO
-  }
+  // cuando se cargue la página, dibujamos lo que haya en memoria fija
+  actualizarVistaMemoriaFija();
 });
+
 
 
 function iniciarProceso(pid){
@@ -179,6 +177,49 @@ function eliminarProceso(pid){
 function obtenerAppPorPid(pid) {
   return window.aplicaciones.find(app => app.pid == pid);
 }
+
+function actualizarVistaMemoriaFija() {
+  const memoria = document.getElementById("memoria-estatica-fija");
+  if (!memoria) return;
+
+  memoria.innerHTML = "";
+
+  // Guardamos todos los nodos en un array
+  let nodos = [];
+  let actual = window.memoria_estatica_fija.head;
+  while (actual) {
+    nodos.push(actual);
+    actual = actual.next;
+  }
+
+  // Recorremos en orden inverso (para que se dibuje de abajo hacia arriba)
+  for (let i = nodos.length - 1; i >= 0; i--) {
+    const nodo = nodos[i];
+
+    // Determinar clase de bloque según estado
+    let clase = "bloque libre";
+    if (nodo.pid === "S.O") {
+      clase = "bloque so";
+    } else if (nodo.estado === "Ocupado") {
+      clase = "bloque ocupado"; // verde
+    }
+
+    const b = document.createElement("div");
+    b.className = clase;
+    b.style.flexGrow = nodo.size / TOTAL;
+
+    b.innerHTML = `
+      <div>${nodo.hex}</div>
+      <div>${nodo.dec}</div>
+      <div>${nodo.pid || ""}</div>
+      <div>${nodo.size.toLocaleString()}</div>
+    `;
+
+    memoria.appendChild(b);
+  }
+}
+
+
 
 
 function imprimirLista(lista) {

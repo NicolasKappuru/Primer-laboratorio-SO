@@ -65,9 +65,9 @@
 }
 
 /* orden: libre arriba (order:0) -> ocupado (order:1) -> SO abajo (order:2) */
-.bloque.libre  { order: 0; background: #fff; }
-.bloque.ocupado{ order: 1; background: #C8E6C9; }  /* verde claro para procesos con PID */
-.bloque.so     { order: 2; background: #FFEB3B; font-weight: 700; } /* S.O. siempre abajo */
+.bloque.libre  { background: #fff; }
+.bloque.ocupado{ background: #C8E6C9; }  /* verde claro para procesos con PID */
+.bloque.so     { background: #FFEB3B; font-weight: 700; } /* S.O. siempre abajo */
 
 /* colores más marcados para bloques con PID no vacíos (si quieres un verde más vivo) */
 .bloque.ocupado.pid-lleno {
