@@ -91,15 +91,17 @@ class ListaEnlazada {
       case "PrimerOrden":
         while(apuntador != null){
           if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
-              this.auxiliar = new Nodo("Disponible", (apuntador.dec + tamproceso).toString(16).toUpperCase(), apuntador.dec + tamproceso, null, apuntador.size - tamproceso);
+              if(apuntador.size - tamproceso > 0){
+                this.auxiliar = new Nodo("Disponible", (apuntador.dec + tamproceso).toString(16).toUpperCase(), apuntador.dec + tamproceso, null, apuntador.size - tamproceso);
+                this.auxiliar.next = apuntador.next;
+                apuntador.next = this.auxiliar;
+                if(this.auxiliar.next == null){
+                  this.ultimo = this.auxiliar;
+                }
+              }
               apuntador.estado = "Ocupado";
               apuntador.size = tamproceso;
               apuntador.pid = pid;
-              this.auxiliar.next = apuntador.next;
-              apuntador.next = this.auxiliar;
-              if(this.auxiliar.next == null){
-                this.ultimo = this.auxiliar;
-              }
               break;
           }
           apuntador = apuntador.next;
@@ -113,15 +115,17 @@ class ListaEnlazada {
         bloques.sort((a, b) => a.size - b.size);
         for (let bloque of bloques) {
           if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
+              if(bloque.size - tamproceso > 0){
+                this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
+                this.auxiliar.next = bloque.next;
+                bloque.next = this.auxiliar;
+                if(this.auxiliar.next == null){
+                  this.ultimo = this.auxiliar;
+                }
+              }
               bloque.estado = "Ocupado";
               bloque.size = tamproceso;
               bloque.pid = pid;
-              this.auxiliar.next = bloque.next;
-              bloque.next = this.auxiliar;
-              if(this.auxiliar.next == null){
-                this.ultimo = this.auxiliar;
-              }
               break;
           }
         }
@@ -134,15 +138,17 @@ class ListaEnlazada {
         bloques.sort((a, b) => b.size - a.size);
         for (let bloque of bloques) {
           if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
+              if(bloque.size - tamproceso > 0){
+                this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
+                this.auxiliar.next = bloque.next;
+                bloque.next = this.auxiliar;
+                if(this.auxiliar.next == null){
+                  this.ultimo = this.auxiliar;
+                }
+              }
               bloque.estado = "Ocupado";
               bloque.size = tamproceso;
               bloque.pid = pid;
-              this.auxiliar.next = bloque.next;
-              bloque.next = this.auxiliar;
-              if(this.auxiliar.next == null){
-                this.ultimo = this.auxiliar;
-              }
               break;
           }
         }
