@@ -38,5 +38,3 @@ function imprimirLista(lista) {
 }
 
 imprimirLista(memoria_estatica_variable);
-
-console.log(localStorage.getItem("algoritmoElegido"));

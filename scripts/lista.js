@@ -91,10 +91,8 @@ class ListaEnlazada {
       case "PrimerOrden":
         while(apuntador != null){
           if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
-              this.auxiliar = new Nodo("Disponible", (apuntador.dec - tamproceso).toString(16).toUpperCase(), apuntador.dec - tamproceso, null, apuntador.size - tamproceso);
+              this.auxiliar = new Nodo("Disponible", (apuntador.dec + tamproceso).toString(16).toUpperCase(), apuntador.dec + tamproceso, null, apuntador.size - tamproceso);
               apuntador.estado = "Ocupado";
-              apuntador.hex = (tamproceso).toString(16).toUpperCase();
-              apuntador.dec = tamproceso;
               apuntador.size = tamproceso;
               apuntador.pid = pid;
               this.auxiliar.next = apuntador.next;
@@ -115,10 +113,8 @@ class ListaEnlazada {
         bloques.sort((a, b) => a.size - b.size);
         for (let bloque of bloques) {
           if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              this.auxiliar = new Nodo("Disponible", (bloque.dec - tamproceso).toString(16).toUpperCase(), bloque.dec - tamproceso, null, bloque.size - tamproceso);
+              this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
               bloque.estado = "Ocupado";
-              bloque.hex = (tamproceso).toString(16).toUpperCase();
-              bloque.dec = tamproceso;
               bloque.size = tamproceso;
               bloque.pid = pid;
               this.auxiliar.next = bloque.next;
@@ -138,10 +134,8 @@ class ListaEnlazada {
         bloques.sort((a, b) => b.size - a.size);
         for (let bloque of bloques) {
           if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              this.auxiliar = new Nodo("Disponible", (bloque.dec - tamproceso).toString(16).toUpperCase(), bloque.dec - tamproceso, null, bloque.size - tamproceso);
+              this.auxiliar = new Nodo("Disponible", (bloque.dec + tamproceso).toString(16).toUpperCase(), bloque.dec + tamproceso, null, bloque.size - tamproceso);
               bloque.estado = "Ocupado";
-              bloque.hex = (tamproceso).toString(16).toUpperCase();
-              bloque.dec = tamproceso;
               bloque.size = tamproceso;
               bloque.pid = pid;
               this.auxiliar.next = bloque.next;
