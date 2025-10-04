@@ -54,6 +54,7 @@ function renderTabla() {
         cambiarEstado(index, false);
         eliminarProceso(colPID.textContent);
         actualizarVistaMemoriaFija();
+        actualizarVistaMemoriaFijaVariable();
 
       };
 
@@ -66,6 +67,7 @@ function renderTabla() {
         console.log("Se oprimio en activar", app.nombre);
         iniciarProceso(colPID.textContent);
         actualizarVistaMemoriaFija();
+        actualizarVistaMemoriaFijaVariable();
 
       }
     }
@@ -132,6 +134,7 @@ function crearBloque(container, { hex, dec, pid, tam }) {
 document.addEventListener("DOMContentLoaded", () => {
   // cuando se cargue la página, dibujamos lo que haya en memoria fija
   actualizarVistaMemoriaFija();
+  actualizarVistaMemoriaFijaVariable();
 });
 
 
@@ -162,14 +165,23 @@ function iniciarProceso(pid){
     "PrimerOrden" 
   );
 
+  window.memoria_estatica_variable.insertarProcesoFijo(
+    pid,
+    tamProceso,
+    localStorage.getItem("algoritmoElegido") 
+  );
+
+
   console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
-  imprimirLista(window.memoria_estatica_fija);
+  imprimirLista(window.memoria_estatica_variable);
+
 }
 
 function eliminarProceso(pid){
   window.memoria_estatica_fija.eliminarFijo(pid); 
-  imprimirLista(window.memoria_estatica_fija);
+  window.memoria_estatica_variable.eliminarFijo(pid);
+  imprimirLista(window.memoria_estatica_variable);
 
 }
 
@@ -219,6 +231,46 @@ function actualizarVistaMemoriaFija() {
   }
 }
 
+function actualizarVistaMemoriaFijaVariable() {
+  const memoria = document.getElementById("memoria-estatica-variable");
+  if (!memoria) return;
+
+  memoria.innerHTML = "";
+
+  // Guardamos todos los nodos en un array
+  let nodos = [];
+  let actual = window.memoria_estatica_variable.head;
+  while (actual) {
+    nodos.push(actual);
+    actual = actual.next;
+  }
+
+  // Recorremos en orden inverso (para que se dibuje de abajo hacia arriba)
+  for (let i = nodos.length - 1; i >= 0; i--) {
+    const nodo = nodos[i];
+
+    // Determinar clase de bloque según estado
+    let clase = "bloque libre";
+    if (nodo.pid === "S.O") {
+      clase = "bloque so";
+    } else if (nodo.estado === "Ocupado") {
+      clase = "bloque ocupado"; // verde
+    }
+
+    const b = document.createElement("div");
+    b.className = clase;
+    b.style.flexGrow = nodo.size / TOTAL;
+
+    b.innerHTML = `
+      <div>${nodo.hex}</div>
+      <div>${nodo.dec}</div>
+      <div>${nodo.pid || ""}</div>
+      <div>${nodo.size.toLocaleString()}</div>
+    `;
+
+    memoria.appendChild(b);
+  }
+}
 
 
 

@@ -24,36 +24,13 @@
   <h1>Elegir algoritmo</h1>
 
   <div>
-    <button onclick="selectOption('Algoritmo 1')" id="btn1">Algoritmo 1</button>
-    <button onclick="selectOption('Algoritmo 2')" id="btn2">Algoritmo 2</button>
-    <button onclick="selectOption('Algoritmo 3')" id="btn3">Algoritmo 3</button>
+    <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+    <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+    <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
   </div>
 
   <br><br>
   <button onclick="continuar()">Continuar</button>
-
-  <script>
-    let selectedOption = null;
-
-    function selectOption(option) {
-      selectedOption = option;
-      // Quitar selección previa
-      document.querySelectorAll("button").forEach(btn => btn.classList.remove("selected"));
-      // Marcar botón elegido
-      event.target.classList.add("selected");
-    }
-
-    function continuar() {
-      if (!selectedOption) {
-        alert("Por favor selecciona un algoritmo antes de continuar.");
-        return;
-      }
-      // Guardar selección en localStorage
-      localStorage.setItem("algoritmoElegido", selectedOption);
-      // Ir al simulador
-      window.location.href = "simulacion.html";
-    }
-  </script>
-
+  <script src="../scripts/main.js"></script>
 </body>
 </html>
