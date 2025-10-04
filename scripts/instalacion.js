@@ -4,23 +4,6 @@
 // contador global de PID
 window.nextPID = window.nextPID || 1;
 
-
-function imprimirLista(lista) {
-  let actual = lista.head;
-  let i = 0;
-  while (actual) {
-    console.log(`Bloque ${i}:`, {
-      disponible: actual.estado,
-      hex: actual.hex,
-      dec: actual.dec,
-      pid: actual.pid,
-      size: actual.size
-    });
-    actual = actual.next;
-    i++;
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.getElementById("dialog-instalar");
   const btnInstalar = document.getElementById("btn-instalar");
@@ -58,25 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       estado: false // inicia inactiva
     };
 
-    const tamProceso = nuevaApp.codigo + nuevaApp.datosIni + nuevaApp.datosNoIni;
-    
-    window.memoria_estatica_fija.insertarProcesoFijo(
-    nuevaApp.pid,
-    tamProceso,
-    "PrimerOrden" 
-    );
-
-    console.log("Resultado de insertar en memoria:", tamProceso);
-
-
-    // Llamada para mostrar tu memoria
-    imprimirLista(window.memoria_estatica_fija);
-
-
-
-
-
-
+  
     // guardar en arreglo global
     window.aplicaciones.push(nuevaApp);
 
@@ -86,5 +51,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // cerrar modal
     if (typeof dialog.close === "function") dialog.close();
     else dialog.removeAttribute("open");
+  
+    imprimirAplicaciones();
   });
 });
+
+
+function imprimirAplicaciones() {
+  console.log("=== Tabla Global de Aplicaciones ===");
+  if (window.aplicaciones.length === 0) {
+    console.log("No hay aplicaciones instaladas.");
+    return;
+  }
+
+  window.aplicaciones.forEach(app => {
+    console.log(`PID: ${app.pid} | Nombre: ${app.nombre} | Estado: ${app.estado ? "Activo" : "Inactivo"}`);
+  });
+
+  console.log("=== Fin de tabla ===");
+}

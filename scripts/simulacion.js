@@ -48,11 +48,22 @@ function renderTabla() {
     if (app.estado) {
       btnEstado.textContent = "✖"; // activo -> parar
       btnEstado.title = "Parar";
-      btnEstado.onclick = () => cambiarEstado(index, false);
+      btnEstado.onclick = () => {
+        console.log(colPID.textContent)
+        console.log("Se oprimió desactivar", app.nombre);
+        cambiarEstado(index, false);
+        eliminarProceso(colPID.textContent);
+      };
+
     } else {
       btnEstado.textContent = "✔"; // inactivo -> iniciar
       btnEstado.title = "Iniciar";
-      btnEstado.onclick = () => cambiarEstado(index, true);
+      btnEstado.onclick = () => {
+        cambiarEstado(index, true);
+        console.log(colPID.textContent)
+        console.log("Se oprimio en activar", app.nombre);
+        iniciarProceso(colPID.textContent);
+      }
     }
     colAcciones.appendChild(btnEstado);
 
@@ -125,3 +136,64 @@ document.addEventListener("DOMContentLoaded", () => {
     crearBloque(memoria, { hex: "0xF00000", dec: 15728640, pid: "S.O", tam: 1048576 }); // 1 MB SO
   }
 });
+
+
+function iniciarProceso(pid){
+  console.log("Le pasamos el pid: " + pid);
+  console.log(typeof pid);
+
+  let app = obtenerAppPorPid(pid);  
+  let codigo = 0;
+  let datosIni = 0;
+  let datosNoIni = 0;
+
+  if (app) {
+    codigo = app.codigo;
+    datosIni = app.datosIni;
+    datosNoIni = app.datosNoIni;
+    console.log("App encontrada");
+  } else {
+    console.log("No existe una app con ese PID");
+    return;
+  }
+
+  const tamProceso =codigo + datosIni + datosNoIni;
+  window.memoria_estatica_fija.insertarProcesoFijo(
+    pid,
+    tamProceso,
+    "PrimerOrden" 
+  );
+
+  console.log("Resultado de insertar en memoria:", tamProceso);
+  // Llamada para mostrar tu memoria
+  imprimirLista(window.memoria_estatica_fija);
+}
+
+function eliminarProceso(pid){
+  window.memoria_estatica_fija.eliminarFijo(pid); 
+  imprimirLista(window.memoria_estatica_fija);
+
+}
+
+//Para obtener los datos de una app por su PID
+function obtenerAppPorPid(pid) {
+  return window.aplicaciones.find(app => app.pid == pid);
+}
+
+
+function imprimirLista(lista) {
+  let actual = lista.head;
+  let i = 0;
+  while (actual) {
+    console.log(`Bloque ${i}:`, {
+      disponible: actual.estado,
+      hex: actual.hex,
+      dec: actual.dec,
+      pid: actual.pid,
+      size: actual.size
+    });
+    actual = actual.next;
+    i++;
+  }
+}
+
