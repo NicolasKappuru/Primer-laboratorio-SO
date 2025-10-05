@@ -1,6 +1,6 @@
 # Primer-laboratorio-SO
 
-El primer laboratori de sistemas operativos consiste en simular un sistema de gestion de memoria. Mas especificamente Memoria Contigua.
+El primer laboratorio de sistemas operativos consiste en simular un sistema de gestion de memoria. Mas especificamente Memoria Contigua.
 
 Debe tener:
 

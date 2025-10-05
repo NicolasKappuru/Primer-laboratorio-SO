@@ -197,25 +197,78 @@ class ListaEnlazada {
   }
   
   eliminarDinamicoConCompactacion(pid){
-    let apuntador = this.head.next;
-    let anterior = this.head;
-    while(apuntador != null){
-      if(apuntador.pid == pid){
-        anterior.next = apuntador.next;
-        if(this.ultimo.estado == "Disponible"){
-          this.ultimo.size += apuntador.size;
-
-        } 
-        else{
-          this.ultimo.next = apuntador;
-          this.ultimo = apuntador;
-        }
-        apuntador.pid = null;
-        apuntador.estado = "Disponible";
+    // Primero marcamos el bloque como disponible (si existe)
+    let encontrado = false;
+    let actual = this.head;
+    while (actual) {
+      if (actual.pid == pid) {
+        actual.pid = null;
+        actual.estado = "Disponible";
+        encontrado = true;
         break;
       }
-      anterior = apuntador;
-      apuntador = apuntador.next;
+      actual = actual.next;
+    }
+
+    if (!encontrado) return; // nada que hacer
+
+    // Ahora compactamos: dejamos el bloque S.O al inicio, mantenemos el orden relativo de los ocupados
+    // y agrupamos todo el espacio libre en un único bloque al final.
+    const nodosOcupados = [];
+    let freeSpace = 0;
+    actual = this.head;
+    // Suponemos que la cabeza es S.O y debe conservarse en primer lugar
+    let soNodo = null;
+    while (actual) {
+      if (actual.pid === "S.O") {
+        soNodo = actual;
+      } else if (actual.estado === "Ocupado") {
+        nodosOcupados.push(actual);
+      } else if (actual.estado === "Disponible") {
+        freeSpace += actual.size;
+      }
+      actual = actual.next;
+    }
+
+    // Reconstruir la lista: soNodo -> nodosOcupados... -> disponible(final)
+    // Reset enlaces
+    this.head = soNodo;
+    let cursor = this.head;
+    if (!cursor) return; // protección
+
+    // Reasignar direcciones (dec/hex) desde 0: soNodo mantiene su dec (asumimos 0)
+    let currentDec = this.head.dec || 0;
+    this.head.previous = null;
+    this.head.next = null;
+    // Si soNodo no estaba en head original (por seguridad), aseguramos su tamaño/dec
+    this.head.dec = currentDec;
+    this.head.hex = currentDec.toString(16).toUpperCase();
+
+    // Avanzar a la siguiente dirección
+    currentDec += this.head.size;
+
+    for (let nodo of nodosOcupados) {
+      // ajustar dec/hex
+      nodo.dec = currentDec;
+      nodo.hex = currentDec.toString(16).toUpperCase();
+      currentDec += nodo.size;
+
+      // enlazar
+      cursor.next = nodo;
+      nodo.previous = cursor;
+      cursor = nodo;
+      cursor.next = null;
+    }
+
+    // Crear o anexar el bloque disponible final
+    if (freeSpace > 0) {
+      const nuevoLibre = new Nodo("Disponible", currentDec.toString(16).toUpperCase(), currentDec, null, freeSpace);
+      cursor.next = nuevoLibre;
+      nuevoLibre.previous = cursor;
+      this.ultimo = nuevoLibre;
+    } else {
+      // No hay espacio libre restante
+      this.ultimo = cursor;
     }
   }
 }
