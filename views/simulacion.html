@@ -131,6 +131,21 @@
     </form>
   </dialog>
 
+  <!-- Modal de mensajes (usado por showModal) -->
+  <div id="modal-message" class="app-modal" style="display:none;">
+    <div class="app-modal__backdrop"></div>
+    <div class="app-modal__box">
+      <header class="app-modal__header">
+        <h3 id="modal-title">Título</h3>
+        <button id="modal-close" aria-label="Cerrar">✖</button>
+      </header>
+      <div class="app-modal__body" id="modal-body">Contenido</div>
+      <footer class="app-modal__footer">
+        <button id="modal-ok">OK</button>
+      </footer>
+    </div>
+  </div>
+
   <script src="../scripts/lista.js"></script>
   <script src="../scripts/estatica_fija.js"></script>
   <script src="../scripts/estatica_variable.js"></script>

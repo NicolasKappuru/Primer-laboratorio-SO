@@ -143,6 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btn) btn.addEventListener('click', hideModal);
 });
 
+// conectar botón OK del modal
+document.addEventListener('DOMContentLoaded', () => {
+  const ok = document.getElementById('modal-ok');
+  if (ok) ok.addEventListener('click', hideModal);
+});
+
 // =======================
 // Aplicaciones (panel izquierdo)
 // =======================
@@ -188,6 +194,7 @@ function renderTabla() {
     // Acciones
     const colAcciones = document.createElement("td");
 
+    // Acciones
     // Botón estado (activar/inactivar)
     const btnEstado = document.createElement("button");
     btnEstado.style.marginRight = "4px";
