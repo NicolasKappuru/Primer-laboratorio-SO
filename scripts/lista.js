@@ -38,7 +38,7 @@ class ListaEnlazada {
     switch(algoritmo){
       case "PrimerOrden":
         while(apuntador != null){
-          // asegurar tipos numéricos
+          // Si o si tienen que ser de tipo numerico 
           const sizeNum = Number(apuntador.size);
           const tamNum = Number(tamproceso);
           if(apuntador.estado == "Disponible" && sizeNum >= tamNum){
@@ -225,81 +225,70 @@ class ListaEnlazada {
   }
   
   eliminarDinamicoConCompactacion(pid){
-    // Primero marcamos el bloque como disponible (si existe)
     let encontrado = false;
-    let actual = this.head;
-    while (actual) {
-      if (actual.pid == pid) {
-        actual.pid = null;
-        actual.estado = "Disponible";
+    let apuntador = this.head;
+    while (apuntador) {
+      if (apuntador.pid == pid) {
+        apuntador.pid = null;
+        apuntador.estado = "Disponible";
         encontrado = true;
         break;
       }
-      actual = actual.next;
+      apuntador = apuntador.next;
     }
 
-    if (!encontrado) return; // nada que hacer
+    if (!encontrado) return; // no hace nada, literalmente no encuentra nada
 
-    // Ahora compactamos: dejamos el bloque S.O al inicio, mantenemos el orden relativo de los ocupados
-    // y agrupamos todo el espacio libre en un único bloque al final.
     const nodosOcupados = [];
     let freeSpace = 0;
-    actual = this.head;
-    // Suponemos que la cabeza es S.O y debe conservarse en primer lugar
+    apuntador = this.head;
+    // La cabeza siempre siempre debe de ser el S.O
     let soNodo = null;
-    while (actual) {
-      if (actual.pid === "S.O") {
-        soNodo = actual;
-      } else if (actual.estado === "Ocupado") {
-        nodosOcupados.push(actual);
-      } else if (actual.estado === "Disponible") {
-        freeSpace += Number(actual.size);
+    while (apuntador) {
+      if (apuntador.pid === "S.O") {
+        soNodo = apuntador;
+      } else if (apuntador.estado === "Ocupado") {
+        nodosOcupados.push(apuntador);
+      } else if (apuntador.estado === "Disponible") {
+        freeSpace += Number(apuntador.size);
       }
-      actual = actual.next;
+      apuntador = apuntador.next;
     }
 
-    // Reconstruir la lista: soNodo -> nodosOcupados... -> disponible(final)
-    // Reset enlaces
     this.head = soNodo;
     let cursor = this.head;
-    if (!cursor) return; // protección
+    if (!cursor) return; 
 
-    // Reasignar direcciones (dec/hex) desde 0: soNodo mantiene su dec (asumimos 0)
   let currentDec = Number(this.head.dec) || 0;
     this.head.previous = null;
     this.head.next = null;
-    // Si soNodo no estaba en head original (por seguridad), aseguramos su tamaño/dec
     this.head.dec = currentDec;
     this.head.hex = currentDec.toString(16).toUpperCase();
 
-    // Avanzar a la siguiente dirección
   currentDec += Number(this.head.size);
 
     for (let nodo of nodosOcupados) {
-      // ajustar dec/hex
   nodo.dec = currentDec;
   nodo.hex = currentDec.toString(16).toUpperCase();
   currentDec += Number(nodo.size);
 
-      // enlazar
       cursor.next = nodo;
       nodo.previous = cursor;
       cursor = nodo;
       cursor.next = null;
     }
 
-    // Crear o anexar el bloque disponible final
     if (freeSpace > 0) {
       const nuevoLibre = new Nodo("Disponible", currentDec.toString(16).toUpperCase(), currentDec, null, Number(freeSpace));
       cursor.next = nuevoLibre;
       nuevoLibre.previous = cursor;
       this.ultimo = nuevoLibre;
     } else {
-      // No hay espacio libre restante
+      // En caso de que no halla espacio libre, el último es el último ocupado
       this.ultimo = cursor;
     }
   }
 }
 
-console.log("📌 Definición de las clases ListaEnlazada y Nodo cargadas.");
+console.log("Definición de las clases ListaEnlazada y Nodo cargadas.");
 //module.exports = ListaEnlazada 

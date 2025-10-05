@@ -12,11 +12,10 @@ function showPanel(panelId, btnEl) {
   document.querySelectorAll(".toolbar button").forEach(b => b.classList.remove("active-btn"));
   if (btnEl) btnEl.classList.add("active-btn");
 
-  // Validar las aplicaciones activas para el panel seleccionado; si no caben, desactivarlas
   validateActiveAppsForPanel(panelId);
 }
 
-// Devuelve el id del panel actualmente activo en la UI
+// este es para poder traer el panel activo actualmente, esto para el manejo de errores
 function getActivePanel() {
   const p = document.querySelector('.panel.active');
   return p ? p.id : null;
@@ -57,7 +56,7 @@ function validateActiveAppsForPanel(panelId) {
   const desactivados = [];
   const indicesToDeactivate = [];
 
-  // Helper: comprueba si un PID ya está presente en la memoria del panel
+  // para saber si el PID ya está en la memoria del panel
   function isProcessInMemory(panelId, pid) {
     let n;
     switch(panelId) {
@@ -80,41 +79,33 @@ function validateActiveAppsForPanel(panelId) {
     return false;
   }
 
-  // Helper: eliminar pid de todas las memorias excepto la del panelId indicado
+  // En el caso que se necesite eliminar el PID de las memorias que no son el actual
   function removePidFromOtherMemories(panelId, pid) {
-    // Estática fija
     if (panelId !== 'estatica_fija' && window.memoria_estatica_fija) window.memoria_estatica_fija.eliminarFijo(pid);
-    // Estática variable
     if (panelId !== 'estatica_variable' && window.memoria_estatica_variable) window.memoria_estatica_variable.eliminarFijo(pid);
-    // Dinámica sin compactación
     if (panelId !== 'dinamica_sin_compactacion' && window.memoria_dinamica_sin_compactacion) window.memoria_dinamica_sin_compactacion.eliminarDinamicoSinCompactacion(pid);
-    // Dinámica con compactación
     if (panelId !== 'dinamica_con_compactacion' && window.memoria_dinamica_con_compactacion) window.memoria_dinamica_con_compactacion.eliminarDinamicoConCompactacion(pid);
   }
 
   // Para cada app activa intentamos garantizar que exista en la memoria del panel seleccionado.
   aplicaciones.forEach((app, idx) => {
-    if (!app.estado) return; // solo considerar activas
+    if (!app.estado) return; // Para considerar unicamente activas
     const pid = app.pid;
 
-    // Si ya está en la memoria destino, nada que hacer
+    // Si ya está en la memoria destino, nada que hacer \_ ._. _/
     if (isProcessInMemory(panelId, pid)) return;
 
-    // Intentar insertar en el panel activo (si no cabe, será desactivada)
+    // Intentar insertar en el panel activo (si no cabe, va a ser desactivada)
     const ins = iniciarEnPanel(pid, panelId);
     if (ins && ins.anyOk) {
-      // inserción exitosa en panel destino: limpiar posibles rastros en otras memorias
       removePidFromOtherMemories(panelId, pid);
-      // actualizar vistas ahora (se hace al final en lote también)
     } else {
-      // No se pudo insertar: desactivar y eliminar de todas las memorias
       indicesToDeactivate.push(idx);
       eliminarProceso(pid);
       desactivados.push(app.nombre);
     }
   });
 
-  // Si hubo desactivaciones, desactivarlas en la tabla y notificar
   if (indicesToDeactivate.length > 0) {
     indicesToDeactivate.forEach(i => { aplicaciones[i].estado = false; });
     renderTabla();
@@ -137,13 +128,11 @@ function hideModal() {
   modal.style.display = 'none';
 }
 
-// cerrar modal
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('modal-close');
   if (btn) btn.addEventListener('click', hideModal);
 });
 
-// conectar botón OK del modal
 document.addEventListener('DOMContentLoaded', () => {
   const ok = document.getElementById('modal-ok');
   if (ok) ok.addEventListener('click', hideModal);
@@ -194,7 +183,6 @@ function renderTabla() {
     // Acciones
     const colAcciones = document.createElement("td");
 
-    // Acciones
     // Botón estado (activar/inactivar)
     const btnEstado = document.createElement("button");
     btnEstado.style.marginRight = "4px";
@@ -224,16 +212,14 @@ function renderTabla() {
         if (res && res.anyOk) {
           cambiarEstado(index, true);
         } else {
-          // no se pudo cargar en ninguna memoria
           showModal('Error', `No hay suficiente memoria para crear el proceso ${app.nombre}.`);
           cambiarEstado(index, false);
         }
-        // actualizar vistas siempre
         actualizarVistaMemoriaFija();
         actualizarVistaMemoriaFijaVariable();
         actualizarVistaMemoriaDinamicaSinCompactacion();
         actualizarVistaMemoriaDinamicaConCompactacion();
-        // si hubo advertencias (por ejemplo fija no entró), mostrarlas
+        // Que muestre las advertencias si las hay !!!
         if (res && res.warnings && res.warnings.length > 0) {
           showModal('Advertencias', res.warnings.join('\n'));
         }
@@ -315,34 +301,29 @@ document.addEventListener("DOMContentLoaded", () => {
   actualizarVistaMemoriaFijaVariable();
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
-  // Reaplicar procesos activos con el algoritmo actualmente seleccionado (si los hay)
   if (window.aplicaciones && window.aplicaciones.some(a => a.estado)) {
     reapplyActiveProcessesWithNewAlgorithm();
   }
 });
 
-// Reaplicar procesos activos usando el algoritmo actual guardado en localStorage.
-// Intenta conservar los procesos que puedan ser asignados; los que no, se desactivan.
+// Que se aplique si se puede los nuevos procesos que se hagan desde otro algoritmo 
+// (quitar esto si se quiere que funcionen por separado pero da errores :c)
 function reapplyActiveProcessesWithNewAlgorithm() {
   const failed = [];
-  // Hacemos una copia de la lista de aplicaciones para no modificar mientras iteramos
   const apps = Array.from(window.aplicaciones || []);
   apps.forEach(app => {
     if (!app.estado) return;
     const pid = app.pid;
-    // Eliminamos cualquier rastro previo en las memorias
     eliminarProceso(pid);
-    // Intentamos insertar con el algoritmo actual (iniciarProceso intenta todas las memorias)
     const res = iniciarProceso(pid);
     if (!res || !res.anyOk) {
-      // No se pudo reubicar: desactivar
+      // Se desactiva si no se puede reubicar
       const idx = window.aplicaciones.findIndex(a => a.pid == pid);
       if (idx !== -1) window.aplicaciones[idx].estado = false;
       failed.push(app.nombre);
     }
   });
 
-  // Actualizar UI
   renderTabla();
   actualizarVistaMemoriaFija();
   actualizarVistaMemoriaFijaVariable();
@@ -375,7 +356,8 @@ function iniciarEnPanel(pid, panelId) {
   const result = { anyOk: false, warnings: [] };
 
 
-  //Hay comentarios en mensajes porque me salia doble error, pienso que con solo mostrar una vez que la memoria está llena esta bien, para cambiarlo quitar los errores
+  //Hay comentarios en mensajes porque me salia doble error,
+  // pienso que con solo mostrar una vez que la memoria está llena esta bien, para cambiarlo quitar los comentarios
   switch(panelId) {
     case 'estatica_fija':
       // insertar en estática fija
@@ -415,7 +397,6 @@ function iniciarEnPanel(pid, panelId) {
       result.warnings.push('Panel desconocido');
   }
 
-  // actualizar vistas
   actualizarVistaMemoriaFija();
   actualizarVistaMemoriaFijaVariable();
   actualizarVistaMemoriaDinamicaSinCompactacion();
@@ -446,7 +427,6 @@ function iniciarProceso(pid){
   }
 
   const tamProceso =codigo + datosIni + datosNoIni;
-  // Intentar insertar en todas las memorias y devolver un resumen
   const result = {
     anyOk: false,
     fijaOk: false,
@@ -456,7 +436,6 @@ function iniciarProceso(pid){
     warnings: []
   };
 
-  // Estática fija (no fatal)
   const resFija = window.memoria_estatica_fija.insertarProcesoFijo(
     pid,
     tamProceso,
@@ -469,14 +448,13 @@ function iniciarProceso(pid){
     result.anyOk = true;
   }
 
-  // Estática variable (fatal)
   const resVariable = window.memoria_estatica_variable.insertarProcesoFijo(
     pid,
     tamProceso,
     localStorage.getItem("algoritmoElegido")
   );
   if (typeof resVariable === 'string' && resVariable.startsWith('Error')) {
-    // si variable falla, revertir fija si se insertó
+    // Si la variable falla, revertir fija si se insertó
     if (result.fijaOk) window.memoria_estatica_fija.eliminarFijo(pid);
     return { anyOk: false, warning: resVariable };
   } else {
@@ -484,7 +462,6 @@ function iniciarProceso(pid){
     result.anyOk = true;
   }
 
-  // Dinámica sin compactación (fatal)
   const resDinamica = window.memoria_dinamica_sin_compactacion.insertarProcesoDinamico(
     pid,
     tamProceso,
@@ -499,7 +476,6 @@ function iniciarProceso(pid){
     result.anyOk = true;
   }
 
-  // Dinámica con compactación (opcional)
   if (window.memoria_dinamica_con_compactacion) {
     const resCon = window.memoria_dinamica_con_compactacion.insertarProcesoDinamico(
       pid,
@@ -507,7 +483,7 @@ function iniciarProceso(pid){
       localStorage.getItem("algoritmoElegido")
     );
     if (typeof resCon === 'string' && resCon.startsWith('Error')) {
-      // revertir las otras que ya se insertaron
+      // Revertir las que ya fueron insertadas previamente
       if (result.fijaOk) window.memoria_estatica_fija.eliminarFijo(pid);
       if (result.variableOk) window.memoria_estatica_variable.eliminarFijo(pid);
       if (result.dinamicaOk) window.memoria_dinamica_sin_compactacion.eliminarDinamicoSinCompactacion(pid);
@@ -517,7 +493,6 @@ function iniciarProceso(pid){
     }
   }
 
-  // actualizar vistas
   imprimirLista(window.memoria_dinamica_sin_compactacion);
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
@@ -534,7 +509,6 @@ function eliminarProceso(pid){
   }
   imprimirLista(window.memoria_dinamica_sin_compactacion);
 
-  // Actualizar vistas (incluida la con-compactacion)
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
 
@@ -545,7 +519,6 @@ function obtenerAppPorPid(pid) {
   return window.aplicaciones.find(app => app.pid == pid);
 }
 
-// Mostrar detalles de un proceso (rápido: alert). Puede reemplazarse por un modal más elegante.
 function mostrarDetalles(pid) {
   const app = obtenerAppPorPid(pid);
   if (!app) return showModal('Error', 'No se encontró la aplicación.');
@@ -572,12 +545,11 @@ function actualizarVistaMemoriaFija() {
   for (let i = nodos.length - 1; i >= 0; i--) {
     const nodo = nodos[i];
 
-    // Determinar clase de bloque según estado
     let clase = "bloque libre";
     if (nodo.pid === "S.O") {
       clase = "bloque so";
     } else if (nodo.estado === "Ocupado") {
-      clase = "bloque ocupado"; // verde
+      clase = "bloque ocupado"; // verdejillo
     }
 
     const b = document.createElement("div");
@@ -601,7 +573,6 @@ function actualizarVistaMemoriaDinamicaConCompactacion() {
 
   memoria.innerHTML = "";
 
-  // Guardamos todos los nodos en un array
   let nodos = [];
   let actual = window.memoria_dinamica_con_compactacion ? window.memoria_dinamica_con_compactacion.head : null;
   while (actual) {
@@ -609,7 +580,6 @@ function actualizarVistaMemoriaDinamicaConCompactacion() {
     actual = actual.next;
   }
 
-  // Recorremos en orden inverso (para que se dibuje de abajo hacia arriba)
   for (let i = nodos.length - 1; i >= 0; i--) {
     const nodo = nodos[i];
 

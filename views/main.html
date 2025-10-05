@@ -2,35 +2,81 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Elegir Algoritmo</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+
+  <!-- Pongo los estilos directamente porque no son muchos -->
+  <style> 
+    :root{
+      --accent: #4CAF50;
+      --muted: rgba(255,255,255,0.85);
+      --card-bg: rgba(255,255,255,0.92);
+      --glass: rgba(255,255,255,0.12);
     }
-    button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
+    html,body{height:100%;margin:0;font-family: "Segoe UI", Roboto, Arial, sans-serif;color:#fff}
+    body{
+      background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('../Images/Main_background.jpg');
+      background-size: cover;
+      background-position: center center;
+      display:flex;align-items:center;justify-content:center;padding:24px;
     }
-    .selected {
-      background-color: #4CAF50;
-      color: white;
+
+    .card{
+      display:inline-block;max-width:760px;background:var(--card-bg);color:#111;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.5);overflow:visible;position:relative;padding:28px 36px;
+      text-align:left;
     }
+
+    .card__center{min-width:320px;}
+
+    .card__corner{position:absolute;right:12px;top:12px;background:rgba(0,0,0,0.06);color:#222;padding:8px 10px;border-radius:8px;font-size:12px;text-align:right}
+
+    h1{margin:0;font-size:28px}
+    p.lead{margin-top:8px;color:#555;font-size:14px}
+
+    .options{margin-top:18px;display:flex;gap:12px;flex-wrap:wrap}
+    .options button{flex: 1 1 150px;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:#fff;color:#111;cursor:pointer;font-weight:600}
+    .options button.selected{background:var(--accent);color:#fff;border-color:transparent;box-shadow:0 6px 18px rgba(76,175,80,0.22);}
+    .options button:hover{transform:translateY(-2px)}
+
+    .continue{margin-top:22px;display:inline-flex;padding:10px 16px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:15px;cursor:pointer}
+
+    .small{font-size:13px;color:#666;margin-top:16px}
+
+    /* Responsive */
+    @media (max-width:800px){
+      .card{flex-direction:column}
+      .card__right{width:100%}
+    }
+    /* page corner box moved outside the card */
+    .page-corner{position:fixed;right:18px;top:18px;background:rgba(255,255,255,0.9);color:#111;padding:8px 12px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.15);font-size:12px}
   </style>
 </head>
 <body>
-  <h1>Elegir algoritmo</h1>
+  <!-- Va en la esquina para poner creditos -->
+  <div class="page-corner">Responsables:<br><strong>
+    Nicolas Castro Rivera - 20221020055             <br>
+    Juan Andrés Jiménez Palomino - 20221020087      <br>
+    Pablo Alejandro Montaña Moreno – 20201020090    <br>
+  </strong></div>
 
-  <div>
-    <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
-    <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
-    <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+  <div class="card" role="main">
+    <div class="card__center">
+      <h1 style="text-align:center;">Primer laboratorio SO</h1>
+      <p class="lead" style="text-align:center;">Elige el algoritmo de asignación que quieres utilizar en la simulación.</p>
+
+      <div class="options" aria-label="Opciones de algoritmo" style="justify-content:center;">
+        <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+        <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+        <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+      </div>
+
+      <div style="text-align:center;margin-top:18px;">
+        <button class="continue" onclick="continuar()">Continuar</button>
+        <div class="small">Universidad Distrital Francisco José de Caldas (2025)</div>
+      </div>
+    </div>
   </div>
 
-  <br><br>
-  <button onclick="continuar()">Continuar</button>
   <script src="../scripts/main.js"></script>
 </body>
 </html>

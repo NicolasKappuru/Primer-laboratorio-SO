@@ -5,15 +5,15 @@
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-  font-size: 12px; /* más compacto */
+  font-size: 12px;
   font-family: "Segoe UI", Tahoma, sans-serif;
-  table-layout: fixed; /* fuerza ancho fijo */
+  table-layout: fixed; /* para que el ancho sea fijo */
   word-break: break-word;
 }
 
 #tabla-aplicaciones th,
 #tabla-aplicaciones td {
-  padding: 6px; /* menos espacio */
+  padding: 6px; 
   text-align: center;
 }
 
@@ -25,28 +25,17 @@
 }
 
 #tabla-aplicaciones tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 
 #tabla-aplicaciones tr:hover {
-  background-color: #f3fbff;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-}
-
-/* Dar aspecto de tarjetas a las filas: bordes redondeados y separación */
-#tabla-aplicaciones tbody tr {
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 8px;
-  display: table-row; /* mantener comportamiento de tabla */
+  background-color: #f1f1f1;
 }
 
 #tabla-aplicaciones td {
-  padding: 8px 10px;
+  padding: 6px;
 }
 
-/* Columna PID */
 #tabla-aplicaciones th:first-child,
 #tabla-aplicaciones td:first-child {
   width: 45px;
@@ -54,7 +43,6 @@
   color: #555;
 }
 
-/* Acciones más compactas */
 #tabla-aplicaciones td:last-child {
   display: flex;
   justify-content: center;
@@ -62,9 +50,8 @@
   flex-wrap: wrap;
 }
 
-/* Botones dentro de la tabla */
 #tabla-aplicaciones button {
-  padding: 4px 8px; /* más pequeños */
+  padding: 4px 8px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -92,23 +79,7 @@
   color: #fff;
 }
 
-/* Icon-only buttons: quitar texto y ajustar tamaño */
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border-radius: 6px;
-  font-size: 14px;
-}
-.icon-play { background: #4CAF50; color: white; }
-.icon-pause { background: #f44336; color: white; }
-.icon-trash { background: #9e9e9e; color: white; }
-.icon-info { background: #2196F3; color: white; }
-
-/* Nuevo modal de mensajes */
+/* para que los mensajes se vean mas bonitos y no el predeterminado del navegador */
 .app-modal { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1200; }
 .app-modal__backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.45); }
 .app-modal__box { position: relative; background: white; width: 420px; max-width: calc(100% - 40px); border-radius: 10px; box-shadow: 0 12px 40px rgba(0,0,0,0.35); overflow: hidden; z-index: 2; }
@@ -120,9 +91,9 @@
 .app-modal__footer button { padding:8px 12px; border-radius:6px; border:none; cursor:pointer; }
 .app-modal__footer #modal-ok { background:#2196F3; color:white; }
 
-/* Centrar el dialog de instalar (en pantallas pequeñas ya lo hace) */
+/* para centrar el modal de instalar */
 dialog.dialog { margin: 0 auto; }
-/* Asegurar centrado vertical/horizontal en navegadores que soporten dialog[open] */
+
 dialog.dialog[open] { display: flex; align-items: center; justify-content: center; }
 
 /* ===========================

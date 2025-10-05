@@ -6,16 +6,16 @@
 
 /* ===== contenedor completo de la "tabla" ===== */
 .memoria-wrapper {
-  max-width: 480px;   /* más angosta */
-  margin: 0 auto;     /* centrada dentro del panel */
+  max-width: 480px;
+  margin: 0 auto;   
 }
 
 
 /* ===== encabezado (siempre visible, verde) ===== */
 .memoria-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columnas iguales */
-  background: #4CAF50; /* verde */
+  grid-template-columns: 1fr 1fr 1fr 1fr; 
+  background: #4CAF50; 
   color: #fff;
   font-weight: 600;
   font-size: 12px;
@@ -36,7 +36,7 @@
 .memoria-body {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;   /* 🔥 todos los bloques pegados al fondo */
+  justify-content: flex-end;  /* S.O. siempre abajo */
   height: 320px;
   border: 2px solid #4CAF50;
   border-top: none;
