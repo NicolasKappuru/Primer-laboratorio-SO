@@ -18,11 +18,13 @@
       background-image: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('../Images/Main_background.jpg');
       background-size: cover;
       background-position: center center;
-      display:flex;align-items:center;justify-content:center;padding:24px;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display:flex;align-items:center;justify-content:center;padding:0;overflow-x:hidden;
     }
 
     .card{
-      display:inline-block;max-width:760px;background:var(--card-bg);color:#111;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.5);overflow:visible;position:relative;padding:28px 36px;
+      display:inline-block;max-width:760px;background:var(--card-bg);color:#111;border-radius:12px;box-shadow:0 12px 40px rgba(2,6,23,0.5);overflow:visible;position:relative;padding:28px 36px;margin:24px;
       text-align:left;
     }
 
@@ -65,10 +67,13 @@
       <p class="lead" style="text-align:center;">Elige el algoritmo de asignación que quieres utilizar en la simulación.</p>
 
       <div class="options" aria-label="Opciones de algoritmo" style="justify-content:center;">
-        <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
-        <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
-        <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+        <button data-option="PrimerOrden" onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+        <button data-option="PeorAjuste" onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+        <button data-option="MejorAjuste" onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
       </div>
+
+      <!-- Advertencia visible en la página cuando no se ha seleccionado nada -->
+      <div id="warning-message" role="alert" aria-live="assertive" style="display:none;color:#b71c1c;margin-top:12px;text-align:center;font-weight:600"></div>
 
       <div style="text-align:center;margin-top:18px;">
         <button class="continue" onclick="continuar()">Continuar</button>
