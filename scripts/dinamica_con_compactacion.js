@@ -1,4 +1,4 @@
-// Crear una memoria dinámica específica para la variante CON compactación
+// Importar la clase desde lista.js (si no usas "export" en lista.js, simplemente cópialo todo aquí)
 const memoria_dinamica_con_compactacion = new ListaEnlazada();
 
 memoria_dinamica_con_compactacion.insertar("Ocupado", "0x0000", 0, "S.O", 1048576);
@@ -9,10 +9,10 @@ hex = dec.toString(16).toUpperCase();
 memoria_dinamica_con_compactacion.insertar("Disponible", hex, dec, null, tamParticion);
  
 
-// Exponer globalmente bajo otro nombre para evitar colisiones
+// Exponer globalmente
 window.memoria_dinamica_con_compactacion = memoria_dinamica_con_compactacion;
 
-// Función para recorrer e imprimir la lista (solo para debug de compactación)
+// Función para recorrer e imprimir la lista
 function imprimirListaConCompactacion(lista) {
   let actual = lista.head;
   let i = 0;
@@ -29,5 +29,5 @@ function imprimirListaConCompactacion(lista) {
   }
 }
 
-// Llamada para mostrar tu memoria (debug)
+// Llamada para mostrar tu memoria
 imprimirListaConCompactacion(memoria_dinamica_con_compactacion);

@@ -7,18 +7,31 @@ function selectOption(option, event) {
   window.algoritmoSeleccionado = option;
 
   // Quitar selección previa
-  document.querySelectorAll("button").forEach(btn => btn.classList.remove("selected"));
+  document.querySelectorAll(".options button").forEach(btn => btn.classList.remove("selected"));
 
   // Marcar el botón actual como seleccionado
   event.target.classList.add("selected");
 
+  // hide any previous warning
+  const warn = document.getElementById('warning-message');
+  if (warn) warn.style.display = 'none';
   console.log("Algoritmo seleccionado:", window.algoritmoSeleccionado);
 }
 
 // --- Continuar al simulador ---
 function continuar() {
   if (!window.algoritmoSeleccionado) {
-    alert("Por favor selecciona un algoritmo antes de continuar.");
+    // show inline warning instead of alert
+    const warn = document.getElementById('warning-message');
+    if (warn) {
+      warn.textContent = 'Por favor selecciona un algoritmo antes de continuar.';
+      warn.style.display = 'block';
+      // focus the options container for accessibility
+      const firstBtn = document.querySelector('.options button');
+      if (firstBtn) firstBtn.focus();
+    } else {
+      alert('Por favor selecciona un algoritmo antes de continuar.');
+    }
     return;
   }
 
@@ -41,9 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
     window.algoritmoSeleccionado = guardado;
 
     // Marcar visualmente el botón correspondiente
-    document.querySelectorAll("button").forEach(btn => {
-      if (btn.textContent === guardado) btn.classList.add("selected");
-    });
+    // Prefer matching by data-option attribute
+    const matched = document.querySelector(`.options button[data-option="${guardado}"]`);
+    if (matched) {
+      matched.classList.add('selected');
+    } else {
+      // fallback: try match by textContent
+      document.querySelectorAll('.options button').forEach(btn => {
+        if (btn.textContent.trim() === guardado) btn.classList.add('selected');
+      });
+    }
 
     console.log("Algoritmo recuperado:", guardado);
   }

@@ -36,12 +36,12 @@ body, html {
 
 /* Barra de botones */
 .toolbar {
-  height: 60px; /* Fijo en px para consistencia */
+  height: 60px; 
   background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px; /* espacio entre botones */
+  gap: 12px; 
   padding: 0 15px;
   border-bottom: 1px solid #ddd;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
@@ -70,7 +70,7 @@ body, html {
   box-shadow: none;
 }
 
-/* Área de simulación */
+/* Área de simulación, cuidado con los tamaños que a veces molesta */
 .sim-view {
   flex-grow: 1;
   background-color: #fff;
