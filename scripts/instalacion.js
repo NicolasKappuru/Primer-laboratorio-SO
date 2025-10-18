@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.aplicaciones.push(nuevaApp);
 
     // re-render tabla
-    if (typeof renderTabla === "function") renderTabla();
+    if (typeof renderTablaAplicaciones === "function") renderTablaAplicaciones();
 
     // cerrar modal
     if (typeof dialog.close === "function") dialog.close();
