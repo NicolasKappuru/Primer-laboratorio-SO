@@ -1,3 +1,63 @@
+/* Renderiza la tabla en el sidebar */
+function renderTablaProcesos() {
+  const tbody = document.querySelector("#tabla-procesos tbody");
+  if (!tbody) return;
+  tbody.innerHTML = "";
+
+  aplicaciones.forEach((app, index) => {
+    const row = document.createElement("tr");
+
+    // PID
+    const colPID = document.createElement("td");
+    colPID.textContent = app.pid || "-";
+    row.appendChild(colPID);
+
+    // ID Programa
+    const colID_Programa = document.createElement("td");
+    colID_Programa.textContent = app.nombre;
+    row.appendChild(colID_Programa);
+
+    // Acciones
+    const colAcciones = document.createElement("td");
+
+    // Botón estado (activar/inactivar)
+    const btnEstado = document.createElement("button");
+    btnEstado.style.marginRight = "4px";
+    if (app.estado) {
+      btnEstado.textContent = "✖"; // activo -> parar
+      btnEstado.title = "Parar";
+      btnEstado.onclick = () => {
+        console.log(colPID.textContent)
+        console.log("Se oprimió desactivar", app.nombre);
+        cambiarEstado(index, false);
+        eliminarProceso(colPID.textContent);
+        actualizarVistaMemoriaFija();
+        actualizarVistaMemoriaFijaVariable();
+        actualizarVistaMemoriaDinamicaSinCompactacion();
+
+      };
+
+    } else {
+      btnEstado.textContent = "✔"; // inactivo -> iniciar
+      btnEstado.title = "Iniciar";
+      btnEstado.onclick = () => {
+        cambiarEstado(index, true);
+        console.log(colPID.textContent)
+        console.log("Se oprimio en activar", app.nombre);
+        iniciarProceso(colPID.textContent);
+        actualizarVistaMemoriaFija();
+        actualizarVistaMemoriaFijaVariable();
+        actualizarVistaMemoriaDinamicaSinCompactacion();
+
+      }
+    }
+    colAcciones.appendChild(btnEstado);
+
+    row.appendChild(colAcciones);
+    tbody.appendChild(row);
+  });
+}
+
 function iniciarProceso(pid){
   console.log("Le pasamos el pid: " + pid);
   console.log(typeof pid);
@@ -90,4 +150,10 @@ function imprimirLista(lista) {
     actual = actual.next;
     i++;
   }
+}
+
+
+function cambiarEstado(index, nuevoEstado) {
+  aplicaciones[index].estado = !!nuevoEstado;
+  renderTablaAplicaciones();
 }

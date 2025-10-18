@@ -93,12 +93,6 @@ function renderTablaAplicaciones() {
   });
 }
 
-/* Cambiar estado */
-function cambiarEstado(index, nuevoEstado) {
-  aplicaciones[index].estado = !!nuevoEstado;
-  renderTablaAplicaciones();
-}
-
 /* Desinstalar */
 function desinstalarApp(index) {
   aplicaciones.splice(index, 1);

@@ -18,6 +18,7 @@ function showPanel(panelId, btnEl) {
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
   renderTablaAplicaciones();
+  renderTablaProcesos();
   // cuando se cargue la página, dibujamos lo que haya en las memorias
   actualizarVistaMemoriaFija();
   actualizarVistaMemoriaFijaVariable();
