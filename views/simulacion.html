@@ -50,10 +50,25 @@
     <div class="main">
       <!-- Barra superior con botones -->
       <div class="toolbar">
-        <button onclick="showPanel('estatica_fija')">Estatica fija</button>
-        <button onclick="showPanel('estatica_variable')">Estatica variable</button>
-        <button onclick="showPanel('dinamica_sin_compactacion')">Dinamica sin compactacion</button>
-        <button onclick="showPanel('dinamica_con_compactacion')">Dinamica con compactacion</button>
+        <div class="toolbar-group">
+          <span class="toolbar-group-title">Contiguo</span>
+          <div class="toolbar-buttons">
+            <button onclick="showPanel('estatica_fija')">Estatica fija</button>
+            <button onclick="showPanel('estatica_variable')">Estatica variable</button>
+            <button onclick="showPanel('dinamica_sin_compactacion')">Dinamica sin compactacion</button>
+            <button onclick="showPanel('dinamica_con_compactacion')">Dinamica con compactacion</button>
+          </div>
+        </div>
+        
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+          <span class="toolbar-group-title">Discontiguo</span>
+          <div class="toolbar-buttons">
+            <button onclick="showPanel('segmentacion')">Segmentación</button>
+            <button onclick="showPanel('paginacion')">Paginación</button>
+          </div>
+        </div>
       </div>
 
       <!-- Panel de simulación -->
@@ -131,6 +146,65 @@
           </div>
         </div>
 
+        <!-- Panel 5: Segmentacion -->
+        <div id="segmentacion" class="panel">
+          <h2>Memoria Segmentación</h2>
+
+          <div class="memoria-container">
+
+            <!-- Tabla principal de segmentos asignados -->
+            <div class="memoria-wrapper">
+              <div class="memoria-header">
+                <div>PID</div>
+                <div>Base</div>
+                <div>Límite</div>
+              </div>
+              <div class="memoria-body" id="tabla-segmentos"></div>
+            </div>
+
+            <!-- 🟦 Tabla de espacios libres -->
+            <div class="tabla-libres-wrapper">
+              <h3>Espacios libres</h3>
+              <div class="memoria-header mini">
+                <div>Inicio</div>
+                <div>Tamaño</div>
+              </div>
+              <div class="memoria-body mini" id="tabla-libres-segmentacion"></div>
+            </div>
+
+          </div>
+        </div>
+        
+        <!-- Panel 6: Paginacion -->
+        <div id="paginacion" class="panel">
+          <h2>Memoria Paginación</h2>
+
+          <div class="memoria-container">
+
+            <!-- 🟩 Tabla principal de páginas asignadas -->
+            <div class="memoria-wrapper">
+              <div class="memoria-header">
+                <div>PID</div>
+                <div>Página</div>
+                <div>Marco</div>
+              </div>
+              <div class="memoria-body" id="tabla-paginas"></div>
+            </div>
+
+            <!-- 🟦 Tabla de marcos libres y ocupados -->
+            <div class="tabla-libres-wrapper">
+              <h3>Marcos libres</h3>
+              <div class="memoria-header mini">
+                <div>Marco</div>
+                <div>Estado</div>
+              </div>
+              <div class="memoria-body mini" id="tabla-libres-paginacion"></div>
+            </div>
+
+          </div>
+        </div>
+
+
       </div>
     </div>
   </div>
@@ -164,7 +238,7 @@
   </dialog>
 
   <script src="../scripts/algoritmo.js"></script>
-  <script src="../scripts/lista.js"></script>
+  <script src="../scripts/estructuras_datos/lista.js"></script>
   <script src="../scripts/aplicaciones/aplicaciones.js"></script>
   <script src="../scripts/procesos/vista_memoria.js"></script>
   <script src="../scripts/procesos/procesos.js"></script>

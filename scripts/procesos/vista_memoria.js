@@ -199,3 +199,10 @@ function crearTooltip(b, document, nodo){
     tooltip.classList.remove("visible");
   });
 }
+
+function actualizarVistas(){
+  actualizarVistaMemoriaFija();
+  actualizarVistaMemoriaFijaVariable();
+  actualizarVistaMemoriaDinamicaSinCompactacion();
+  actualizarVistaMemoriaDinamicaConCompactacion();
+}

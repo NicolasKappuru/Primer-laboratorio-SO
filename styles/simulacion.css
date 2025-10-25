@@ -34,41 +34,70 @@ body, html {
   flex-direction: column;
 }
 
-/* Barra de botones */
+/* ✅ Nueva estructura para grupos dentro de la toolbar */
 .toolbar {
-  height: 60px; /* Fijo en px para consistencia */
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px; /* espacio entre botones */
-  padding: 0 15px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  height: auto; /* permitir que crezca segun contenido */
+  padding: 10px 15px 14px; /* generar espacio superior/inferior */
+  gap: 25px; /* más separación entre grupos */
 }
 
-/* Estilo de los botones */
+.toolbar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 250px; /* que los botones queden en bloque organizado */
+}
+
+.toolbar-group-title {
+  font-size: 12px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Los botones de toolbar ahora se distribuyen mejor */
+.toolbar-buttons {
+  display: flex;
+  gap: 6px;
+}
+
+/* ✅ Botones más compactos */
 .toolbar button {
-  padding: 8px 14px;
-  font-size: 13px;
-  cursor: pointer;
-  border: 1px solid #ccc;
+  padding: 6px 10px; /* más pequeños */
+  font-size: 12px;
+  min-width: 120px; /* para que se alineen en columnas más uniformes */
+}
+
+/* ✅ Separador visual más elegante */
+.toolbar-divider {
+  width: 2px;
+  background-color: #ccc;
+  align-self: stretch;
+  margin: 0 10px;
+}
+
+/* ✅ Restaurar el estilo visual original en botones de la toolbar */
+.toolbar button {
+  border-radius: 6px;
+  border: 1px solid #4CAF50;
   background-color: #4CAF50;
   color: white;
-  border-radius: 6px;
   transition: all 0.2s ease-in-out;
 }
 
+/* Hover original bonito */
 .toolbar button:hover {
   background-color: #45a049;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
+/* Cuando se presiona */
 .toolbar button:active {
   transform: translateY(0);
   box-shadow: none;
 }
+
 
 /* Área de simulación */
 .sim-view {

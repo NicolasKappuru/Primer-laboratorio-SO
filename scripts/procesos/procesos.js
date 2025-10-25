@@ -33,9 +33,7 @@ function renderTablaProcesos() {
     btnEstado.onclick = () => {
       console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
       eliminarProceso(colPID.textContent);
-      actualizarVistaMemoriaFija();
-      actualizarVistaMemoriaFijaVariable();
-      actualizarVistaMemoriaDinamicaSinCompactacion();
+      actualizarVistas();
     };
 
     colAcciones.appendChild(btnEstado);
@@ -99,9 +97,7 @@ function iniciarProceso(id_program){
   // Llamada para mostrar tu memoria
   imprimirLista(window.memoria_dinamica_sin_compactacion);
 
-  // Actualizar vistas (incluida la con-compactacion)
-  actualizarVistaMemoriaDinamicaSinCompactacion();
-  actualizarVistaMemoriaDinamicaConCompactacion();
+  actualizarVistas();
 
 }
 
@@ -116,9 +112,7 @@ function eliminarProceso(pid){
 
   quitarProcesoTabla(pid);
 
-  // Actualizar vistas (incluida la con-compactacion)
-  actualizarVistaMemoriaDinamicaSinCompactacion();
-  actualizarVistaMemoriaDinamicaConCompactacion();
+  actualizarVistas();
 
 }
 
