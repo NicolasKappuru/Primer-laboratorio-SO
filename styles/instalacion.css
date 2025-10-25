@@ -5,11 +5,13 @@
   width: 100%;
   margin-top: 10px;
   border-collapse: collapse;
-  font-size: 12px; /* más compacto */
+  font-size: 12px;
   font-family: "Segoe UI", Tahoma, sans-serif;
-  table-layout: fixed; /* fuerza ancho fijo */
-  word-break: break-word;
+  table-layout: fixed;
+  white-space: normal; /* ✅ nueva regla */
+  word-break: keep-all; /* ✅ evita romper palabras por la mitad */
 }
+
 
 #tabla-aplicaciones th,
 #tabla-aplicaciones td {
@@ -200,4 +202,12 @@ dialog::backdrop {
 .toolbar button.active-btn {
   background-color: #2196F3;
   color: #fff;
+}
+
+
+/* ✅ Columna ID Programa en tabla de aplicaciones — texto blanco y alineado */
+#tabla-aplicaciones th:first-child,
+#tabla-aplicaciones td:first-child {
+  color: #fff;
+  font-weight: 700;
 }

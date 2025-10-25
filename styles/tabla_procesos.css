@@ -1,0 +1,87 @@
+/* ===========================
+   Tabla de procesos
+   Mismo estilo que la de aplicaciones
+   =========================== */
+#tabla-procesos {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 12px;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  table-layout: fixed;
+  word-break: break-word;
+}
+
+#tabla-procesos th,
+#tabla-procesos td {
+  padding: 6px;
+  text-align: center;
+}
+
+#tabla-procesos th {
+  background: #4CAF50;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+}
+
+#tabla-procesos tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#tabla-procesos tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Columna PID */
+#tabla-procesos th:first-child,
+#tabla-procesos td:first-child {
+  width: 45px;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Botones dentro de la tabla */
+#tabla-procesos button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+/* Solo botón "Parar" */
+#tabla-procesos button[title="Parar"] {
+  background: #f44336;
+  color: #fff;
+}
+
+#tabla-procesos button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ✅ Forzar texto blanco en la columna PID de la tabla de procesos */
+#tabla-procesos th:first-child,
+#tabla-procesos td:first-child {
+  color: #fff;   /* texto blanco */
+  font-weight: 700;
+}
+
+
+/* Encabezados: texto blanco (mantener contraste sobre la cabecera verde) */
+#tabla-aplicaciones th:first-child,
+#tabla-procesos th:first-child {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* Celdas del body: texto oscuro para que sean visibles sobre fondo claro */
+#tabla-aplicaciones td:first-child,
+#tabla-procesos td:first-child {
+  color: #333;           /* texto visible en filas blancas */
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;   /* evita saltos extra dentro de la celda */
+}

@@ -93,3 +93,27 @@ body, html {
 .panel.active {
   display: block;
 }
+
+/* === Estilo para los botones de selección de algoritmo === */
+.panel-botones button {
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  margin: 6px 4px; /* espacio entre botones */
+}
+
+.panel-botones button:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.panel-botones button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
