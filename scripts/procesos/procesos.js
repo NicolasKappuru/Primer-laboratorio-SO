@@ -1,20 +1,24 @@
+window.pidIncremental = window.pidIncremental || 1;
+
+window.procesos = window.procesos || [];
+
 /* Renderiza la tabla en el sidebar */
 function renderTablaProcesos() {
   const tbody = document.querySelector("#tabla-procesos tbody");
   if (!tbody) return;
   tbody.innerHTML = "";
 
-  aplicaciones.forEach((app, index) => {
+  procesos.forEach((proceso, index) => {
     const row = document.createElement("tr");
 
     // PID
     const colPID = document.createElement("td");
-    colPID.textContent = app.pid || "-";
+    colPID.textContent = proceso.processID || "-";
     row.appendChild(colPID);
 
     // ID Programa
     const colID_Programa = document.createElement("td");
-    colID_Programa.textContent = app.nombre;
+    colID_Programa.textContent = proceso.id_programa;
     row.appendChild(colID_Programa);
 
     // Acciones
@@ -23,34 +27,17 @@ function renderTablaProcesos() {
     // Botón estado (activar/inactivar)
     const btnEstado = document.createElement("button");
     btnEstado.style.marginRight = "4px";
-    if (app.estado) {
-      btnEstado.textContent = "✖"; // activo -> parar
-      btnEstado.title = "Parar";
-      btnEstado.onclick = () => {
-        console.log(colPID.textContent)
-        console.log("Se oprimió desactivar", app.nombre);
-        cambiarEstado(index, false);
-        eliminarProceso(colPID.textContent);
-        actualizarVistaMemoriaFija();
-        actualizarVistaMemoriaFijaVariable();
-        actualizarVistaMemoriaDinamicaSinCompactacion();
+    
+    btnEstado.textContent = "✖"; // activo -> parar
+    btnEstado.title = "Parar";
+    btnEstado.onclick = () => {
+      console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
+      eliminarProceso(colPID.textContent);
+      actualizarVistaMemoriaFija();
+      actualizarVistaMemoriaFijaVariable();
+      actualizarVistaMemoriaDinamicaSinCompactacion();
+    };
 
-      };
-
-    } else {
-      btnEstado.textContent = "✔"; // inactivo -> iniciar
-      btnEstado.title = "Iniciar";
-      btnEstado.onclick = () => {
-        cambiarEstado(index, true);
-        console.log(colPID.textContent)
-        console.log("Se oprimio en activar", app.nombre);
-        iniciarProceso(colPID.textContent);
-        actualizarVistaMemoriaFija();
-        actualizarVistaMemoriaFijaVariable();
-        actualizarVistaMemoriaDinamicaSinCompactacion();
-
-      }
-    }
     colAcciones.appendChild(btnEstado);
 
     row.appendChild(colAcciones);
@@ -58,52 +45,55 @@ function renderTablaProcesos() {
   });
 }
 
-function iniciarProceso(pid){
-  console.log("Le pasamos el pid: " + pid);
-  console.log(typeof pid);
+function iniciarProceso(id_program){
+  console.log("Le pasamos el id__programa: " + id_program);
+  console.log(typeof id_program);
 
-  let app = obtenerAppPorPid(pid);  
-  let codigo = 0;
-  let datosIni = 0;
-  let datosNoIni = 0;
+  let app = obtenerAppPorIDProgram(id_program);  
+  let codigo = app.codigo;
+  let datosIni = app.datosIni;
+  let datosNoIni = app.datosNoIni;
+  let heap = 65536;
+  let stack = 131072;
 
-  if (app) {
-    codigo = app.codigo;
-    datosIni = app.datosIni;
-    datosNoIni = app.datosNoIni;
-    console.log("App encontrada");
-  } else {
-    console.log("No existe una app con ese PID");
-    return;
+  let pidProceso = window.pidIncremental++;
+
+  const nuevo_proceso = {
+    processID: pidProceso,
+    id_programa: id_program,
+    codigo: codigo,
+    datosIni: datosIni,
+    datosNoIni: datosNoIni
   }
+  window.procesos.push(nuevo_proceso);
 
-  const tamProceso =codigo + datosIni + datosNoIni;
+  const tamProceso = codigo + datosIni + datosNoIni + heap + stack;
+
   window.memoria_estatica_fija.insertarProcesoFijo(
-    pid,
+    pidProceso,
     tamProceso,
-    "PrimerOrden" 
+    "PrimerOrden"
   );
 
   window.memoria_estatica_variable.insertarProcesoFijo(
-    pid,
+    pidProceso,
     tamProceso,
     localStorage.getItem("algoritmoElegido") 
   );
 
   window.memoria_dinamica_sin_compactacion.insertarProcesoDinamico(
-    pid,
+    pidProceso,
     tamProceso,
     localStorage.getItem("algoritmoElegido") 
   );
 
   // Insertar también en la variante con compactación si existe
-  if (window.memoria_dinamica_con_compactacion) {
-    window.memoria_dinamica_con_compactacion.insertarProcesoDinamico(
-      pid,
-      tamProceso,
-      localStorage.getItem("algoritmoElegido")
-    );
-  }
+  window.memoria_dinamica_con_compactacion.insertarProcesoDinamico(
+    pidProceso,
+    tamProceso,
+    "PrimerOrden"
+  );
+  
 
   console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
@@ -124,15 +114,17 @@ function eliminarProceso(pid){
   }
   imprimirLista(window.memoria_dinamica_sin_compactacion);
 
+  quitarProcesoTabla(pid);
+
   // Actualizar vistas (incluida la con-compactacion)
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
 
 }
 
-//Para obtener los datos de una app por su PID
-function obtenerAppPorPid(pid) {
-  return window.aplicaciones.find(app => app.pid == pid);
+//Para obtener los datos de una app por su id_program
+function obtenerAppPorIDProgram(id_program) {
+  return window.aplicaciones.find(app => app.id_program == id_program);
 }
 
 // Funcion de test para imprimir lista
@@ -152,8 +144,8 @@ function imprimirLista(lista) {
   }
 }
 
-
-function cambiarEstado(index, nuevoEstado) {
-  aplicaciones[index].estado = !!nuevoEstado;
-  renderTablaAplicaciones();
+function quitarProcesoTabla(index){
+  let val = procesos.findIndex(obj => obj.processID == index);
+  procesos.splice(val, 1);
+  renderTablaProcesos();
 }

@@ -6,6 +6,7 @@ class Nodo {
     this.estado = disponible; //Disponible, ocupado
     this.pid = pid;
     this.size = size; //Tamaño de la particion
+    this.tam_proceso = 0;
     this.previous = null;
     this.next = null;
   }
@@ -41,6 +42,7 @@ class ListaEnlazada {
           if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
               apuntador.estado = "Ocupado";
               apuntador.pid = pid;
+              apuntador.tam_proceso = tamproceso;
               break;
           }
           apuntador = apuntador.next;
@@ -58,6 +60,7 @@ class ListaEnlazada {
           if ( bloque.size >= tamproceso) {
               bloque.estado = "Ocupado";
               bloque.pid = pid;
+              bloque.tam_proceso = tamproceso;
               break;
           }
         }
@@ -74,6 +77,7 @@ class ListaEnlazada {
           if ( bloque.size >= tamproceso) {
               bloque.estado = "Ocupado";
               bloque.pid = pid;
+              bloque.tam_proceso = tamproceso;
               break;
           }
         }

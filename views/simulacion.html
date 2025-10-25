@@ -20,7 +20,7 @@
       <table id="tabla-aplicaciones">
         <thead>
           <tr>
-            <th>PID</th>
+            <th>ID Programa</th>
             <th>Nombre</th>
             <th>Acciones</th>
           </tr>
@@ -74,6 +74,14 @@
         <!-- Panel 2: Estática variable -->
         <div id="estatica_variable" class="panel">
           <h2>Memoria Estática Variable</h2>
+          <div class="panel-botones">
+
+            <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+            <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+            <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+
+          </div>
+
           <div class="memoria-wrapper">
             <div class="memoria-header">
               <div>HEX</div>
@@ -88,6 +96,15 @@
         <!-- Panel 3: Dinámica sin compactación -->
         <div id="dinamica_sin_compactacion" class="panel">
           <h2>Memoria Dinámica (sin compactación)</h2>
+
+          <div class="panel-botones">
+
+            <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+            <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+            <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+
+          </div>
+          
           <div class="memoria-wrapper">
             <div class="memoria-header">
               <div>HEX</div>
@@ -145,7 +162,7 @@
     </form>
   </dialog>
 
-  
+  <script src="../scripts/algoritmo.js"></script>
   <script src="../scripts/lista.js"></script>
   <script src="../scripts/aplicaciones/aplicaciones.js"></script>
   <script src="../scripts/procesos/vista_memoria.js"></script>

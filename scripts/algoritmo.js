@@ -15,28 +15,11 @@ function selectOption(option, event) {
   console.log("Algoritmo seleccionado:", window.algoritmoSeleccionado);
 }
 
-// --- Continuar al simulador ---
-function continuar() {
-  if (!window.algoritmoSeleccionado) {
-    alert("Por favor selecciona un algoritmo antes de continuar.");
-    return;
-  }
-
-  // Guardar selección en localStorage (para que persista entre páginas)
-  localStorage.setItem("algoritmoElegido", window.algoritmoSeleccionado);
-
-  console.log("Guardado en localStorage:", window.algoritmoSeleccionado);
-
-  // Ir al simulador
-  window.location.href = "simulacion.html";
-
-
-}
 
 // --- Al cargar la página ---
 document.addEventListener("DOMContentLoaded", () => {
   // Si ya había algo guardado en localStorage, lo recuperamos
-  const guardado = localStorage.getItem("algoritmoElegido");
+  const guardado = localStorage.getItem("algoritmoElegido") || "PrimerOrden";
   if (guardado) {
     window.algoritmoSeleccionado = guardado;
 

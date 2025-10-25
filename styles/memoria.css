@@ -98,3 +98,24 @@
   .memoria-header { font-size: 11px; padding: 5px 6px; }
   .bloque { font-size: 10px; padding: 3px 4px; }
 }
+
+#tooltip-memoria {
+  position: absolute;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 5px;
+  font-size: 12px;
+  pointer-events: none; /* no bloquea el hover */
+  z-index: 1000;
+  display: none; /* oculto por defecto */
+  white-space: nowrap; /* evita saltos de línea */
+  transition: opacity 0.15s ease;
+  opacity: 0;
+  white-space: pre-line;
+}
+
+#tooltip-memoria.visible {
+  display: block;
+  opacity: 1;
+}

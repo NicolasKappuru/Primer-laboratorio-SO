@@ -1,8 +1,8 @@
 /* instalacion.js */
 
 
-// contador global de PID
-window.nextPID = window.nextPID || 9; // empieza en 9 porque hay 8 apps por defecto
+// contador global de id_program
+window.nextIDProgram = window.nextIDProgram || 9; // empieza en 9 porque hay 8 apps por defecto
 
 document.addEventListener("DOMContentLoaded", () => {
   const dialog = document.getElementById("dialog-instalar");
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const nuevaApp = {
-      pid: window.nextPID++, // ✅ asigna PID secuencial
+      id_program: window.nextIDProgram++, // ✅ asigna id_program secuencial
       nombre: document.getElementById("nombre").value.trim(),
       codigo: Number(document.getElementById("codigo").value) || 0,
       datosIni: Number(document.getElementById("datosIni").value) || 0,
@@ -65,7 +65,7 @@ function imprimirAplicaciones() {
   }
 
   window.aplicaciones.forEach(app => {
-    console.log(`PID: ${app.pid} | Nombre: ${app.nombre} | Estado: ${app.estado ? "Activo" : "Inactivo"}`);
+    console.log(`id_program: ${app.id_program} | Nombre: ${app.nombre} | Estado: ${app.estado ? "Activo" : "Inactivo"}`);
   });
 
   console.log("=== Fin de tabla ===");
