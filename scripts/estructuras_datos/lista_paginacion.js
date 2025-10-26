@@ -14,7 +14,7 @@ class Nodo {
   }
 }
 
-class ListaEnlazada {
+class ListaEnlazadaPaginacion {
   constructor() {
     this.head = null;
     this.ultimo = null;
@@ -133,48 +133,4 @@ class ListaEnlazada {
 
 }
 
-
-// Creamos la lista de memoria (ya definida previamente)
-const memoria = new ListaEnlazada();
-
-// Tamaño del marco (constante en paginación)
-const TAM_MARCO = 65536;
-
-// Insertamos los marcos vacíos (20 marcos físicos)
-for (let i = 0; i < 20; i++) {
-  const hex = "0x" + (i * TAM_MARCO).toString(16).padStart(4, "0");
-  memoria.insertar(hex, i * TAM_MARCO, null, TAM_MARCO, "libre", null, 0, null, i);
-}
-
-const segmentos = ["codigo", "dataInit", "dataNoInit", "heap", "stack"];
-
-// PID 1
-memoria.modificar("ocupado", 1, "codigo", 0, 32000);
-memoria.modificar("ocupado", 1, "dataInit", 1, 25000);
-memoria.modificar("ocupado", 1, "dataNoInit", 2, 18000);
-memoria.modificar("ocupado", 1, "heap", 3, 10000);
-memoria.modificar("ocupado", 1, "stack", 4, 12000);
-
-// PID 2
-memoria.modificar("ocupado", 2, "codigo", 0, 30000);
-memoria.modificar("ocupado", 2, "dataInit", 1, 50000);
-memoria.modificar("ocupado", 2, "dataNoInit", 2, 20000);
-memoria.modificar("ocupado", 2, "heap", 3, 16000);
-memoria.modificar("ocupado", 2, "stack", 4, 10000);
-
-// PID 3
-memoria.modificar("ocupado", 3, "codigo", 0, 28000);
-memoria.modificar("ocupado", 3, "dataInit", 1, 40000);
-memoria.modificar("ocupado", 3, "dataNoInit", 2, 25000);
-memoria.modificar("ocupado", 3, "heap", 3, 15000);
-memoria.modificar("ocupado", 3, "stack", 4, 12000);
-
-// Mostrar la memoria cargada
-memoria.mostrar();
-
-
-// Liberar todos los segmentos del proceso 2
-memoria.vaciar_PID(2);
-
-// Mostrar la memoria actualizada
-memoria.mostrar();
+export default ListaEnlazadaPaginacion;
