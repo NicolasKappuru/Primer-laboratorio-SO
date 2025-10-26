@@ -39,6 +39,44 @@ function actualizarVistaMemoriaSegmentacion() {
 
     memoria.appendChild(b);
   }
+
+  actualizarTablaPosLibresSegmentacion();
+
+}
+
+
+function actualizarTablaPosLibresSegmentacion(){
+  const memoria = document.getElementById("tabla-libres-segmentacion");
+  if (!memoria) return;
+
+  memoria.innerHTML = "";
+
+  // Guardamos todos los nodos libres en un array
+  let nodos = [];
+  let actual = window.memoria_segmentacion.head;
+
+  while (actual) {
+    if(actual.estado == "Disponible"){
+      nodos.push(actual);
+    }
+    actual = actual.next;
+  }
+
+  for (let i = 0; i < nodos.length; i++) {
+    const nodo = nodos[i];
+
+    // Determinar clase de bloque según estado
+
+    const b = document.createElement("div");
+    b.className = "bloque libre";
+
+    b.innerHTML = `
+      <div>${nodo.hex}</div>
+      <div>${nodo.dec}</div>
+      <div>${nodo.size.toLocaleString()}</div>
+    `;
+    memoria.appendChild(b);
+  }
 }
 
 
