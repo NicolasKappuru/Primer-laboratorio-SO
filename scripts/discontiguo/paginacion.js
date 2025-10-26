@@ -1,4 +1,4 @@
-import ListaEnlazadaPaginacion from "../estructuras_datos/lista_paginacion.js";
+//import ListaEnlazadaPaginacion from "../estructuras_datos/lista_paginacion.js";
 
 const paginacion = new ListaEnlazadaPaginacion();
 
@@ -14,7 +14,9 @@ for (let i = 0; i < NUM_MARCOS; i++) {
 }
 
 // Exponer globalmente
-global.memoria_paginacion = paginacion;
+window.memoria_paginacion = paginacion;
+
+console.log("HOLAAAAAAAAAAAAAAAAAAAA ESTOY AQUI?")
 
 paginacion.mostrar();
 

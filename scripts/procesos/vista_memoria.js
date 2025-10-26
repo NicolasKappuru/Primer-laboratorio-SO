@@ -1,8 +1,6 @@
 // total de memoria (16 MB)
 const TOTAL = 16777216;
 
-
-
 function actualizarVistaMemoriaFija() {
   const memoria = document.getElementById("memoria-estatica-fija");
   if (!memoria) return;
@@ -200,9 +198,61 @@ function crearTooltip(b, document, nodo){
   });
 }
 
+// === ACTUALIZAR VISTA DE PAGINACIÓN ===
+function actualizarVistaPaginacion() {
+  const memoria = document.getElementById("tabla-paginas");
+  if (!memoria) return;
+
+  memoria.innerHTML = "";
+
+  // Accedemos a la estructura global de memoria paginada
+  const lista = (typeof window !== "undefined" ? window.memoria_paginacion : global.memoria_paginacion);
+  if (!lista || !lista.head) {
+    console.warn("⚠️ No se encontró la memoria paginada inicializada.");
+    return;
+  }
+
+  // Recorremos todos los nodos de la lista enlazada
+  let actual = lista.head;
+  const nodos = [];
+  while (actual) {
+    nodos.push(actual);
+    actual = actual.next;
+  }
+
+  // Mostramos de arriba hacia abajo (orden natural)
+  for (let i = 0; i < nodos.length; i++) {
+    const nodo = nodos[i];
+
+    // Determinar clase visual según estado
+    let clase = "bloque libre";
+    if (nodo.estado === "ocupado") clase = "bloque ocupado";
+    if (nodo.pid === "S.O") clase = "bloque so";
+
+    // Crear el bloque visual
+    const bloque = document.createElement("div");
+    bloque.className = clase;
+
+    // Cada bloque contiene 5 columnas
+    bloque.innerHTML = `
+      <div>${nodo.hex || "-"}</div>
+      <div>${nodo.dec?.toLocaleString() || "-"}</div>
+      <div>${nodo.pid ? nodo.pid + (nodo.tipo_segmento ? " / " + nodo.tipo_segmento : "") : "-"}</div>
+      <div>${nodo.tam_segmento?.toLocaleString() || "0"}</div>
+      <div>${nodo.num_marco != null ? nodo.num_marco : "-"}</div>
+    `;
+
+    memoria.appendChild(bloque);
+  }
+
+  console.log("✅ Vista de memoria de paginación actualizada con", nodos.length, "marcos.");
+}
+
+
 function actualizarVistas(){
   actualizarVistaMemoriaFija();
   actualizarVistaMemoriaFijaVariable();
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
+  actualizarVistaPaginacion()
 }

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../styles/instalacion.css">
     <link rel="stylesheet" href="../styles/memoria.css">
     <link rel="stylesheet" href="../styles/tabla_procesos.css">
+    <link rel="stylesheet" href="../styles/memoria_paginacion.css">
 
   
 </head>
@@ -184,26 +185,16 @@
             <!-- 🟩 Tabla principal de páginas asignadas -->
             <div class="memoria-wrapper">
               <div class="memoria-header">
-                <div>PID</div>
-                <div>Página</div>
-                <div>Marco</div>
+                <div>HEX</div>
+                <div>DEC</div>
+                <div>PID/SEG</div>
+                <div>TAM SEG</div>
+                <div>MARCO</div>
               </div>
               <div class="memoria-body" id="tabla-paginas"></div>
             </div>
-
-            <!-- 🟦 Tabla de marcos libres y ocupados -->
-            <div class="tabla-libres-wrapper">
-              <h3>Marcos libres</h3>
-              <div class="memoria-header mini">
-                <div>Marco</div>
-                <div>Estado</div>
-              </div>
-              <div class="memoria-body mini" id="tabla-libres-paginacion"></div>
-            </div>
-
           </div>
         </div>
-
 
       </div>
     </div>

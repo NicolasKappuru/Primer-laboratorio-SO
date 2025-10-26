@@ -1,4 +1,4 @@
-class Nodo {
+class NodoSegmento {
   constructor(hex, dec, pid, size, estado, tipo_segmento, tam_segmento, num_pagina, num_marco) {
     this.hex = hex;
     this.dec = dec;
@@ -22,7 +22,7 @@ class ListaEnlazadaPaginacion {
 
   // Insertar un nuevo marco en la lista
   insertar(hex, dec, pid, size, estado, tipo_segmento, tam_segmento, num_pagina, num_marco) {
-    const nuevoNodo = new Nodo(hex, dec, pid, size, estado, tipo_segmento, tam_segmento, num_pagina, num_marco);
+    const nuevoNodo = new NodoSegmento(hex, dec, pid, size, estado, tipo_segmento, tam_segmento, num_pagina, num_marco);
 
     if (!this.head) {
       this.head = nuevoNodo;
@@ -133,4 +133,4 @@ class ListaEnlazadaPaginacion {
 
 }
 
-export default ListaEnlazadaPaginacion;
+//export default ListaEnlazadaPaginacion;
