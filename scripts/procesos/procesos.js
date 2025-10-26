@@ -115,7 +115,6 @@ function iniciarProceso(id_program){
   let num_segmento = 1;
 
   for(i=0;i<5;i++){
-
     num_segmento = window.memoria_segmentacion.insertarSegmentacion(
       num_segmento, 
       listaProceso[i].tam_segm, 
@@ -123,7 +122,7 @@ function iniciarProceso(id_program){
       tam_max, 
       pidProceso, 
       window.algoritmoSeleccionado,
-     listaProceso[i].permiso
+      listaProceso[i].permiso
     );
   }
 
@@ -146,6 +145,9 @@ function eliminarProceso(pid){
   if (window.memoria_dinamica_con_compactacion) {
     window.memoria_dinamica_con_compactacion.eliminarDinamicoConCompactacion(pid);
   }
+  
+  window.memoria_segmentacion.eliminarDinamicoSegmentacion(pid);
+
   imprimirLista(window.memoria_dinamica_sin_compactacion);
 
   quitarProcesoTabla(pid);

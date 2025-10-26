@@ -20,7 +20,7 @@ class ListaSegmentacion{
     this.ultimo = null;
 
     this.insertarSegmentacion = this.insertarSegmentacion.bind(this);
-    this.insertarProcesoDinamico = this.insertarProcesoDinamico.bind(this);
+    this.insertarProcesoDinamicoSegmentacion = this.insertarProcesoDinamicoSegmentacion.bind(this);
   }
 
   listaVaciaSegmentacion(){
@@ -38,15 +38,27 @@ class ListaSegmentacion{
     this.ultimo = nuevo;
   }
 
+  permiteProcesoSegmentacion(text, data, bss, heap, stack){
+    let sizeAvailable = 0;
+    let apuntador = this.head;
+    while(apuntador){
+      if (apuntador.estado == "Disponible"){
+        sizeAvailable += apuntador.size;
+      }
+      apuntador = apuntador.next;
+    }
+
+  }
+
   insertarSegmentacion(num_segmento, tam_segm, tipo, tam_max, pid, algoritmo, permiso){
     let tam_anterior = 0
     do{
       tam_anterior = tam_segm
       if(tam_segm>tam_max){
-        this.insertarProcesoDinamico(pid, tam_max, algoritmo, permiso, tipo, num_segmento)
+        this.insertarProcesoDinamicoSegmentacion(pid, tam_max, algoritmo, permiso, tipo, num_segmento)
         tam_segm -= tam_max;
       }else{
-        this.insertarProcesoDinamico(pid, tam_segm, algoritmo, permiso, tipo, num_segmento)
+        this.insertarProcesoDinamicoSegmentacion(pid, tam_segm, algoritmo, permiso, tipo, num_segmento)
       }
       num_segmento += 1;
 
@@ -54,7 +66,7 @@ class ListaSegmentacion{
     return num_segmento
   }
 
-  insertarProcesoDinamico(pid, tamproceso, algoritmo, permiso, tipo, num_segmento) {
+  insertarProcesoDinamicoSegmentacion(pid, tamproceso, algoritmo, permiso, tipo, num_segmento) {
   console.log("=== insertarProcesoDinamico ===");
   console.log("PID:", pid, "Tamaño:", tamproceso, "Algoritmo:", algoritmo);
 
@@ -157,7 +169,7 @@ class ListaSegmentacion{
       return false;
   }
 
-  // ✅ Registrar en la lista de segmentos global
+  // Registrar en la lista de segmentos global
   this.listaSegmentos.insertar(
     num_segmento,
     num_segmento.toString(2),
@@ -169,11 +181,11 @@ class ListaSegmentacion{
     pid
   );
 
-  return true; // ✅ devolver éxito
+  return true; 
 }
 
 
-  eliminarDinamicoSinCompactacion(pid){
+  eliminarDinamicoSegmentacion(pid){
     let apuntador = this.head.next;
     let anterior = this.head;
     let variar = false;
