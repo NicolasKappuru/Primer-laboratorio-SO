@@ -10,13 +10,12 @@ const NUM_MARCOS = 256;
 for (let i = 0; i < NUM_MARCOS; i++) {
   const dec = i * TAM_MARCO;
   const hex = "0x" + dec.toString(16).padStart(5, "0"); // ej: 0x00000, 0x10000, etc.
-  paginacion.insertar(hex, dec, null, TAM_MARCO, "libre", null, 0, null, i);
+  paginacion.insertar(hex, dec, null, 0, "libre", null, TAM_MARCO, null, i);
 }
 
 // Exponer globalmente
 window.memoria_paginacion = paginacion;
 
-console.log("HOLAAAAAAAAAAAAAAAAAAAA ESTOY AQUI?")
 
 paginacion.mostrar();
 

@@ -232,15 +232,17 @@ function actualizarVistaPaginacion() {
     // Crear el bloque visual
     const bloque = document.createElement("div");
     bloque.className = clase;
+    const TAM_MARCO = 65536;
 
     // Cada bloque contiene 5 columnas
     bloque.innerHTML = `
       <div>${nodo.hex || "-"}</div>
       <div>${nodo.dec?.toLocaleString() || "-"}</div>
       <div>${nodo.pid ? nodo.pid + (nodo.tipo_segmento ? " / " + nodo.tipo_segmento : "") : "-"}</div>
-      <div>${nodo.tam_segmento?.toLocaleString() || "0"}</div>
+      <div>${TAM_MARCO.toLocaleString()}</div>  <!-- ← constante, no cambia -->
       <div>${nodo.num_marco != null ? nodo.num_marco : "-"}</div>
     `;
+
 
     memoria.appendChild(bloque);
   }

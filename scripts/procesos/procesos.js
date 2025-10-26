@@ -78,6 +78,15 @@ function iniciarProceso(id_program){
 
   let tam_max = 262144
 
+  let listaSegmentosPaginacion = [
+      { tipo: "text", tam_segm: codigo},
+      { tipo: "data", tam_segm: datosIni},
+      { tipo: "bss", tam_segm: datosNoIni},
+      { tipo: "heap", tam_segm: heap},
+      { tipo: "stack", tam_segm: stack}
+    ];
+
+
   window.memoria_estatica_fija.insertarProcesoFijo(
     pidProceso,
     tamProceso,
@@ -117,6 +126,9 @@ function iniciarProceso(id_program){
      listaProceso[i].permiso
     );
   }
+
+  //Insertamos la paginacion
+  iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion);
 
   console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
