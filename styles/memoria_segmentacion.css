@@ -1,21 +1,21 @@
 /* memoria_paginacion.css
    Estilos específicos para la representación de memoria paginada.
    Este archivo asume que memoria.css ya está cargado.
-   Solo redefine o amplía comportamientos dentro del panel #paginacion.
+   Solo redefine o amplía comportamientos dentro del panel #segmentacion.
 */
 
 /* Ajustes exclusivos del panel de paginación */
-#paginacion .memoria-wrapper {
+#segmentacion .memoria-wrapper {
   max-width: 560px;   /* más ancho por tener 5 columnas */
   margin-top: 10px;   /* ligera separación respecto al panel superior */
 }
 
-#paginacion .memoria-header {
+#segmentacion .memoria-header {
   grid-template-columns: repeat(5, 1fr); /* agrega la columna MARCO */
 }
 
 /* Panel general de paginación */
-#paginacion .memoria-container {
+#segmentacion .memoria-container {
   display: flex;
   flex-direction: column;
   height: 700px;       /* altura visible del panel */
@@ -23,13 +23,13 @@
 }
 
 /* Contenedor interno con scroll propio */
-#paginacion .memoria-body {
+#segmentacion .memoria-body {
   flex: 1;
   max-height: 100%;
   overflow-y: scroll;          /* desplazamiento vertical */
   overflow-x: hidden;
   display: flex;
-  flex-direction: column-reverse; /* mantiene orden 0 → 255 desde abajo */
+  flex-direction: column; /* mantiene orden 0 → 255 desde abajo */
   border: 2px solid #4CAF50;
   border-top: none;
   background: #fff;
@@ -37,49 +37,50 @@
 }
 
 /* Cada bloque de la paginación (ahora con 5 columnas) */
-#paginacion .bloque {
+#segmentacion .bloque {
   grid-template-columns: repeat(5, 1fr);
 }
 
 /* Columna del marco (última) destacada ligeramente */
-#paginacion .bloque > div.marco {
+#segmentacion .bloque > div.marco {
   font-weight: 600;
 }
 
 /* Scrollbar personalizado dentro del cuerpo */
-#paginacion .memoria-body::-webkit-scrollbar {
+#segmentacion .memoria-body::-webkit-scrollbar {
   width: 10px;
 }
 
-#paginacion .memoria-body::-webkit-scrollbar-thumb {
+#segmentacion .memoria-body::-webkit-scrollbar-thumb {
   background-color: #4CAF50;
   border-radius: 10px;
 }
 
-#paginacion .memoria-body::-webkit-scrollbar-thumb:hover {
+#segmentacion .memoria-body::-webkit-scrollbar-thumb:hover {
   background-color: #3e8e41;
 }
 
 /* Ajustes responsivos */
 @media (max-width: 900px) {
-  #paginacion .memoria-wrapper {
+  #segmentacion .memoria-wrapper {
     max-width: 100%;
     padding: 0 8px;
   }
-  #paginacion .memoria-header {
+  #segmentacion .memoria-header {
     font-size: 11px;
     padding: 5px 6px;
   }
-  #paginacion .bloque {
+  #segmentacion .bloque {
     font-size: 10px;
     padding: 3px 4px;
   }
 }
 
-/* --- Overwrites y ajustes para que #paginacion tenga su propio scroll interno --- */
+/* --- Overwrites y ajustes para que #segmentacion tenga su propio scroll interno --- */
 
 /* Asegúrate que el panel paginación ocupe el espacio disponible */
-#paginacion .panel {
+
+#segmentacion .panel {
   display: none;
   width: 100%;
   height: 100%;
@@ -87,13 +88,13 @@
   padding: 20px;
 }
 
-#paginacion .panel.active {
+#segmentacion .panel.active {
   display: flex;
   flex-direction: column;
 }
 
-/* Contenedor principal dentro de #paginacion que queremos que haga scroll */
-#paginacion .memoria-container {
+/* Contenedor principal dentro de #segmentacion que queremos que haga scroll */
+#segmentacion .memoria-container {
   /* Allow the container to flex and define a max-height relative to the viewport.
      Ajusta el 160px según el alto real de tu toolbar + headers */
   max-height: calc(100vh - 160px);
@@ -104,32 +105,32 @@
 }
 
 /* Si tu .memoria-body tenía una altura fija grande, la anulamos */
-#paginacion .memoria-body {
+#segmentacion .memoria-body {
   height: auto !important;       /* quita cualquier height fijo */
   max-height: none !important;
   overflow: visible;             /* el scroll lo gestiona el .memoria-container */
   display: flex;
-  flex-direction: column-reverse; /* mantiene el orden 0→255 desde abajo */
+  flex-direction: column; /* mantiene el orden 0→255 desde abajo */
 }
 
-/* Bloques y layout interno: usa grid de 5 columnas dentro del #paginacion */
-#paginacion .bloque {
+/* Bloques y layout interno: usa grid de 5 columnas dentro del #segmentacion */
+#segmentacion .bloque {
   grid-template-columns: repeat(5, 1fr) !important;
 }
 
 /* Opcional: personalizar scrollbar SOLO dentro del panel de paginación */
-#paginacion .memoria-container::-webkit-scrollbar { width: 10px; }
-#paginacion .memoria-container::-webkit-scrollbar-thumb {
+#segmentacion .memoria-container::-webkit-scrollbar { width: 10px; }
+#segmentacion .memoria-container::-webkit-scrollbar-thumb {
   background-color: #4CAF50;
   border-radius: 10px;
 }
-#paginacion .memoria-container::-webkit-scrollbar-thumb:hover {
+#segmentacion .memoria-container::-webkit-scrollbar-thumb:hover {
   background-color: #3e8e41;
 }
 
 /* Responsivo: reducir el max-height en pantallas pequeñas */
 @media (max-width: 900px) {
-  #paginacion .memoria-container {
+  #segmentacion .memoria-container {
     max-height: calc(100vh - 200px); /* más espacio para headers en móvil */
   }
 }

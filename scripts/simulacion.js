@@ -6,6 +6,7 @@ function showPanel(panelId, btnEl) {
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
   // mostrar el seleccionado
   const panel = document.getElementById(panelId);
+  console.log("Panel seleccionado: ", panelId);
   if (panel) panel.classList.add("active");
 
   // manejar estilo de botón activo
