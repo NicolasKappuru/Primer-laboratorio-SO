@@ -1,4 +1,4 @@
-class Nodo {
+class NodoSegmentos {
   constructor(num, binario, dec, hex, size, permisos, tipo, pid) {
     this.num = num;
     this.dec = dec;
@@ -23,9 +23,8 @@ class ListaSegmentos {
   }
 
 
-
   insertar(num, binario, dec, hex, size, permisos, tipo, pid) {
-    const nuevoNodo = new Nodo(num, binario, dec, hex, size, permisos, tipo, pid);
+    const nuevoNodo = new NodoSegmentos(num, binario, dec, hex, size, permisos, tipo, pid);
 
     if (this.listaVacia()) {
       this.head = nuevoNodo;
@@ -71,5 +70,3 @@ class ListaSegmentos {
     }
   }
 }
-
-module.exports = ListaSegmentos;

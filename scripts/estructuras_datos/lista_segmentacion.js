@@ -1,5 +1,4 @@
-
-class Nodo {
+class NodoSegmentacion {
   constructor(disponible, hex, dec, pid, size) {
     this.hex = hex;
     this.dec = dec;
@@ -12,27 +11,29 @@ class Nodo {
   }
 }
 
-
-const ListaSegmentos = require('./lista_segmentos.js');
+window.listaSegmentosGlobal = new ListaSegmentos();
 
 class ListaSegmentacion{
   constructor() {
-    this.listaSegmentos = new ListaSegmentos()
+    this.listaSegmentos = window.listaSegmentosGlobal;
     this.head = null;
     this.ultimo = null;
+
+    this.insertarSegmentacion = this.insertarSegmentacion.bind(this);
+    this.insertarProcesoDinamico = this.insertarProcesoDinamico.bind(this);
   }
 
-  listaVacia(){
+  listaVaciaSegmentacion(){
     if(this.head == null) return true;
   }
 
-  insertar(disponible, hex, dec, pid, size) {
-    if (this.listaVacia()) {
-      this.head = new Nodo(disponible, hex, dec, pid, size);
+  insertarNodoSegmentacion(disponible, hex, dec, pid, size) {
+    if (this.listaVaciaSegmentacion()) {
+      this.head = new NodoSegmentacion(disponible, hex, dec, pid, size);
       this.ultimo = this.head;
       return;
     }
-    let nuevo = new Nodo(disponible, hex, dec, pid, size);
+    let nuevo = new NodoSegmentacion(disponible, hex, dec, pid, size);
     this.ultimo.next = nuevo;
     this.ultimo = nuevo;
   }
@@ -53,92 +54,124 @@ class ListaSegmentacion{
     return num_segmento
   }
 
-  insertarProcesoDinamico(pid, tamproceso, algoritmo, permiso, tipo, num_segmento){
-    let apuntador = this.head;
-    let bloques = [];
-    let decimal = 0;
-    //let pid_tipo = pid+"("+tipo+")";
-    switch(algoritmo){
-      case "PrimerOrden":
-        while(apuntador != null){
-          if(apuntador.estado == "Disponible" && apuntador.size >= tamproceso){
-              if(apuntador.size - tamproceso > 0){
-                decimal = apuntador.dec;
-                this.auxiliar = new Nodo("Disponible", (decimal + tamproceso).toString(16).toUpperCase(), apuntador.dec + tamproceso, null, apuntador.size - tamproceso);
-                this.auxiliar.next = apuntador.next;
-                apuntador.next = this.auxiliar;
-                if(this.auxiliar.next == null){
-                  this.ultimo = this.auxiliar;
-                }
-              }
-              apuntador.estado = "Ocupado";
-              apuntador.size = tamproceso;
-              apuntador.pid = pid;
-              //apuntador.pid = pid_tipo;
-              break;
+  insertarProcesoDinamico(pid, tamproceso, algoritmo, permiso, tipo, num_segmento) {
+  console.log("=== insertarProcesoDinamico ===");
+  console.log("PID:", pid, "Tamaño:", tamproceso, "Algoritmo:", algoritmo);
+
+  let apuntador = this.head;
+  let bloques = [];
+  let decimal = 0;
+
+  switch (algoritmo) {
+    case "PrimerOrden":
+      while (apuntador != null) {
+        if (apuntador.estado === "Disponible" && apuntador.size >= tamproceso) {
+          decimal = apuntador.dec; 
+          if (apuntador.size - tamproceso > 0) {
+            this.auxiliar = new NodoSegmentacion(
+              "Disponible",
+              (decimal + tamproceso).toString(16).toUpperCase(),
+              decimal + tamproceso,
+              null,
+              apuntador.size - tamproceso
+            );
+            this.auxiliar.next = apuntador.next;
+            apuntador.next = this.auxiliar;
+            if (!this.auxiliar.next) this.ultimo = this.auxiliar;
           }
-          apuntador = apuntador.next;
+
+          apuntador.estado = "Ocupado";
+          apuntador.size = tamproceso;
+          apuntador.tam_proceso = tamproceso; 
+          apuntador.pid = pid;
+          break;
         }
-
-
-
+        apuntador = apuntador.next;
+      }
       break;
-      case "MejorAjuste":
-        while(apuntador != null){
-          bloques.push(apuntador);
-          apuntador = apuntador.next;
-        }
-        bloques.sort((a, b) => a.size - b.size);
-        for (let bloque of bloques) {
-          if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              if(bloque.size - tamproceso > 0){
-                decimal = bloque.dec
-                this.auxiliar = new Nodo("Disponible", (decimal + tamproceso).toString(16).toUpperCase(), decimal + tamproceso, null, bloque.size - tamproceso);
-                this.auxiliar.next = bloque.next;
-                bloque.next = this.auxiliar;
-                if(this.auxiliar.next == null){
-                  this.ultimo = this.auxiliar;
-                }
-              }
-              bloque.estado = "Ocupado";
-              bloque.size = tamproceso;
-              bloque.pid = pid;
-              //bloque.pid = pid_tipo;
-              break;
+
+    case "MejorAjuste":
+      while (apuntador != null) {
+        bloques.push(apuntador);
+        apuntador = apuntador.next;
+      }
+      bloques.sort((a, b) => a.size - b.size);
+      for (let bloque of bloques) {
+        if (bloque.estado === "Disponible" && bloque.size >= tamproceso) {
+          decimal = bloque.dec; 
+          if (bloque.size - tamproceso > 0) {
+            this.auxiliar = new NodoSegmentacion(
+              "Disponible",
+              (decimal + tamproceso).toString(16).toUpperCase(),
+              decimal + tamproceso,
+              null,
+              bloque.size - tamproceso
+            );
+            this.auxiliar.next = bloque.next;
+            bloque.next = this.auxiliar;
+            if (!this.auxiliar.next) this.ultimo = this.auxiliar;
           }
-        }
-      break;
-      case "PeorAjuste":
-        while(apuntador != null){
-          bloques.push(apuntador);
-          apuntador = apuntador.next;
-        }
-        bloques.sort((a, b) => b.size - a.size);
-        for (let bloque of bloques) {
-          if ( bloque.size >= tamproceso && bloque.estado == "Disponible") {
-              if(bloque.size - tamproceso > 0){
-                decimal = bloque.dec
-                this.auxiliar = new Nodo("Disponible", (decimal + tamproceso).toString(16).toUpperCase(), decimal + tamproceso, null, bloque.size - tamproceso);
-                this.auxiliar.next = bloque.next;
-                bloque.next = this.auxiliar;
-                if(this.auxiliar.next == null){
-                  this.ultimo = this.auxiliar;
-                }
-              }
-              bloque.estado = "Ocupado";
-              bloque.size = tamproceso;
-              bloque.pid = pid;
-              //bloque.pid = pid_tipo;
-              break;
-          }
-        }
-      break;
-      default:
-        return "Error: Algoritmo no reconocido";
-    }
 
-    this.listaSegmentos.insertar(num_segmento, num_segmento.toString(2), decimal, decimal.toString(16), tamproceso, permiso, tipo, pid);
+          bloque.estado = "Ocupado";
+          bloque.size = tamproceso;
+          bloque.tam_proceso = tamproceso;
+          bloque.pid = pid;
+          break;
+        }
+      }
+      break;
+
+    case "PeorAjuste":
+      while (apuntador != null) {
+        bloques.push(apuntador);
+        apuntador = apuntador.next;
+      }
+      bloques.sort((a, b) => b.size - a.size);
+      for (let bloque of bloques) {
+        if (bloque.estado === "Disponible" && bloque.size >= tamproceso) {
+          decimal = bloque.dec; 
+          if (bloque.size - tamproceso > 0) {
+            this.auxiliar = new NodoSegmentacion(
+              "Disponible",
+              (decimal + tamproceso).toString(16).toUpperCase(),
+              decimal + tamproceso,
+              null,
+              bloque.size - tamproceso
+            );
+            this.auxiliar.next = bloque.next;
+            bloque.next = this.auxiliar;
+            if (!this.auxiliar.next) this.ultimo = this.auxiliar;
+          }
+
+          bloque.estado = "Ocupado";
+          bloque.size = tamproceso;
+          bloque.tam_proceso = tamproceso;
+          bloque.pid = pid;
+          break;
+        }
+      }
+      break;
+
+    default:
+      console.error("Algoritmo no reconocido:", algoritmo);
+      return false;
   }
+
+  // ✅ Registrar en la lista de segmentos global
+  this.listaSegmentos.insertar(
+    num_segmento,
+    num_segmento.toString(2),
+    decimal,
+    decimal.toString(16),
+    tamproceso,
+    permiso,
+    tipo,
+    pid
+  );
+
+  return true; // ✅ devolver éxito
+}
+
 
   eliminarDinamicoSinCompactacion(pid){
     let apuntador = this.head.next;
@@ -186,71 +219,3 @@ class ListaSegmentacion{
   }
 
 }
-
-
-// const listaBloques = new ListaSegmentacion();
-
-// listaBloques.insertar("Disponible", "0", 0, null, 15000000);
-
-// num = 1
-// num = listaBloques.insertarSegmentacion(num, 250, "Código", 200, "1", "PrimerOrden", "R");
-
-// num = listaBloques.insertarSegmentacion(num, 180, "Datos", 200, "1", "PrimerOrden", "A");
-
-// num = listaBloques.insertarSegmentacion(num, 300, "Stack", 200, "1", "PrimerOrden", "R");
-
-// num = 1
-// num = listaBloques.insertarSegmentacion(num, 20, "Código", 200, "2", "PrimerOrden", "R");
-
-// num = listaBloques.insertarSegmentacion(num, 210, "Datos", 200, "2", "PrimerOrden", "A");
-
-// num = listaBloques.insertarSegmentacion(num, 650, "Stack", 200, "2", "PrimerOrden", "R");
-
-// num = 1
-// num = listaBloques.insertarSegmentacion(num, 100, "Código", 200, "3", "PrimerOrden", "R");
-
-// num = listaBloques.insertarSegmentacion(num, 20, "Datos", 200, "3", "PrimerOrden", "A");
-
-// num = listaBloques.insertarSegmentacion(num, 200, "Stack", 200, "3", "PrimerOrden", "R");
-
-// console.log("\n=== 🧠 Memoria ===");
-// listaBloques.mostrar();
-
-// console.log("\n=== 🧠 Lista Segmentos PID 1 ===");
-// listaBloques.listaSegmentos.mostrar(1);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 2 ===");
-// listaBloques.listaSegmentos.mostrar(2);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 3 ===");
-// listaBloques.listaSegmentos.mostrar(3);
-
-
-
-// listaBloques.eliminarDinamicoSinCompactacion(2);
-
-// console.log("\n=== 🧠 Memoria TRAS ELIMINAR ===");
-// listaBloques.mostrar();
-
-// console.log("\n=== 🧠 Lista Segmentos PID 1 ===");
-// listaBloques.listaSegmentos.mostrar(1);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 2 ===");
-// listaBloques.listaSegmentos.mostrar(2);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 3 ===");
-// listaBloques.listaSegmentos.mostrar(3);
-
-// listaBloques.eliminarDinamicoSinCompactacion(3);
-
-// console.log("\n=== 🧠 Memoria TRAS ELIMINAR 3 ===");
-// listaBloques.mostrar();
-
-// console.log("\n=== 🧠 Lista Segmentos PID 1 ===");
-// listaBloques.listaSegmentos.mostrar(1);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 2 ===");
-// listaBloques.listaSegmentos.mostrar(2);
-
-// console.log("\n=== 🧠 Lista Segmentos PID 3 ===");
-// listaBloques.listaSegmentos.mostrar(3);
