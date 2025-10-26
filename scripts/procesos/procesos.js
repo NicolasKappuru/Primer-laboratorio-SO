@@ -34,6 +34,7 @@ function renderTablaProcesos() {
       console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
       eliminarProceso(colPID.textContent);
       actualizarVistas();
+      actualizarVistaDiscontiguas();
     };
 
     colAcciones.appendChild(btnEstado);
@@ -66,6 +67,16 @@ function iniciarProceso(id_program){
   window.procesos.push(nuevo_proceso);
 
   const tamProceso = codigo + datosIni + datosNoIni + heap + stack;
+  
+  let listaProceso = [
+    { tipo: "text", tam_segm: codigo, permiso: "RX"},
+    { tipo: "data", tam_segm: datosIni, permiso: "RW"},
+    { tipo: "bss", tam_segm: datosNoIni, permiso: "RW"},
+    { tipo: "heap", tam_segm: heap, permiso: "RW"},
+    { tipo: "stack", tam_segm: stack, permiso: "RW"}
+  ];
+
+  let tam_max = 262144
 
   window.memoria_estatica_fija.insertarProcesoFijo(
     pidProceso,
@@ -76,13 +87,13 @@ function iniciarProceso(id_program){
   window.memoria_estatica_variable.insertarProcesoFijo(
     pidProceso,
     tamProceso,
-    localStorage.getItem("algoritmoElegido") 
+    window.algoritmoSeleccionado
   );
 
   window.memoria_dinamica_sin_compactacion.insertarProcesoDinamico(
     pidProceso,
     tamProceso,
-    localStorage.getItem("algoritmoElegido") 
+    window.algoritmoSeleccionado
   );
 
   // Insertar también en la variante con compactación si existe
@@ -92,12 +103,27 @@ function iniciarProceso(id_program){
     "PrimerOrden"
   );
   
+  let num_segmento = 1;
+
+  for(i=0;i<5;i++){
+
+    num_segmento = window.memoria_segmentacion.insertarSegmentacion(
+      num_segmento, 
+      listaProceso[i].tam_segm, 
+      listaProceso[i].tipo, 
+      tam_max, 
+      pidProceso, 
+      window.algoritmoSeleccionado,
+     listaProceso[i].permiso
+    );
+  }
 
   console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
-  imprimirLista(window.memoria_dinamica_sin_compactacion);
+  imprimirLista(window.memoria_segmentacion);
 
   actualizarVistas();
+  actualizarVistaDiscontiguas();
 
 }
 
@@ -113,6 +139,7 @@ function eliminarProceso(pid){
   quitarProcesoTabla(pid);
 
   actualizarVistas();
+  actualizarVistaDiscontiguas();
 
 }
 

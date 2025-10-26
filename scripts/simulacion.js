@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTablaAplicaciones();
   renderTablaProcesos();
   actualizarVistas();
+  actualizarVistaDiscontiguas();
 });
 
 

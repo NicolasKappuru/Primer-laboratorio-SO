@@ -151,6 +151,14 @@
         <div id="segmentacion" class="panel">
           <h2>Memoria Segmentación</h2>
 
+          <div class="panel-botones">
+
+            <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
+            <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
+            <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+
+          </div>
+
           <div class="memoria-container">
 
             <!-- Tabla principal de segmentos asignados -->
@@ -229,11 +237,15 @@
   </dialog>
 
   <script src="../scripts/algoritmo.js"></script>
+
   <script src="../scripts/estructuras_datos/lista.js"></script>
   <script src="../scripts/estructuras_datos/lista_paginacion.js"></script>
+  <script src="../scripts/estructuras_datos/lista_segmentos.js"></script>
+  <script src="../scripts/estructuras_datos/lista_segmentacion.js"></script>
   <script src="../scripts/aplicaciones/aplicaciones.js"></script>
   
   <script src="../scripts/procesos/vista_memoria.js"></script>
+  <script src="../scripts/procesos/vista_memoria_discontigua.js"></script>
   <script src="../scripts/procesos/procesos.js"></script>
   
   <script src="../scripts/contiguo/estatica_fija.js"></script>
@@ -242,6 +254,7 @@
   <script src="../scripts/contiguo/dinamica_sin_compactacion.js"></script>
 
   <script src="../scripts/discontiguo/paginacion.js"></script>
+  <script src="../scripts/discontiguo/segmentacion.js"></script>
 
   <script src="../scripts/simulacion.js"></script>
   <script src="../scripts/instalacion.js"></script>
