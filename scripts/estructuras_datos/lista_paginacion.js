@@ -72,24 +72,6 @@ class ListaEnlazadaPaginacion {
     return false; // No hay marcos libres
   }
 
-  // Liberar los marcos de un proceso
-  liberarMarcos(pid) {
-    let actual = this.head;
-    let liberados = 0;
-    while (actual) {
-      if (actual.pid === pid) {
-        actual.pid = null;
-        actual.estado = "libre";
-        actual.tipo_segmento = null;
-        actual.tam_segmento = null;
-        actual.num_pagina = null;
-        liberados++;
-      }
-      actual = actual.next;
-    }
-    return liberados;
-  }
-
   modificar(estado, pid, tipo_segmento, num_pagina, tam_segmento) {
     let actual = this.head;
     while (actual) {
@@ -106,31 +88,35 @@ class ListaEnlazadaPaginacion {
     return -1; // No hay marcos libres
   }
 
-    // Vaciar todos los marcos asociados a un PID
-  vaciar_PID(pid) {
+
+  liberarMarcosPorPID(pid) {
     let actual = this.head;
-    let encontrado = false;
+    let liberados = 0;
 
     while (actual) {
-      if (actual.pid === pid) {
+      // Usamos comparación flexible == para tolerar '1' vs 1
+      if (actual.pid == pid && actual.pid != null) {
         actual.estado = "libre";
         actual.pid = null;
         actual.tipo_segmento = null;
+        actual.size = 0;
         actual.num_pagina = null;
-        actual.tam_segmento = 0;
-        encontrado = true;
+        actual.tam_segmento = null;
+        liberados++;
       }
       actual = actual.next;
     }
 
-    if (!encontrado) {
-      console.warn(`⚠️  No se encontraron segmentos asociados al PID ${pid}.`);
+    if (liberados === 0) {
+      console.warn(`⚠️ No se encontraron segmentos asociados al PID ${pid}.`);
     } else {
-      console.log(`✅ Se liberaron correctamente los marcos del PID ${pid}.`);
+      console.log(`✅ Se liberaron ${liberados} marcos del PID ${pid}.`);
     }
+
+    return liberados;
   }
 
-
+  
 }
 
 //export default ListaEnlazadaPaginacion;

@@ -25,6 +25,10 @@ function iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion) {
     }
   }
 
-  console.log(`✅ Proceso ${pidProceso} asignado en memoria paginada (${numPagina} páginas totales).`);
-  actualizarVistaPaginacion();
+  window.memoria_paginacion.mostrar(); 
+}
+
+function finalizarProcesoPaginacion(pidProceso) {
+  window.memoria_paginacion.liberarMarcosPorPID(pidProceso);
+  window.memoria_paginacion.mostrar(); 
 }

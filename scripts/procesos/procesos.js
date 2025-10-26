@@ -148,7 +148,7 @@ function eliminarProceso(pid){
   
   window.memoria_segmentacion.eliminarDinamicoSegmentacion(pid);
 
-  imprimirLista(window.memoria_dinamica_sin_compactacion);
+  finalizarProcesoPaginacion(pid);
 
   quitarProcesoTabla(pid);
 

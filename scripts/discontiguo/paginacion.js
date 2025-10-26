@@ -16,6 +16,15 @@ for (let i = 0; i < NUM_MARCOS; i++) {
 // Exponer globalmente
 window.memoria_paginacion = paginacion;
 
+for (let i = 0; i < 16; i++) {
+  window.memoria_paginacion.modificar(
+    "ocupado",   // estado
+    "S.O",       // pid (simbólico)
+    "S.O",       // tipo_segmento
+    i,           // num_pagina (0 a 15)
+    TAM_MARCO    // tam_segmento real
+  );
+}
 
 paginacion.mostrar();
 
