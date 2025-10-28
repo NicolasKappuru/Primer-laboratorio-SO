@@ -4,6 +4,10 @@ window.procesos = window.procesos || [];
 
 /* Renderiza la tabla en el sidebar */
 function renderTablaProcesos() {
+
+  
+
+
   const tbody = document.querySelector("#tabla-procesos tbody");
   if (!tbody) return;
   tbody.innerHTML = "";
@@ -14,6 +18,11 @@ function renderTablaProcesos() {
     // PID
     const colPID = document.createElement("td");
     colPID.textContent = proceso.processID || "-";
+    
+    // Sirve para el hover de Paginacion y Segmentacion
+    colPID.classList.add('pid-cell');
+    colPID.dataset.pid = proceso.processID || '';
+    
     row.appendChild(colPID);
 
     // ID Programa
@@ -184,3 +193,6 @@ function quitarProcesoTabla(index){
   procesos.splice(val, 1);
   renderTablaProcesos();
 }
+
+
+
