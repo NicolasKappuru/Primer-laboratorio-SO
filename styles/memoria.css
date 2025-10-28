@@ -119,3 +119,31 @@
   display: block;
   opacity: 1;
 }
+
+
+/* Tabla dentro del tooltip de Paginacion*/ 
+.tabla-tooltip {
+  border-collapse: collapse;
+  margin-top: 4px;
+}
+
+.tabla-tooltip th,
+.tabla-tooltip td {
+  border: 1px solid #aaa;
+  padding: 3px 6px;
+  font-size: 12px;
+  color: #fff;
+}
+
+.tabla-tooltip th {
+  background-color: #444;
+  font-weight: bold;
+}
+
+#tooltip-memoria {
+  max-width: 300px;
+  max-height: 250px;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #666 #222;
+}
