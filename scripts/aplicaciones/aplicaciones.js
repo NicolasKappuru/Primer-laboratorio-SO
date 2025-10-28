@@ -53,7 +53,7 @@ function renderTablaAplicaciones() {
     btnEstado.onclick = () => {
       console.log(colIDProgram.textContent)
       console.log("Se creo el proceso de la app ", app.id_program);
-      iniciarProceso(colIDProgram.textContent);
+      iniciarProceso(colIDProgram.textContent, window.panelActivo);
       renderTablaProcesos();
       actualizarVistaMemoriaFija();
       actualizarVistaMemoriaFijaVariable();

@@ -38,16 +38,20 @@ class ListaSegmentacion{
     this.ultimo = nuevo;
   }
 
-  permiteProcesoSegmentacion(text, data, bss, heap, stack){
-    let sizeAvailable = 0;
+  procesoCompletoSegmentacion(pid, tamProcesoTotal){
     let apuntador = this.head;
+    let tamProcesoMemoria = 0
     while(apuntador){
-      if (apuntador.estado == "Disponible"){
-        sizeAvailable += apuntador.size;
+      if(apuntador.pid == pid){
+        tamProcesoMemoria += apuntador.size;
       }
       apuntador = apuntador.next;
     }
 
+    if(tamProcesoMemoria < tamProcesoTotal){
+      return false
+    }
+    return true
   }
 
   insertarSegmentacion(num_segmento, tam_segm, tipo, tam_max, pid, algoritmo, permiso){

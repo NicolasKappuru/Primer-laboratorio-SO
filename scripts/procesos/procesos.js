@@ -41,7 +41,7 @@ function renderTablaProcesos() {
     btnEstado.title = "Parar";
     btnEstado.onclick = () => {
       console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
-      eliminarProceso(colPID.textContent);
+      eliminarProceso(colPID.textContent, window.panelActivo);
       actualizarVistas();
       actualizarVistaDiscontiguas();
     };
@@ -53,7 +53,7 @@ function renderTablaProcesos() {
   });
 }
 
-function iniciarProceso(id_program){
+function iniciarProceso(id_program, panelActual){
   console.log("Le pasamos el id__programa: " + id_program);
   console.log(typeof id_program);
 
@@ -76,89 +76,111 @@ function iniciarProceso(id_program){
   window.procesos.push(nuevo_proceso);
 
   const tamProceso = codigo + datosIni + datosNoIni + heap + stack;
-  
-  let listaProceso = [
-    { tipo: "text", tam_segm: codigo, permiso: "RX"},
-    { tipo: "data", tam_segm: datosIni, permiso: "RW"},
-    { tipo: "bss", tam_segm: datosNoIni, permiso: "RW"},
-    { tipo: "heap", tam_segm: heap, permiso: "RW"},
-    { tipo: "stack", tam_segm: stack, permiso: "RW"}
-  ];
+  switch (panelActual){
+    case "estatica_fija":
+      window.memoria_estatica_fija.insertarProcesoFijo(
+        pidProceso,
+        tamProceso,
+        "PrimerOrden"
+      );
+    break;
+    case "estatica_variable":
+      window.memoria_estatica_variable.insertarProcesoFijo(
+        pidProceso,
+        tamProceso,
+        window.algoritmoSeleccionado
+      );
+    break;
+    case "dinamica_sin_compactacion":
+      window.memoria_dinamica_sin_compactacion.insertarProcesoDinamico(
+        pidProceso,
+        tamProceso,
+        window.algoritmoSeleccionado
+      );
+    break;
+    case "dinamica_con_compactacion":
+      // Insertar también en la variante con compactación si existe
+      window.memoria_dinamica_con_compactacion.insertarProcesoDinamico(
+        pidProceso,
+        tamProceso,
+        "PrimerOrden"
+      );
+    break;
+    case "segmentacion":
+      let listaProceso = [
+        { tipo: "text", tam_segm: codigo, permiso: "RX"},
+        { tipo: "data", tam_segm: datosIni, permiso: "RW"},
+        { tipo: "bss", tam_segm: datosNoIni, permiso: "RW"},
+        { tipo: "heap", tam_segm: heap, permiso: "RW"},
+        { tipo: "stack", tam_segm: stack, permiso: "RW"}
+      ];
 
-  let tam_max = 262144
+      let tam_max = 262144
+      let num_segmento = 1;
 
-  let listaSegmentosPaginacion = [
-      { tipo: "text", tam_segm: codigo},
-      { tipo: "data", tam_segm: datosIni},
-      { tipo: "bss", tam_segm: datosNoIni},
-      { tipo: "heap", tam_segm: heap},
-      { tipo: "stack", tam_segm: stack}
-    ];
+      for(i=0;i<5;i++){
+        num_segmento = window.memoria_segmentacion.insertarSegmentacion(
+          num_segmento, 
+          listaProceso[i].tam_segm, 
+          listaProceso[i].tipo, 
+          tam_max, 
+          pidProceso, 
+          window.algoritmoSeleccionado,
+          listaProceso[i].permiso
+        );
+      }   
+      if(!window.memoria_segmentacion.procesoCompletoSegmentacion(pidProceso, tamProceso)){
+        eliminarProceso(pidProceso, panelActual)
+      }
+    break;
+    case "paginacion":
 
+      let listaSegmentosPaginacion = [
+        { tipo: "text", tam_segm: codigo},
+        { tipo: "data", tam_segm: datosIni},
+        { tipo: "bss", tam_segm: datosNoIni},
+        { tipo: "heap", tam_segm: heap},
+        { tipo: "stack", tam_segm: stack}
+      ];
+      //Insertamos la paginacion
+      iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion);
 
-  window.memoria_estatica_fija.insertarProcesoFijo(
-    pidProceso,
-    tamProceso,
-    "PrimerOrden"
-  );
-
-  window.memoria_estatica_variable.insertarProcesoFijo(
-    pidProceso,
-    tamProceso,
-    window.algoritmoSeleccionado
-  );
-
-  window.memoria_dinamica_sin_compactacion.insertarProcesoDinamico(
-    pidProceso,
-    tamProceso,
-    window.algoritmoSeleccionado
-  );
-
-  // Insertar también en la variante con compactación si existe
-  window.memoria_dinamica_con_compactacion.insertarProcesoDinamico(
-    pidProceso,
-    tamProceso,
-    "PrimerOrden"
-  );
-  
-  let num_segmento = 1;
-
-  for(i=0;i<5;i++){
-    num_segmento = window.memoria_segmentacion.insertarSegmentacion(
-      num_segmento, 
-      listaProceso[i].tam_segm, 
-      listaProceso[i].tipo, 
-      tam_max, 
-      pidProceso, 
-      window.algoritmoSeleccionado,
-      listaProceso[i].permiso
-    );
+      
   }
-
-  //Insertamos la paginacion
-  iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion);
 
   console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
-  imprimirLista(window.memoria_segmentacion);
+  //imprimirLista(window.memoria_segmentacion);
 
   actualizarVistas();
   actualizarVistaDiscontiguas();
 
 }
 
-function eliminarProceso(pid){
-  window.memoria_estatica_fija.eliminarFijo(pid); 
-  window.memoria_estatica_variable.eliminarFijo(pid);
-  window.memoria_dinamica_sin_compactacion.eliminarDinamicoSinCompactacion(pid);
-  if (window.memoria_dinamica_con_compactacion) {
-    window.memoria_dinamica_con_compactacion.eliminarDinamicoConCompactacion(pid);
+function eliminarProceso(pid, panelActual){
+  switch (panelActual){
+    case "estatica_fija": 
+      window.memoria_estatica_fija.eliminarFijo(pid); 
+    break;
+    case "estatica_variable":
+      window.memoria_estatica_variable.eliminarFijo(pid);
+    break;
+    case "dinamica_sin_compactacion":
+      window.memoria_dinamica_sin_compactacion.eliminarDinamicoSinCompactacion(pid);
+    break;
+    case "dinamica_con_compactacion":
+      if (window.memoria_dinamica_con_compactacion) {
+        window.memoria_dinamica_con_compactacion.eliminarDinamicoConCompactacion(pid);
+      }
+    break;
+    case "segmentacion":
+      window.memoria_segmentacion.eliminarDinamicoSegmentacion(pid);
+    break;
+    case "paginacion":
+      finalizarProcesoPaginacion(pid);
+    break;
   }
   
-  window.memoria_segmentacion.eliminarDinamicoSegmentacion(pid);
-
-  finalizarProcesoPaginacion(pid);
-
   quitarProcesoTabla(pid);
 
   actualizarVistas();
