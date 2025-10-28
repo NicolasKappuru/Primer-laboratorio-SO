@@ -117,6 +117,21 @@ class ListaEnlazadaPaginacion {
   }
 
   
+  procesoCompletoPaginacion(pid, tamProcesoTotal){
+    let apuntador = this.head;
+    let tamProcesoMemoria = 0
+    while(apuntador){
+      if(apuntador.pid == pid){
+        tamProcesoMemoria += apuntador.tam_segmento;
+      }
+      apuntador = apuntador.next;
+    }
+
+    if(tamProcesoMemoria < tamProcesoTotal){
+      return false
+    }
+    return true
+  }
 }
 
 //export default ListaEnlazadaPaginacion;

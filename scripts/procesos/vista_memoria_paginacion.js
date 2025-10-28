@@ -1,7 +1,6 @@
-function iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion) {
+function iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion, tamProceso) {
   const TAM_MARCO = 65536; // tamaño fijo del marco
   let numPagina = 0;       // contador global de páginas dentro del proceso
-
   // Iteramos sobre los 5 tipos de segmentos
   for (const segmento of listaSegmentosPaginacion) {
     const { tipo, tam_segm } = segmento;
@@ -23,6 +22,9 @@ function iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion) {
       restante -= tamUsado;
       numPagina++; // siguiente página
     }
+  }
+  if(!window.memoria_paginacion.procesoCompletoPaginacion(pidProceso, tamProceso)){
+    eliminarProceso(pidProceso, window.panelActivo)
   }
 
   window.memoria_paginacion.mostrar(); 

@@ -143,7 +143,7 @@ function iniciarProceso(id_program, panelActual){
         { tipo: "stack", tam_segm: stack}
       ];
       //Insertamos la paginacion
-      iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion);
+      iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion, tamProceso);
 
       
   }
