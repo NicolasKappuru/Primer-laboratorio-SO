@@ -232,7 +232,7 @@ function actualizarVistaPaginacion() {
     // Crear el bloque visual
     const bloque = document.createElement("div");
     bloque.className = clase;
-    const TAM_MARCO = 65536;
+    let TAM_MARCO = 2**window.offsetPaginacion;
 
     // Cada bloque contiene 5 columnas
     bloque.innerHTML = `

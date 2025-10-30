@@ -114,8 +114,8 @@ function iniciarProceso(id_program, panelActual){
         { tipo: "heap", tam_segm: heap, permiso: "RW"},
         { tipo: "stack", tam_segm: stack, permiso: "RW"}
       ];
-
-      let tam_max = 262144
+      
+      window.tam_max = 262144;
       let num_segmento = 1;
 
       for(i=0;i<5;i++){
@@ -131,6 +131,7 @@ function iniciarProceso(id_program, panelActual){
       }   
       if(!window.memoria_segmentacion.procesoCompletoSegmentacion(pidProceso, tamProceso)){
         eliminarProceso(pidProceso, panelActual)
+        window.pidIncremental--;
       }
     break;
     case "paginacion":

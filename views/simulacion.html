@@ -157,9 +157,18 @@
             <button onclick="selectOption('PrimerOrden', event)" id="btn1">Primer Ajuste</button>
             <button onclick="selectOption('PeorAjuste', event)" id="btn2">Peor Ajuste</button>
             <button onclick="selectOption('MejorAjuste', event)" id="btn3">Mejor Ajuste</button>
+            
+            <br><br>
+
+            <input type="number" id="numeroSegmentacion" placeholder="Numero" step="any">
+            <input type="number" id="offsetSegmentacion" placeholder="Offset" step="any">
+
+            <!-- Botón para guardar -->
+            <button onclick="guardarNumerosSegmentacion()">Guardar Información</button>
 
           </div>
-
+          
+            
           <div class="memoria-container">
 
             <!-- Tabla principal de segmentos asignados -->
@@ -190,6 +199,16 @@
         <!-- Panel 6: Paginacion -->
         <div id="paginacion" class="panel">
           <h2>Memoria Paginación</h2>
+
+          <div class="panel-botones">
+
+            <input type="number" id="numeroPaginacion" placeholder="Numero" step="any">
+            <input type="number" id="offsetPaginacion" placeholder="Offset" step="any">
+
+            <!-- Botón para guardar -->
+            <button onclick="guardarNumerosPaginacion()">Guardar Información</button>
+
+          </div>
 
           <div class="memoria-container">
 
@@ -241,6 +260,8 @@
 
   <div id="tooltip-memoria" role="tooltip"></div>
 
+
+
   <script src="../scripts/algoritmo.js"></script>
 
   <script src="../scripts/estructuras_datos/lista.js"></script>
@@ -262,6 +283,8 @@
 
   <script src="../scripts/discontiguo/paginacion.js"></script>
   <script src="../scripts/discontiguo/segmentacion.js"></script>
+
+  <script src="../scripts/discontiguo/seleccionBits.js"></script>
 
   <script src="../scripts/simulacion.js"></script>
   <script src="../scripts/instalacion.js"></script>

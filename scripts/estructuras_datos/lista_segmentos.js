@@ -69,4 +69,13 @@ class ListaSegmentos {
       actual = actual.next;
     }
   }
+
+  obtenerTipo(dec){
+    let apuntador = this.head
+    while(apuntador){
+      if(this.apuntador.dec = dec) return this.apuntador.tipo;
+      apuntador = apuntador.next;
+    }
+    return ""
+  }
 }
