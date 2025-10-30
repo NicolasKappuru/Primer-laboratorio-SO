@@ -115,7 +115,7 @@ function iniciarProceso(id_program, panelActual){
         { tipo: "stack", tam_segm: stack, permiso: "RW"}
       ];
       
-      window.tam_max = 262144;
+      // window.tam_maxSegmentacion = 262144;
       let num_segmento = 1;
 
       for(i=0;i<5;i++){
@@ -123,7 +123,7 @@ function iniciarProceso(id_program, panelActual){
           num_segmento, 
           listaProceso[i].tam_segm, 
           listaProceso[i].tipo, 
-          tam_max, 
+          window.tam_maxSegmentacion, 
           pidProceso, 
           window.algoritmoSeleccionado,
           listaProceso[i].permiso

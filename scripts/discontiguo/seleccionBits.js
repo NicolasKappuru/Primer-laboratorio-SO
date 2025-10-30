@@ -5,6 +5,8 @@ window.offsetSegmentacion = null; //Pues el offset :v
 window.numeroPaginacion = null; //Pagina-Segmento xD
 window.offsetPaginacion = null; //Pues el offset :v
 
+window.tam_maxSegmentacion = 0;
+
 function guardarNumerosSegmentacion() {
     // Leer los valores de los inputs
 
