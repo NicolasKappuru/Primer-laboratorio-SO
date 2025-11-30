@@ -13,7 +13,7 @@
 
 #gantt-eje-y {
   display: flex;
-  flex-direction: column-reverse; /* para que los nuevos queden arriba */
+  flex-direction: column; /* para que los nuevos queden arriba */
   gap: 6px;
 }
 
