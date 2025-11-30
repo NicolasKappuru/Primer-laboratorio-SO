@@ -7,6 +7,7 @@ window.incrementClock = function () {
 
   if (typeof window.actualizarVistaEjeX === "function") {
     window.actualizarVistaEjeX();
+    window.actualizarVistaEjeY(); 
   }
 };
 

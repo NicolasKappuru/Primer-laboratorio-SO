@@ -35,16 +35,17 @@ window.actualizarVistaEjeX = function () {
   rebuildCuerpoGrid();
 };
 
+window.agregarPID = function (pidNuevo) {
+    if (pidNuevo !== undefined) {
+      window.ejeYPIDs.push(pidNuevo);
+    }
+};
+
 // Actualiza eje Y — recibe pidNuevo opcional
-window.actualizarVistaEjeY = function (pidNuevo) {
+window.actualizarVistaEjeY = function () {
   const contY = document.getElementById("gantt-eje-y");
   const cuerpo = document.getElementById("gantt-cuerpo");
   if (!contY || !cuerpo) return;
-
-  if (pidNuevo !== undefined) {
-    window.ejeYPIDs.push(pidNuevo);
-  }
-
   // Limpiar y dibujar Y (de mayor a menor para que lo nuevo quede arriba)
   contY.innerHTML = "";
   const ordenados = [...window.ejeYPIDs].sort((a,b)=> a-b);

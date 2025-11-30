@@ -151,7 +151,7 @@ function iniciarProceso(id_program, panelActual){
     break;
 
     case "fcfs":
-    actualizarVistaEjeY(pidProceso);  // PASAR EL PID NUEVO
+    agregarPID(pidProceso);  // PASAR EL PID NUEVO
     actualizarVistaEjeX();             // actualiza ticks / columnas y reconstruye la grid
     break; 
 

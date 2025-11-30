@@ -17,15 +17,6 @@ function showPanel(panelId, btnEl) {
   // manejar estilo de botón activo
   document.querySelectorAll(".toolbar button").forEach(b => b.classList.remove("active-btn"));
   if (btnEl) btnEl.classList.add("active-btn");
-
-  // actualizar vistas según panel activo
-  if (panelId === "fcfs" && typeof window.actualizarVistaEjeX === "function") {
-    window.actualizarVistaEjeX();
-  }
-
-  if (panelId === "fcfs" && typeof window.actualizarVistaEjeY === "function") {
-      window.actualizarVistaEjeY(); 
-  }
 }
 
 
@@ -39,9 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTablaProcesos();
   actualizarVistas();
   actualizarVistaDiscontiguas();
-
-  actualizarVistaEjeX();     // <<< NUEVO
-
 });
 
 
