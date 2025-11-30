@@ -6,7 +6,7 @@ export default class ListaBloqueo{
     }
 
     add(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo){
-        let nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueo)
+        let nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueo, "blocked")
 
         if(!this.head){
             this.head = nuevoNodo
@@ -41,7 +41,8 @@ export default class ListaBloqueo{
         console.log(
             `P=${apuntador.prioridad}, PID=${apuntador.pid}, ` +
             `TE=${apuntador.tiempoEjecucion}, IB=${apuntador.inicioBloqueo}, ` +
-            `DB=${apuntador.duracionBloqueo}, DBA=${apuntador.duracionBloqueoActual}`
+            `DB=${apuntador.duracionBloqueo}, DBA=${apuntador.duracionBloqueoActual}` +
+            `E=${apuntador.estado} `
         );
         apuntador = apuntador.back;
     }

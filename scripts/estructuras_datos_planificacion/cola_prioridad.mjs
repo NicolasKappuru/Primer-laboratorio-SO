@@ -8,7 +8,7 @@ export default class ColaPrioridad{
 
 
     push(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual){
-        const nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual)
+        const nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, "await")
         if (!this.head){
             this.head = nuevoNodo
             this.ultimo = nuevoNodo
@@ -44,7 +44,8 @@ export default class ColaPrioridad{
                 pid: primerNodo.pid,
                 tiempoEjecucion: primerNodo.tiempoEjecucion,
                 inicioBloqueo: primerNodo.inicioBloqueo,
-                duracionBloqueo: primerNodo.duracionBloqueo
+                duracionBloqueo: primerNodo.duracionBloqueo,
+                estado: primerNodo.estado
                }
     }
 
@@ -57,7 +58,8 @@ export default class ColaPrioridad{
         console.log(
             `P=${apuntador.prioridad}, PID=${apuntador.pid}, ` +
             `TE=${apuntador.tiempoEjecucion}, IB=${apuntador.inicioBloqueo}, ` +
-            `DB=${apuntador.duracionBloqueo}, DBA=${apuntador.duracionBloqueoActual}`
+            `DB=${apuntador.duracionBloqueo}, DBA=${apuntador.duracionBloqueoActual}` +
+            `E=${apuntador.estado} `
         );
         apuntador = apuntador.back;
     }
