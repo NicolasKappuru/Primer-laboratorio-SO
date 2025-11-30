@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
       datosNoIni: Number(document.getElementById("datosNoIni").value) || 0,
       estado: false, // inicia inactiva
 
-      tiempo_ejecucion: 0,
-      inicio_bloqueo: 0,
-      duracion: 0
+      tiempo_ejecucion: Number(document.getElementById("tiempoEjecucion").value) || 0,
+      inicio_bloqueo: Number(document.getElementById("inicioBloqueo").value) || 0,
+      duracion: Number(document.getElementById("duracion").value) || 0
     };
 
   
