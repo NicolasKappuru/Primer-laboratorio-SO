@@ -148,8 +148,10 @@ function iniciarProceso(id_program, panelActual){
       ];
       //Insertamos la paginacion
       iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion, tamProceso);
-
-      //cases de algoritmos de planificacion
+    break;
+    case "fcfs":
+      vistaFCFS();   // ← aquí llamas tu método del archivo fcfs.js
+    break;
       
   }
 

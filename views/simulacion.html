@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../styles/tabla_procesos.css">
     <link rel="stylesheet" href="../styles/memoria_paginacion.css">
     <link rel="stylesheet" href="../styles/memoria_segmentacion.css">
+    <link rel="stylesheet" href="../styles/css_planificacion/fcfs.css">
 
   
 </head>
@@ -226,6 +227,7 @@
         <!-- Panel 7: (FCFS – First come, first served) -->
         <div id="fcfs" class="panel">
           <h2>Primero en llegar, primero en salir</h2>
+          <button onclick="selectOption('Clock', event)" id="btnClock">Clock</button>
         </div>
 
         <!-- Panel 8: (SJF - Shortest Job First) -->
@@ -297,6 +299,17 @@
   <script src="../scripts/estructuras_datos/lista_segmentacion.js"></script>
   <script src="../scripts/aplicaciones/aplicaciones.js"></script>
   
+
+  
+  <script src="../scripts/estructuras_datos_planificacion/cola_prioridad.js"></script>
+  <script src="../scripts/estructuras_datos_planificacion/lista_bloqueo.js"></script>
+  <script src="../scripts/estructuras_datos_planificacion/nodo.js"></script>
+  
+  <script src="../scripts/planificacion/clock.js"></script>
+  <script src="../scripts/planificacion/fcfs.js" ></script>
+
+
+
   <script src="../scripts/procesos/vista_memoria.js"></script>
   <script src="../scripts/procesos/vista_memoria_discontigua.js"></script>
   <script src="../scripts/procesos/vista_memoria_paginacion.js"></script>

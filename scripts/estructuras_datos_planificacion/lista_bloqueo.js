@@ -1,12 +1,10 @@
-import Nodo from './nodo.mjs'
-
-export default class ListaBloqueo{
+class ListaBloqueo{
     constructor(){
         this.head = null
     }
 
     add(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo){
-        let nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueo, "blocked")
+        let nuevoNodo = new NodoPlanificacion(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueo, "blocked")
 
         if(!this.head){
             this.head = nuevoNodo

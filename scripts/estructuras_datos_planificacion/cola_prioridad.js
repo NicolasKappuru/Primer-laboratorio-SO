@@ -1,6 +1,4 @@
-import Nodo from './nodo.mjs'
-
-export default class ColaPrioridad{
+class ColaPrioridad{
     constructor(){
         this.head = null
         this.ultimo = null
@@ -8,7 +6,7 @@ export default class ColaPrioridad{
 
 
     push(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual){
-        const nuevoNodo = new Nodo(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, "await")
+        const nuevoNodo = new NodoPlanificacion(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, "await")
         if (!this.head){
             this.head = nuevoNodo
             this.ultimo = nuevoNodo
@@ -65,6 +63,10 @@ export default class ColaPrioridad{
     }
 
     console.log("=========================\n");
-}
+    }
+
+    isEmpty(){
+        return this.head == null    
+    }
 
 }

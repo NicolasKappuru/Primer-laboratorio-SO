@@ -1,4 +1,4 @@
-export default class Nodo{
+class NodoPlanificacion {
     constructor(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, estado) {
         this.prioridad = prioridad
         this.pid = pid

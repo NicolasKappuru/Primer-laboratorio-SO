@@ -1,5 +1,3 @@
-import ListaBloqueo from './lista_bloqueo.mjs'
-import ColaPrioridad from './cola_prioridad.mjs'
 
 let cola_prioridad = new ColaPrioridad()
 let lista_bloqueo = new ListaBloqueo()

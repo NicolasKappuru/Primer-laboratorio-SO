@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderTablaProcesos();
   actualizarVistas();
   actualizarVistaDiscontiguas();
+  vistaFCFS(); 
 });
 
 
