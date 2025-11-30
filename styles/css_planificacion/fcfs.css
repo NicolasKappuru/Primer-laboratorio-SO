@@ -1,34 +1,78 @@
-/* === Estilos del Gantt para FCFS === */
-
-.fcfs-gantt-container {
-  width: 100%;
-  overflow-x: auto;
-  margin-top: 20px;
+/* contenedor principal */
+#gantt-fcfs {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 18px;
 }
 
-.fcfs-proceso {
+/* columna izquierda (etiquetas PID) */
+#gantt-left {
+  width: 100px; /* ancho fijo para etiqueta PID */
+}
+
+#gantt-eje-y {
+  display: flex;
+  flex-direction: column-reverse; /* para que los nuevos queden arriba */
+  gap: 6px;
+}
+
+.gantt-pid-row {
+  height: 32px;               /* ALTURA de fila: importante que coincida con grid row */
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
-}
-
-.fcfs-nombre {
-  width: 50px;
+  justify-content: center;
+  background: #e6e6e6;
+  border: 1px solid #bbb;
   font-weight: bold;
 }
 
-.fcfs-linea {
-  position: relative;
-  height: 25px;
-  border: 1px solid #ccc;
-  background: #f0f0f0;
+/* columna derecha: eje X arriba y cuerpo (grid) debajo.
+   Usaremos grid-template-columns dinámico desde JS. */
+#gantt-right {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.fcfs-barra {
-  position: absolute;
+/* EJE X: lo hacemos también con grid para que columnas coincidan */
+#gantt-eje-x {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  height: 30px;
+}
+
+/* tick estilo */
+.gantt-tick {
+  width: 32px;                 /* ANCHO de columna: importante que coincida con grid column */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #999;
+  background: #f6f6f6;
+}
+
+/* CUERPO del GANTT: grid donde cada celda corresponde a (PID,row) x (tick,col) */
+#gantt-cuerpo {
+  display: grid;
+  gap: 6px 4px; /* gap fila-columna */
+  align-items: center;
+  position: relative;
+  /* grid-template-columns y grid-template-rows se generan desde JS */
+}
+
+/* CELDA vacía por defecto */
+.gantt-cell {
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent; /* cambiar cuando haya barra */
+  background: transparent;
+}
+
+/* ejemplo de barra: ejecución */
+.gantt-bar-ejec {
+  background: #3cb44b;
   height: 100%;
 }
-
-.fcfs-ejecucion { background: #3cb44b; }
-.fcfs-bloqueo   { background: #e6194B; }
-.fcfs-espera    { background: #bdbdbd; }

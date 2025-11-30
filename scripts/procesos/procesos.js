@@ -149,10 +149,12 @@ function iniciarProceso(id_program, panelActual){
       //Insertamos la paginacion
       iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion, tamProceso);
     break;
+
     case "fcfs":
-      vistaFCFS();   // ← aquí llamas tu método del archivo fcfs.js
-    break;
-      
+    actualizarVistaEjeY(pidProceso);  // PASAR EL PID NUEVO
+    actualizarVistaEjeX();             // actualiza ticks / columnas y reconstruye la grid
+    break; 
+
   }
 
   //console.log("Resultado de insertar en memoria:", tamProceso);

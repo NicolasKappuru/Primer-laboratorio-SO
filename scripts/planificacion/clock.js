@@ -1,15 +1,18 @@
-// Crear variable global explícita
-window.clock = 0;
+// clock.js
+window.clock = window.clock || 0;
 
-// Incrementa el clock global
 window.incrementClock = function () {
-    window.clock += 1;
-    console.log("Clock:", window.clock); // opcional
+  window.clock++;
+  console.log("[clock.js] Clock =", window.clock);
+
+  if (typeof window.actualizarVistaEjeX === "function") {
+    window.actualizarVistaEjeX();
+  }
 };
 
-// Función llamada desde el botón
+// Compatible con tu onclick="selectOption('Clock', event)"
 window.selectOption = function (option, event) {
-    if (option === "Clock") {
-        window.incrementClock();
-    }
+  if (option === "Clock") {
+    window.incrementClock();
+  }
 };
