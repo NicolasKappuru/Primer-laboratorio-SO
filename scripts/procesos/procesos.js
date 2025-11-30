@@ -62,16 +62,24 @@ function iniciarProceso(id_program, panelActual){
 
   let pidProceso = window.pidIncremental++;
 
+  let tiempoEjecucion = app.tiempo_ejecucion; 
+  let inicioBloqueo = app.inicio_bloqueo;
+  let duracion = app.duracion; 
+
   const nuevo_proceso = {
     processID: pidProceso,
     id_programa: id_program,
     codigo: codigo,
     datosIni: datosIni,
-    datosNoIni: datosNoIni
+    datosNoIni: datosNoIni,
+    tiempo_ejecucion: tiempoEjecucion,
+    inicio_bloqueo: inicioBloqueo,
+    duracion: duracion
   }
   window.procesos.push(nuevo_proceso);
 
   const tamProceso = codigo + datosIni + datosNoIni + heap + stack;
+  
   switch (panelActual){
     case "estatica_fija":
       window.memoria_estatica_fija.insertarProcesoFijo(
@@ -141,6 +149,7 @@ function iniciarProceso(id_program, panelActual){
       //Insertamos la paginacion
       iniciarProcesoPaginacion(pidProceso, listaSegmentosPaginacion, tamProceso);
 
+      //cases de algoritmos de planificacion
       
   }
 
