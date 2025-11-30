@@ -71,8 +71,8 @@ class ListaSegmentacion{
   }
 
   insertarProcesoDinamicoSegmentacion(pid, tamproceso, algoritmo, permiso, tipo, num_segmento) {
-  console.log("=== insertarProcesoDinamico ===");
-  console.log("PID:", pid, "Tamaño:", tamproceso, "Algoritmo:", algoritmo);
+  //console.log("=== insertarProcesoDinamico ===");
+  //console.log("PID:", pid, "Tamaño:", tamproceso, "Algoritmo:", algoritmo);
 
   let apuntador = this.head;
   let bloques = [];

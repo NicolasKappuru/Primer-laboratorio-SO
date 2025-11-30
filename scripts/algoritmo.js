@@ -12,7 +12,7 @@ function selectOption(option, event) {
   // Marcar el botón actual como seleccionado
   event.target.classList.add("selected");
 
-  console.log("Algoritmo seleccionado:", window.algoritmoSeleccionado);
+  //console.log("Algoritmo seleccionado:", window.algoritmoSeleccionado);
 }
 
 
@@ -28,6 +28,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (btn.textContent === guardado) btn.classList.add("selected");
     });
 
-    console.log("Algoritmo recuperado:", guardado);
+    //console.log("Algoritmo recuperado:", guardado);
   }
 });

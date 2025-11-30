@@ -25,13 +25,13 @@ function imprimirLista(lista) {
   let actual = lista.head;
   let i = 0;
   while (actual) {
-    console.log(`Bloque ${i}:`, {
-      disponible: actual.estado,
-      hex: actual.hex,
-      dec: actual.dec,
-      pid: actual.pid,
-      size: actual.size
-    });
+    //console.log(`Bloque ${i}:`, {
+      //disponible: actual.estado,
+      //hex: actual.hex,
+      //dec: actual.dec,
+      //pid: actual.pid,
+      //size: actual.size
+    //});
     actual = actual.next;
     i++;
   }

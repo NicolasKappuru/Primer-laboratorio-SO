@@ -8,7 +8,7 @@ function showPanel(panelId, btnEl) {
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
   // mostrar el seleccionado
   const panel = document.getElementById(panelId);
-  console.log("Panel seleccionado: ", panelId);
+  //console.log("Panel seleccionado: ", panelId);
   if (panel) panel.classList.add("active");
   window.panelActivo = panelId;
   
@@ -21,7 +21,7 @@ function showPanel(panelId, btnEl) {
 // Ejemplo dinámico SOLO en estática fija
 // =======================
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Panel Actual "+window.panelActivo);
+  //console.log("Panel Actual "+window.panelActivo);
   renderTablaAplicaciones();
   renderTablaProcesos();
   actualizarVistas();

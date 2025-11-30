@@ -71,7 +71,21 @@
             <button onclick="showPanel('paginacion')">Paginación</button>
           </div>
         </div>
+
+        <div class="toolbar-divider"></div>
+
+        <div class="toolbar-group">
+          <span class="toolbar-group-title">Algoritmos de planificación</span>
+          <div class="toolbar-buttons">
+            <button onclick="showPanel('fcfs')">FCFS</button>
+            <button onclick="showPanel('sjf')">SJF</button>
+            <button onclick="showPanel('srtf')">SRTF</button>
+            <button onclick="showPanel('rr')">RR</button>
+          </div>
+        </div>
       </div>
+
+
 
       <!-- Panel de simulación -->
       
@@ -187,6 +201,7 @@
           </div>
         </div>
         
+
         <!-- Panel 6: Paginacion -->
         <div id="paginacion" class="panel">
           <h2>Memoria Paginación</h2>
@@ -205,6 +220,27 @@
               <div class="memoria-body" id="tabla-paginas"></div>
             </div>
           </div>
+        </div>
+
+
+        <!-- Panel 7: (FCFS – First come, first served) -->
+        <div id="fcfs" class="panel">
+          <h2>Primero en llegar, primero en salir</h2>
+        </div>
+
+        <!-- Panel 8: (SJF - Shortest Job First) -->
+        <div id="sjf" class="panel">
+          <h2>Primero el trabajo más corto </h2>
+        </div>
+
+        <!-- Panel 9: (SRTF, Short Remaining Time First) -->
+        <div id="srtf" class="panel">
+          <h2>Prioridad al tiempo restante más corto</h2>
+        </div>
+
+        <!-- Panel 10: (RR – Round Robin) -->
+        <div id="rr" class="panel">
+          <h2>Turno rotatorio o cíclico </h2>
         </div>
 
       </div>

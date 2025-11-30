@@ -277,5 +277,5 @@ class ListaEnlazada {
   }
 }
 
-console.log("📌 Definición de las clases ListaEnlazada y Nodo cargadas.");
+//console.log("📌 Definición de las clases ListaEnlazada y Nodo cargadas.");
 //module.exports = ListaEnlazada 

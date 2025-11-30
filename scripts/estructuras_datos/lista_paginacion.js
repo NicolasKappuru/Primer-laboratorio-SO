@@ -51,7 +51,7 @@ class ListaEnlazadaPaginacion {
       });
       actual = actual.next;
     }
-    console.table(nodos);
+    //console.table(nodos);
   }
 
 
@@ -108,9 +108,9 @@ class ListaEnlazadaPaginacion {
     }
 
     if (liberados === 0) {
-      console.warn(`⚠️ No se encontraron segmentos asociados al PID ${pid}.`);
+      //console.warn(`⚠️ No se encontraron segmentos asociados al PID ${pid}.`);
     } else {
-      console.log(`✅ Se liberaron ${liberados} marcos del PID ${pid}.`);
+      //console.log(`✅ Se liberaron ${liberados} marcos del PID ${pid}.`);
     }
 
     return liberados;

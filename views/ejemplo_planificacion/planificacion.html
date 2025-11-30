@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Gantt Dinámico</title>
+
+<style>
+  body {
+    font-family: sans-serif;
+    margin: 20px;
+  }
+
+  .contenedor-gantt {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .proceso {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .nombre-proceso {
+    width: 40px;
+    font-weight: bold;
+  }
+
+  .linea-tiempo {
+    position: relative;
+    height: 25px;
+    border: 1px solid #ccc;
+    background: #eee;
+  }
+
+  .barra {
+    position: absolute;
+    height: 100%;
+  }
+
+  .ejecucion { background: #3cb44b; }
+  .bloqueo   { background: #e6194B; }
+  .espera    { background: #bdbdbd; }
+
+</style>
+</head>
+<body>
+
+<h2>Gantt Dinámico</h2>
+
+<div class="contenedor-gantt" id="gantt"></div>
+
+<script>
+const timeline = [
+  { proceso: "A", eventos: [
+    { tipo:"ejecucion", inicio:0, duracion:2 },
+    { tipo:"bloqueo",   inicio:2, duracion:2 },
+    { tipo:"ejecucion", inicio:4, duracion:2 },
+  ]},
+  { proceso: "B", eventos: [
+    { tipo:"espera",    inicio:1, duracion:2 },
+    { tipo:"ejecucion", inicio:3, duracion:2 },
+    { tipo:"bloqueo",   inicio:5, duracion:3 },
+    { tipo:"ejecucion", inicio:8, duracion:8 },
+  ]}
+];
+
+// ------------------------
+// AUTO-ZOOM DINÁMICO
+// ------------------------
+function obtenerFinMaximo(data) {
+  let max = 0;
+  data.forEach(p => {
+    p.eventos.forEach(e => {
+      const fin = e.inicio + e.duracion;
+      if (fin > max) max = fin;
+    });
+  });
+  return max;
+}
+
+function generarGantt(data) {
+  const cont = document.getElementById("gantt");
+  cont.innerHTML = "";
+
+  const maxTiempo = obtenerFinMaximo(data);
+  const PIXELS = Math.max(5, Math.floor(window.innerWidth / maxTiempo));
+
+  data.forEach(p => {
+    const fila = document.createElement("div");
+    fila.className = "proceso";
+
+    const nombre = document.createElement("div");
+    nombre.className = "nombre-proceso";
+    nombre.textContent = p.proceso;
+
+    const linea = document.createElement("div");
+    linea.className = "linea-tiempo";
+    linea.style.width = maxTiempo * PIXELS + "px";
+
+    p.eventos.forEach(e => {
+      const barra = document.createElement("div");
+      barra.className = "barra " + e.tipo;
+      barra.style.left = (e.inicio * PIXELS) + "px";
+      barra.style.width = (e.duracion * PIXELS) + "px";
+
+      linea.appendChild(barra);
+    });
+
+    fila.appendChild(nombre);
+    fila.appendChild(linea);
+    cont.appendChild(fila);
+  });
+}
+
+generarGantt(timeline);
+
+// si quieres que se adapte al cambiar el tamaño de la ventana:
+window.addEventListener("resize", () => generarGantt(timeline));
+</script>
+
+</body>
+</html>

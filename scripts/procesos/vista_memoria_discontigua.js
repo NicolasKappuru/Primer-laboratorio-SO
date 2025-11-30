@@ -87,7 +87,7 @@ function crearTooltip(b, document, nodo){
   document.body.appendChild(tooltip);
 
   b.addEventListener("mouseover", () => {
-    console.log("Hover sobre bloque:", nodo);
+    //console.log("Hover sobre bloque:", nodo);
     tooltip.textContent = `Tamaño usado: ${nodo.tam_proceso.toLocaleString()} bytes\n`;
     tooltip.textContent += `Tamaño sin usar: ${(nodo.size-nodo.tam_proceso).toLocaleString()} bytes`;
     tooltip.style.display = "block";
@@ -100,7 +100,7 @@ function crearTooltip(b, document, nodo){
   });
 
   b.addEventListener("mouseout", () => {
-    console.log("Saliste del bloque:", nodo);
+    //console.log("Saliste del bloque:", nodo);
     tooltip.style.display = "none";
     tooltip.classList.remove("visible");
   });

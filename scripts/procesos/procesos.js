@@ -4,10 +4,6 @@ window.procesos = window.procesos || [];
 
 /* Renderiza la tabla en el sidebar */
 function renderTablaProcesos() {
-
-  
-
-
   const tbody = document.querySelector("#tabla-procesos tbody");
   if (!tbody) return;
   tbody.innerHTML = "";
@@ -40,7 +36,7 @@ function renderTablaProcesos() {
     btnEstado.textContent = "✖"; // activo -> parar
     btnEstado.title = "Parar";
     btnEstado.onclick = () => {
-      console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
+      //console.log("Se oprimió desactivar en el proceso del programa ", proceso.id_programa, " con pid ", proceso.processID);
       eliminarProceso(colPID.textContent, window.panelActivo);
       actualizarVistas();
       actualizarVistaDiscontiguas();
@@ -54,8 +50,8 @@ function renderTablaProcesos() {
 }
 
 function iniciarProceso(id_program, panelActual){
-  console.log("Le pasamos el id__programa: " + id_program);
-  console.log(typeof id_program);
+  //console.log("Le pasamos el id__programa: " + id_program);
+  //console.log(typeof id_program);
 
   let app = obtenerAppPorIDProgram(id_program);  
   let codigo = app.codigo;
@@ -148,7 +144,7 @@ function iniciarProceso(id_program, panelActual){
       
   }
 
-  console.log("Resultado de insertar en memoria:", tamProceso);
+  //console.log("Resultado de insertar en memoria:", tamProceso);
   // Llamada para mostrar tu memoria
   //imprimirLista(window.memoria_segmentacion);
 

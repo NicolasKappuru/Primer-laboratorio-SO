@@ -38,7 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
       codigo: Number(document.getElementById("codigo").value) || 0,
       datosIni: Number(document.getElementById("datosIni").value) || 0,
       datosNoIni: Number(document.getElementById("datosNoIni").value) || 0,
-      estado: false // inicia inactiva
+      estado: false, // inicia inactiva
+
+      tiempo_ejecucion: 0,
+      inicio_bloqueo: 0,
+      duracion: 0
     };
 
   
