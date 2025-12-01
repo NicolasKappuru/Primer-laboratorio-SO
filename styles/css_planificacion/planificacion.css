@@ -1,0 +1,31 @@
+/* contenedor */
+#grid-fcfs { padding: 10px; }
+
+/* grid: 2 filas, N columnas; sin gaps */
+#grid-clock {
+  display: grid;
+  grid-template-rows: 50px 50px;   /* altura fija para cada fila */
+  gap: 0;                          /* nada entre celdas */
+  width: 100%;
+  max-width: 100%;
+  border: 2px solid #000;
+  overflow-x: auto;
+  background: white;
+  box-sizing: border-box;
+}
+
+/* celdas */
+.cell {
+  border: 1px solid #333;
+  min-width: 40px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+/* evita márgenes inesperados */
+#grid-clock .cell { margin: 0; padding: 0; }

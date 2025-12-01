@@ -1,106 +1,147 @@
-// DIMENSIONES (coherentes con CSS)
-const COL_WIDTH = 32;   // ancho por tick (px)
-const ROW_HEIGHT = 32;  // alto por fila (px)
+// Lista global (persistente)
+window.procesosVerticales = window.procesosVerticales || [];
 
-// arreglo con PIDs (se va llenando con pidNuevo)
-window.ejeYPIDs = window.ejeYPIDs || [];
+(function () {
 
-// Actualiza eje X y establece template de columnas para que se use también en el cuerpo
-window.actualizarVistaEjeX = function () {
-  const contX = document.getElementById("gantt-eje-x");
-  const cuerpo = document.getElementById("gantt-cuerpo");
-  if (!contX || !cuerpo) return;
+  // filas: filas[0] = fila clock, filas[1..N] = filas de procesos (de abajo hacia arriba)
+  let filas = [];
 
-  contX.innerHTML = "";
-
-  const n = Number(window.clock) || 0;
-
-  // Crear columnas (ticks) en el eje X
-  for (let i = 0; i < n; i++) {
-    const t = document.createElement("div");
-    t.className = "gantt-tick";
-    t.textContent = i + 1;
-    contX.appendChild(t);
+  // -----------------------
+  // Inicializa la estructura base (no carga procesosVerticales)
+  // -----------------------
+  function initState() {
+    filas = [];
+    filas.push([""]); // fila clock: 1 columna vacía por defecto
   }
 
-  // sincronizar grid-template-columns del cuerpo con los ticks
-  const cols = n > 0 ? `repeat(${n}, ${COL_WIDTH}px)` : "none";
-  cuerpo.style.gridTemplateColumns = cols;
+  // -----------------------
+  // Reconstruye filas (usada SOLO desde addClockColumn)
+  // -----------------------
+  function actualizarFilasVerticales(numCols) {
+    // Guardar la fila clock actual (si existe) para preservarla
+    const priorClock = filas[0] ? filas[0].slice() : new Array(numCols).fill("");
 
-  // también asegurarnos grid-template-rows según PIDs
-  const filas = window.ejeYPIDs.length;
-  cuerpo.style.gridTemplateRows = filas > 0 ? `repeat(${filas}, ${ROW_HEIGHT}px)` : "none";
+    // Reiniciar filas con la fila clock preservada (si priorClock tiene menos columnas, lo rellenamos)
+    const clockRow = priorClock.slice();
+    while (clockRow.length < numCols) clockRow.push("");
 
-  // (reconstruimos las celdas para mantener la alineación)
-  rebuildCuerpoGrid();
-};
+    filas = [];
+    filas.push(clockRow);
 
-window.agregarPID = function (pidNuevo) {
-    if (pidNuevo !== undefined) {
-      window.ejeYPIDs.push(pidNuevo);
-    }
-};
-
-// Actualiza eje Y — recibe pidNuevo opcional
-window.actualizarVistaEjeY = function () {
-  const contY = document.getElementById("gantt-eje-y");
-  const cuerpo = document.getElementById("gantt-cuerpo");
-  if (!contY || !cuerpo) return;
-  // Limpiar y dibujar Y (de mayor a menor para que lo nuevo quede arriba)
-  contY.innerHTML = "";
-  const ordenados = [...window.ejeYPIDs].sort((a,b)=> a-b);
-
-  for (let i = ordenados.length - 1; i >= 0; i--) {
-    const pid = ordenados[i];
-    const fila = document.createElement("div");
-    fila.className = "gantt-pid-row";
-    fila.textContent = "PID " + pid;
-    contY.appendChild(fila);
-  }
-
-  // sincronizar grid rows del cuerpo
-  const filas = window.ejeYPIDs.length;
-  cuerpo.style.gridTemplateRows = filas > 0 ? `repeat(${filas}, ${ROW_HEIGHT}px)` : "none";
-
-  // reconstruir celdas del body para que queden alineadas
-  rebuildCuerpoGrid();
-};
-
-// Reconstruye (o actualiza) el #gantt-cuerpo con la cantidad correcta de celdas
-function rebuildCuerpoGrid() {
-  const cuerpo = document.getElementById("gantt-cuerpo");
-  if (!cuerpo) return;
-
-  const nCols = (Number(window.clock) || 0);
-  const nRows = window.ejeYPIDs.length;
-
-  cuerpo.innerHTML = "";
-
-  if (nCols === 0 || nRows === 0) return;
-
-  // Crear nRows * nCols celdas (vacías por ahora)
-  // Recorremos filas de arriba hacia abajo: como usamos grid, el orden de appendChild
-  // empieza en la primera celda (fila 1,col1) — para que coincida con ejeY invertido,
-  // construiremos en orden de mayor PID a menor PID (coincide con la Y visual).
-  const ordenados = [...window.ejeYPIDs].sort((a,b)=> a-b);
-
-  // iterar de mayor a menor (para que la primera fila del grid corresponda al PID mayor,
-  // que está en la parte superior de #gantt-eje-y por el column-reverse visual).
-  for (let r = ordenados.length - 1; r >= 0; r--) {
-    for (let c = 0; c < nCols; c++) {
-      const cell = document.createElement("div");
-      cell.className = "gantt-cell";
-      // opcional: data attributes para identificar celda
-      cell.dataset.pid = ordenados[r];
-      cell.dataset.col = c + 1;
-      cuerpo.appendChild(cell);
+    // Crear una fila por cada PID en window.procesosVerticales (desde abajo hacia arriba)
+    // Cada fila de proceso tendrá longitud numCols y el PID en la PRIMERA COLUMNA (índice 0)
+    for (let pid of window.procesosVerticales) {
+      const arr = new Array(numCols).fill("");
+      arr[0] = String(pid); // colocar el PID en la primera celda de esa fila
+      filas.push(arr);
     }
   }
-}
 
-// Inicial render al cargar la página
-document.addEventListener("DOMContentLoaded", () => {
-  window.ejeYPIDs = window.ejeYPIDs || [];
-  window.actualizarVistaEjeX();
-  window.actualizarVistaEjeY(); // redibuja vacío si no hay PIDs
-});
+  // -----------------------
+  // Renderiza las filas en el DOM
+  // -----------------------
+  function renderGrid() {
+    const grid = document.getElementById("grid-clock");
+    if (!grid) return;
+
+    const columnas = filas[0].length;
+    grid.style.gridTemplateColumns = `repeat(${columnas}, 1fr)`;
+    grid.innerHTML = "";
+
+    // Pintar desde la fila superior (última) hacia la fila 0 (clock)
+    for (let r = filas.length - 1; r >= 0; r--) {
+      for (let c = 0; c < columnas; c++) {
+        const d = document.createElement("div");
+        d.className = "cell";
+        d.textContent = filas[r][c] || "";
+        grid.appendChild(d);
+      }
+    }
+
+    grid.scrollLeft = grid.scrollWidth;
+  }
+
+  // -----------------------
+  // Expuesta: inicializar vista (NO carga procesosVerticales)
+  // Llamada al entrar al panel — NO debe mostrar procesos añadidos hasta que se pulse Clock
+  // -----------------------
+  window.renderGridProcesos = function () {
+    initState();
+    // IMPORTANTE: NO llamamos a actualizarFilasVerticales aquí para evitar que la vista cambie
+    // al registrar procesos. La vista solo se actualiza (vertical + horizontal) cuando se presiona Clock.
+    renderGrid();
+  };
+
+  // -----------------------
+  // Expuesta: añadir columna del clock (se llama al oprimir Clock)
+  // -----------------------
+  window.addClockColumn = function (clockNumber) {
+
+    // Asegurar que hay estructura inicial
+    if (!filas || filas.length === 0) initState();
+
+    // Guardar copia de la fila clock actual
+    const priorClock = filas[0] ? filas[0].slice() : [""];
+
+    const currentCols = priorClock.length;
+
+    // Reconstruir filas verticales con la cantidad actual de columnas (preserva priorClock)
+    actualizarFilasVerticales(currentCols);
+
+    // Restaurar la fila clock preservada
+    filas[0] = priorClock.slice();
+
+    // Añadir la nueva columna: clockNumber en fila clock, "" en filas de procesos
+    for (let i = 0; i < filas.length; i++) {
+      if (i === 0) filas[i].push(clockNumber.toString());
+      else filas[i].push("");
+    }
+
+    // Ahora que las filas están listas y alineadas, renderizamos
+    renderGrid();
+  };
+
+  // -----------------------
+  // Expuesta: registrar proceso (solo modifica la lista global)
+  // -----------------------
+  window.registrarProcesoVertical = function(pid) {
+    window.procesosVerticales.push(pid);
+    // NOTA: No renderizamos aquí. La vista solo cambia cuando se presiona Clock.
+  };
+
+
+
+
+
+  // -----------------------
+  // Es es el metodo que usaremos, para colorear la grid
+  // -----------------------
+  
+  window.paintCell = function(x_in, y_in, color) {
+    const x = x_in + 1;
+    const y = y_in + 1;
+
+    const grid = document.getElementById("grid-clock");
+    if (!grid) return;
+
+    const columnas = filas[0].length;
+    if (x < 1 || x > columnas) {
+      console.warn("Columna fuera de rango:", x);
+      return;
+    }
+    if (y < 1 || y > filas.length) {
+      console.warn("Fila fuera de rango:", y);
+      return;
+    }
+
+    // filaDesdeArriba: 1 = top DOM row, filas.length = bottom (clock)
+    const filaDesdeArriba = (filas.length + 1) - y;
+    const domIndex = (filaDesdeArriba - 1) * columnas + (x - 1);
+
+    const cell = grid.children[domIndex];
+    if (!cell) return;
+
+    cell.style.background = color;
+  };
+
+})();

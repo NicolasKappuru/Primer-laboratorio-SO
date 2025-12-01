@@ -257,4 +257,5 @@ function actualizarVistas(){
   actualizarVistaMemoriaDinamicaSinCompactacion();
   actualizarVistaMemoriaDinamicaConCompactacion();
   actualizarVistaPaginacion()
+  
 }

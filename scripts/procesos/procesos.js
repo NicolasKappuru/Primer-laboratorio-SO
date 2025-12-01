@@ -151,8 +151,19 @@ function iniciarProceso(id_program, panelActual){
     break;
 
     case "fcfs":
-    agregarPID(pidProceso);  // PASAR EL PID NUEVO
-    actualizarVistaEjeX();             // actualiza ticks / columnas y reconstruye la grid
+      window.registrarProcesoVertical(pidProceso);
+    break; 
+
+    case "sjf":
+      window.registrarProcesoVertical(pidProceso);
+    break; 
+
+    case "srtf":
+      window.registrarProcesoVertical(pidProceso);
+    break; 
+
+    case "rr":
+      window.registrarProcesoVertical(pidProceso);
     break; 
 
   }
@@ -163,7 +174,6 @@ function iniciarProceso(id_program, panelActual){
 
   actualizarVistas();
   actualizarVistaDiscontiguas();
-
 }
 
 function eliminarProceso(pid, panelActual){
