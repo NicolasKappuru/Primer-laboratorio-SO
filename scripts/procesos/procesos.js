@@ -157,6 +157,8 @@ function iniciarProceso(id_program, panelActual){
 
     case "sjf":
       window.registrarProcesoVertical(pidProceso);
+      window.sjf.startProcess(tiempoEjecucion, pidProceso, tiempoEjecucion, inicioBloqueo, duracion)
+
     break; 
 
     case "srtf":

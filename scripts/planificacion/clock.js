@@ -18,9 +18,14 @@ window.incrementClockFor = function (algoritmo) {
   }
 
   if (algoritmo === "sjf") {
-      window.clockSJF++;
-      addClockColumn(window.clockSJF);
-      pintarDesdeEstructura();
+    window.clockSJF++;
+    addClockColumn(window.clockSJF);
+
+    window.sjf.processLogic();
+    window.sjf.report();
+
+    pintarDesdeEstructura();
+    window.imprimirGridColorMap();
   }
 
   if (algoritmo === "srtf") {
