@@ -8,7 +8,13 @@ window.incrementClockFor = function (algoritmo) {
   if (algoritmo === "fcfs") {
       window.clockFCFS++;
       addClockColumn(window.clockFCFS);
+      
+      window.fcfs.processLogic()
+      window.fcfs.report()
+
       pintarDesdeEstructura();
+
+      window.imprimirGridColorMap()
   }
 
   if (algoritmo === "sjf") {

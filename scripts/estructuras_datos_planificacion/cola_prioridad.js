@@ -5,47 +5,85 @@ class ColaPrioridad{
     }
 
 
-    push(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual){
-        const nuevoNodo = new NodoPlanificacion(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, "await")
-        if (!this.head){
-            this.head = nuevoNodo
-            this.ultimo = nuevoNodo
-        } else{
-            let apuntador = this.head
-            while(apuntador){
-                if(prioridad<apuntador.prioridad){  //Si se debe meter antes del final
+    push(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, tiempoEjecucionActual) {
+        const nuevoNodo = new NodoPlanificacion(
+            prioridad, pid, tiempoEjecucion, inicioBloqueo,
+            duracionBloqueo, duracionBloqueoActual, "await",
+            tiempoEjecucionActual
+        );
 
-                    if(apuntador.front == null){    //Si se vuelve el primero de la cola
-                        this.head = nuevoNodo   
-                    }
-                    nuevoNodo.front = apuntador.front
-                    if(apuntador.front) apuntador.front.back = nuevoNodo
-                    apuntador.front = nuevoNodo
-                    nuevoNodo.back = apuntador                    
-                    return
-                }
-                apuntador = apuntador.back
-            }
-            //Si no entro al if, es porque va al final de la cola
-            this.ultimo.back = nuevoNodo
-            nuevoNodo.front = this.ultimo
-            this.ultimo = nuevoNodo
+        // CASO 1: Lista vacía
+        if (!this.head) {
+            this.head = nuevoNodo;
+            this.ultimo = nuevoNodo;
+            return;
         }
+
+        // CASO 2: Insertar al inicio
+        if (prioridad < this.head.prioridad) {
+            nuevoNodo.back = this.head;
+            this.head.front = nuevoNodo;
+            this.head = nuevoNodo;
+            return;
+        }
+
+        // Recorremos la lista
+        let actual = this.head;
+
+        while (actual) {
+
+            if (prioridad < actual.prioridad) {
+                // Insertar antes de "actual"
+                let anterior = actual.front;
+
+                nuevoNodo.front = anterior;
+                nuevoNodo.back = actual;
+
+                anterior.back = nuevoNodo;
+                actual.front = nuevoNodo;
+                return;
+            }
+
+            actual = actual.back;
+        }
+
+        // CASO 4: Insertar al final
+        this.ultimo.back = nuevoNodo;
+        nuevoNodo.front = this.ultimo;
+        this.ultimo = nuevoNodo;
     }
 
-    pop(){
-        let primerNodo = this.head
-        this.head = this.head.back
-        this.head.front = null
+
+    pop() {
+        if (!this.head) return null; // lista vacía
+
+        let primerNodo = this.head;
+        let nuevoHead = primerNodo.back;
+
+        // Actualizar head
+        this.head = nuevoHead;
+
+        if (nuevoHead) {
+            nuevoHead.front = null;   // ← Limpieza correcta
+        } else {
+            this.ultimo = null;       // lista quedó vacía
+        }
+
+        // Opcional: limpiar punteros del nodo removido
+        primerNodo.back = null;
+        primerNodo.front = null;
+
         return {
-                prioridad: primerNodo.prioridad,
-                pid: primerNodo.pid,
-                tiempoEjecucion: primerNodo.tiempoEjecucion,
-                inicioBloqueo: primerNodo.inicioBloqueo,
-                duracionBloqueo: primerNodo.duracionBloqueo,
-                estado: primerNodo.estado
-               }
+            prioridad: primerNodo.prioridad,
+            pid: primerNodo.pid,
+            tiempoEjecucion: primerNodo.tiempoEjecucion,
+            inicioBloqueo: primerNodo.inicioBloqueo,
+            duracionBloqueo: primerNodo.duracionBloqueo,
+            duracionBloqueoActual: primerNodo.duracionBloqueoActual,
+            tiempoEjecucionActual: primerNodo.tiempoEjecucionActual
+        };
     }
+
 
 
     print() {
@@ -57,7 +95,7 @@ class ColaPrioridad{
             `P=${apuntador.prioridad}, PID=${apuntador.pid}, ` +
             `TE=${apuntador.tiempoEjecucion}, IB=${apuntador.inicioBloqueo}, ` +
             `DB=${apuntador.duracionBloqueo}, DBA=${apuntador.duracionBloqueoActual}` +
-            `E=${apuntador.estado} `
+            `E=${apuntador.estado}, TEA = ${apuntador.tiempoEjecucionActual} `
         );
         apuntador = apuntador.back;
     }
@@ -67,6 +105,14 @@ class ColaPrioridad{
 
     isEmpty(){
         return this.head == null    
+    }
+
+    report(clockActual){
+        let apuntador = this.head
+        while (apuntador){
+            agregarColorNodo(clockActual, apuntador.pid, "gray")
+            apuntador = apuntador.back
+        }
     }
 
 }

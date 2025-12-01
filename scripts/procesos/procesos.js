@@ -152,6 +152,7 @@ function iniciarProceso(id_program, panelActual){
 
     case "fcfs":
       window.registrarProcesoVertical(pidProceso);
+      window.fcfs.startProcess(pidProceso, pidProceso, tiempoEjecucion, inicioBloqueo, duracion)
     break; 
 
     case "sjf":

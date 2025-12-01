@@ -1,42 +1,85 @@
-// =======================================================
-//      ESTRUCTURA GLOBAL DE COLOR PARA EL GRID 
-// =======================================================
-
-window.gridColorMap = window.gridColorMap || {};
-
-window.agregarColorNodo = function(pid, time, color) {
-
-    if (!window.gridColorMap[pid]) {
-        window.gridColorMap[pid] = [];
+class FCFS{
+    constructor(){
+        this.await_queue = new ColaPrioridad()
+        this.nodo_exec = null
+        this.blocked = new ListaBloqueo()
     }
 
-    window.gridColorMap[pid].push({
-        time: Number(time),
-        color: color
-    });
 
-    // Opcional: Ver estructura
-    console.log("Nodo agregado:", pid, time, color);
-    console.log(window.gridColorMap);
-};
-
-window.pintarDesdeEstructura = function() {
-    console.log("Pintando estado desde estructura…");
-
-    for (let pid in window.gridColorMap) {
-
-        const listaNodos = window.gridColorMap[pid];
-
-        for (let nodo of listaNodos) {
-
-            const time = nodo.time;
-            const color = nodo.color;
-
-            const x = time;  
-            const y = Number(pid); 
-            paintCell(x, y, color);
+    startProcess(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracion){
+        if(this.nodo_exec == null){
+            this.nodo_exec = new NodoPlanificacion(prioridad, pid, 
+                                                   tiempoEjecucion, inicioBloqueo, 
+                                                   duracion, duracion, 
+                                                   "exec", 0)
+        } else{
+            this.await_queue.push(prioridad, pid, 
+                                  tiempoEjecucion, inicioBloqueo, 
+                                  duracion, duracion, 
+                                  0)
         }
     }
 
-    console.log("Pintado terminado.");
-};
+    processLogic(){
+
+        this.blocked.clock(this.await_queue)
+
+        if(this.nodo_exec){
+            
+            if (this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.inicioBloqueo){
+                this.blocked.add(this.nodo_exec.prioridad, this.nodo_exec.pid, 
+                                 this.nodo_exec.tiempoEjecucion, this.nodo_exec.inicioBloqueo, 
+                                 this.nodo_exec.duracionBloqueo, this.nodo_exec.tiempoEjecucionActual)
+                this.insertFromQueue()
+            }else if(this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.tiempoEjecucion){
+                this.insertFromQueue()
+            }
+        }else{
+            this.insertFromQueue()
+        }
+
+        if(this.nodo_exec){
+            this.nodo_exec.tiempoEjecucionActual += 1
+        }
+        console.log("Clock: ", window.clockFCFS)
+        this.await_queue.print()
+        this.blocked.print()
+        console.log("=== Nodo en Ejecucion ===");
+        console.log(this.nodo_exec)
+        console.log("=========================\n");
+
+    }
+
+    insertFromQueue(){
+        if(!this.await_queue.isEmpty()){
+            let datos_nuevo_nodo = this.await_queue.pop()
+            this.nodo_exec = new NodoPlanificacion(datos_nuevo_nodo.prioridad, datos_nuevo_nodo.pid, 
+                                                    datos_nuevo_nodo.tiempoEjecucion, datos_nuevo_nodo.inicioBloqueo, 
+                                                    datos_nuevo_nodo.duracionBloqueo, datos_nuevo_nodo.duracionBloqueoActual,
+                                                    "exec", datos_nuevo_nodo.tiempoEjecucionActual)
+        } else{
+            this.nodo_exec = null
+        }
+    }
+
+    report(){
+
+
+        if(!this.blocked.isEmpty()){
+            this.blocked.report(window.clockFCFS)
+        }
+        
+        if(!this.await_queue.isEmpty()){
+            this.await_queue.report(window.clockFCFS)
+        }
+        
+        if(this.nodo_exec){
+            agregarColorNodo(window.clockFCFS, this.nodo_exec.pid, "green")
+        }
+
+    }
+}
+
+const fcfs = new FCFS()
+
+window.fcfs = fcfs
