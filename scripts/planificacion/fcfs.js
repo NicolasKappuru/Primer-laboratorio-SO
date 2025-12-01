@@ -1,5 +1,5 @@
 // =======================================================
-//      ESTRUCTURA GLOBAL DE COLOR PARA EL GRID FCFS
+//      ESTRUCTURA GLOBAL DE COLOR PARA EL GRID 
 // =======================================================
 
 window.gridColorMap = window.gridColorMap || {};

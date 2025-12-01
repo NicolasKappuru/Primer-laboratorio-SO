@@ -1,5 +1,10 @@
 // Lista global (persistente)
-window.procesosVerticales = window.procesosVerticales || [];
+window.procesosVerticales = {
+    fcfs: [],
+    sjf: [],
+    srtf: [],
+    rr: []
+};
 
 (function () {
 
@@ -18,30 +23,32 @@ window.procesosVerticales = window.procesosVerticales || [];
   // Reconstruye filas (usada SOLO desde addClockColumn)
   // -----------------------
   function actualizarFilasVerticales(numCols) {
-    // Guardar la fila clock actual (si existe) para preservarla
     const priorClock = filas[0] ? filas[0].slice() : new Array(numCols).fill("");
 
-    // Reiniciar filas con la fila clock preservada (si priorClock tiene menos columnas, lo rellenamos)
     const clockRow = priorClock.slice();
     while (clockRow.length < numCols) clockRow.push("");
 
     filas = [];
     filas.push(clockRow);
 
-    // Crear una fila por cada PID en window.procesosVerticales (desde abajo hacia arriba)
-    // Cada fila de proceso tendrá longitud numCols y el PID en la PRIMERA COLUMNA (índice 0)
-    for (let pid of window.procesosVerticales) {
+    // ⬇️ Este es el bloque corregido
+    const alg = window.panelActivo || "fcfs";
+    const listaDePIDs = window.procesosVerticales[alg];
+
+    for (let pid of listaDePIDs) {
       const arr = new Array(numCols).fill("");
-      arr[0] = String(pid); // colocar el PID en la primera celda de esa fila
+      arr[0] = String(pid);
       filas.push(arr);
     }
   }
+
 
   // -----------------------
   // Renderiza las filas en el DOM
   // -----------------------
   function renderGrid() {
-    const grid = document.getElementById("grid-clock");
+    const gridId = "grid-clock-" + window.panelActivo;
+    const grid = document.getElementById(gridId);
     if (!grid) return;
 
     const columnas = filas[0].length;
@@ -105,43 +112,42 @@ window.procesosVerticales = window.procesosVerticales || [];
   // Expuesta: registrar proceso (solo modifica la lista global)
   // -----------------------
   window.registrarProcesoVertical = function(pid) {
-    window.procesosVerticales.push(pid);
-    // NOTA: No renderizamos aquí. La vista solo cambia cuando se presiona Clock.
+    const alg = window.panelActivo || "fcfs";  
+    // Agregamos el PID a la lista DEL ALGORITMO ACTIVO
+    window.procesosVerticales[alg].push(pid);
   };
-
-
-
-
 
   // -----------------------
   // Es es el metodo que usaremos, para colorear la grid
   // -----------------------
   
   window.paintCell = function(x_in, y_in, color) {
-    const x = x_in + 1;
-    const y = y_in + 1;
+      const x = x_in + 1;
+      const y = y_in + 1;
 
-    const grid = document.getElementById("grid-clock");
-    if (!grid) return;
+      // Obtener id del grid del panel activo
+      const gridId = "grid-clock-" + window.panelActivo;
+      const grid = document.getElementById(gridId);
 
-    const columnas = filas[0].length;
-    if (x < 1 || x > columnas) {
-      console.warn("Columna fuera de rango:", x);
-      return;
-    }
-    if (y < 1 || y > filas.length) {
-      console.warn("Fila fuera de rango:", y);
-      return;
-    }
+      if (!grid) {
+          console.warn("Grid no encontrado:", gridId);
+          return;
+      }
 
-    // filaDesdeArriba: 1 = top DOM row, filas.length = bottom (clock)
-    const filaDesdeArriba = (filas.length + 1) - y;
-    const domIndex = (filaDesdeArriba - 1) * columnas + (x - 1);
+      const columnas = filas[0].length;
 
-    const cell = grid.children[domIndex];
-    if (!cell) return;
+      if (x < 1 || x > columnas) return;
+      if (y < 1 || y > filas.length) return;
 
-    cell.style.background = color;
+      const filaDesdeArriba = (filas.length + 1) - y;
+      const domIndex = (filaDesdeArriba - 1) * columnas + (x - 1);
+
+      const cell = grid.children[domIndex];
+      if (!cell) return;
+
+      cell.style.background = color;
   };
+
+
 
 })();
