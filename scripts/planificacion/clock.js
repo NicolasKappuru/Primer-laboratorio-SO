@@ -31,7 +31,12 @@ window.incrementClockFor = function (algoritmo) {
   if (algoritmo === "srtf") {
       window.clockSRTF++;
       addClockColumn(window.clockSRTF);
+
+      window.srtf.processLogic();
+      window.srtf.report();
+
       pintarDesdeEstructura();
+      window.imprimirGridColorMap()
   }
 
   if (algoritmo === "rr") {

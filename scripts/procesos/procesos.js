@@ -163,6 +163,7 @@ function iniciarProceso(id_program, panelActual){
 
     case "srtf":
       window.registrarProcesoVertical(pidProceso);
+      window.srtf.startProcess(tiempoEjecucion, pidProceso, tiempoEjecucion, inicioBloqueo, duracion)
     break; 
 
     case "rr":

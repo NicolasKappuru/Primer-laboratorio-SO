@@ -27,15 +27,34 @@ class ColaPrioridad{
             return;
         }
 
-        // Recorremos la lista
-        let actual = this.head;
+        // CASO 2.5: Insertar por llegada
+
+        if(prioridad == this.head.prioridad && pid < this.head.pid){
+            nuevoNodo.back = this.head;
+            this.head.front = nuevoNodo;
+            this.head = nuevoNodo;
+            return;
+        }
+
+        // CASO 3: Entre la lista
+        let actual = this.head.back;
 
         while (actual) {
 
+            let anterior = actual.front;
+
             if (prioridad < actual.prioridad) {
                 // Insertar antes de "actual"
-                let anterior = actual.front;
 
+                nuevoNodo.front = anterior;
+                nuevoNodo.back = actual;
+
+                anterior.back = nuevoNodo;
+                actual.front = nuevoNodo;
+                return;
+            }
+
+            if(prioridad == this.head.prioridad && pid < this.head.pid){
                 nuevoNodo.front = anterior;
                 nuevoNodo.back = actual;
 

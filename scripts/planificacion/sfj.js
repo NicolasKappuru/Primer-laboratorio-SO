@@ -6,24 +6,12 @@ class SJF {
     }
 
     startProcess(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo) {
-
-        // ⬅️ Aquí está el ÚNICO cambio respecto a FCFS
-
-        if (this.nodo_exec == null) {
-            this.nodo_exec = new NodoPlanificacion(
-                prioridad, pid,
-                tiempoEjecucion, inicioBloqueo,
-                duracionBloqueo, duracionBloqueo,
-                "exec", 0
-            );
-        } else {
-            this.await_queue.push(
-                prioridad, pid,
-                tiempoEjecucion, inicioBloqueo,
-                duracionBloqueo, duracionBloqueo,
-                0
-            );
-        }
+        this.await_queue.push(
+            prioridad, pid,
+            tiempoEjecucion, inicioBloqueo,
+            duracionBloqueo, duracionBloqueo,
+            0
+        );
     }
 
     processLogic() {
@@ -32,10 +20,7 @@ class SJF {
 
         if (this.nodo_exec) {
 
-            if (
-                this.nodo_exec.inicioBloqueo > 0 && 
-                this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.inicioBloqueo
-            ) {
+            if (this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.inicioBloqueo) { //Si se debe bloquear
                 this.blocked.add(
                     this.nodo_exec.prioridad, this.nodo_exec.pid,
                     this.nodo_exec.tiempoEjecucion, this.nodo_exec.inicioBloqueo,
@@ -43,7 +28,7 @@ class SJF {
                 );
                 this.insertFromQueue();
 
-            } else if (this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.tiempoEjecucion) {
+            } else if (this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.tiempoEjecucion) { //Si cumplio su tiempo de ejecucion
                 this.insertFromQueue();
             }
 
