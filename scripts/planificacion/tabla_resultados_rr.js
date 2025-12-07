@@ -96,7 +96,7 @@ function generarTablaResultadosRR(gridMap) {
     const tiempoSistema = tiempoEncendido-tiempoProcesos
 
     //Porcentajes
-    const cpuProcesos = (tiempoProcesos*100)/tiempoEncendido
+    const cpuProcesos = ((tiempoProcesos*100)/tiempoEncendido).toFixed(2)
     const cpuSistema = 100-cpuProcesos
 
     // Promedios
