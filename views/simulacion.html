@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../styles/memoria_paginacion.css">
     <link rel="stylesheet" href="../styles/memoria_segmentacion.css">
     <link rel="stylesheet" href="../styles/css_planificacion/planificacion.css">
+    <link rel="stylesheet" href="../styles/css_planificacion/tabla_resultados.css">
  
 </head>
 <body>
@@ -227,7 +228,7 @@
         <div id="fcfs" class="panel">
           <h2>Primero en llegar, primero en salir</h2>
           <button onclick="selectOption('ClockFCFS', event)" id="btnClockFCFS">Clock FCFS</button>
-          <button onclick="selectOption('Prueba', event)" id="btnPrueba">Prueba</button>
+          <button onclick="selectOption('Resultados', event)" id="btnResultados">Resultados</button>
           <div id="grid-fcfs">
             <div id="grid-clock-fcfs"  class="grid-clock"></div>
           </div>
@@ -239,7 +240,7 @@
         <div id="sjf" class="panel">
           <h2>Primero el trabajo más corto </h2>
           <button onclick="selectOption('ClockSJF', event)" id="btnClockSJF">Clock SJF</button>
-          <button onclick="selectOption('Prueba', event)" id="btnPrueba">Prueba</button>
+          <button onclick="selectOption('Resultados', event)" id="btnResultados">Resultados</button>
           <div id="grid-sjf">
             <div id="grid-clock-sjf"  class="grid-clock"></div>
           </div>
@@ -249,7 +250,7 @@
         <div id="srtf" class="panel">
           <h2>Prioridad al tiempo restante más corto</h2>
           <button onclick="selectOption('ClockSRTF', event)" id="btnClockSRTF">Clock SRTF</button>
-          <button onclick="selectOption('Prueba', event)" id="btnPrueba">Prueba</button>
+          <button onclick="selectOption('Resultados', event)" id="btnResultados">Resultados</button>
           <div id="grid-srtf">
             <div id="grid-clock-srtf"  class="grid-clock"></div>
           </div>
@@ -262,7 +263,7 @@
           <input type="number" id="quantums" placeholder="Número de quantums">
           <button onclick="sendQuantums()">Enviar quantums</button>
           <button onclick="selectOption('ClockRR', event)" id="btnClockRR">Clock RR</button>
-          <button onclick="selectOption('Prueba', event)" id="btnPrueba">Prueba</button>
+          <button onclick="selectOption('Resultados', event)" id="btnResultados">Resultados</button>
           <div id="grid-rr">
             <div id="grid-clock-rr"  class="grid-clock"></div>
           </div>
@@ -314,6 +315,15 @@
 
   <div id="tooltip-memoria" role="tooltip"></div>
 
+  <div id="popupResultados" class="popup">
+    <div class="popup-inner">
+        <button class="popup-close" onclick="cerrarPopup()">❌</button>
+        <div id="popupContenido"></div>
+    </div>
+  </div>
+
+
+
   <script src="../scripts/algoritmo.js"></script>
 
   <script src="../scripts/estructuras_datos/lista.js"></script>
@@ -327,7 +337,7 @@
   <script src="../scripts/estructuras_datos_planificacion/lista_bloqueo.js"></script>
   <script src="../scripts/estructuras_datos_planificacion/nodo.js"></script>
 
-  
+  <script src="../scripts/planificacion/tabla_resultados.js"></script>
   <script src="../scripts/planificacion/clock.js"></script>
   <script src="../scripts/planificacion/vista_planificacion.js"></script>
   <script src="../scripts/planificacion/matriz_color.js"></script>

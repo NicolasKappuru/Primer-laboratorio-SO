@@ -11,7 +11,7 @@ window.agregarColorNodo = function(time, pid, color) {
     }
 
     window.gridColorMap[pid].push({
-        time: Number(time),
+        time: Number(time)+1,
         color: color
     });
 

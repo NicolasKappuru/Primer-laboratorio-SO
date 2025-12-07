@@ -1,0 +1,53 @@
+/* ----- POPUP ----- */
+.popup {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(3px);
+    z-index: 9999;
+}
+
+.popup-inner {
+    background: #fff;
+    padding: 20px;
+    width: 80%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #000;
+    position: relative;
+}
+
+.popup-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: none;
+    background: #d33;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ----- TABLA ----- */
+.resultado-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resultado-table th, .resultado-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.resultado-table th {
+    background: #0078ff;
+    color: white;
+    position: sticky;
+    top: 0;
+}
