@@ -16,7 +16,17 @@ if (!tooltip) {
 function hoverPermitido() {
   const pag = document.getElementById('paginacion');
   const seg = document.getElementById('segmentacion');
-  return (pag && pag.classList.contains('active')) || (seg && seg.classList.contains('active'));
+  const fcfs = document.getElementById('fcfs');
+  const sjf = document.getElementById('sjf');
+  const srtf = document.getElementById('srtf');
+  const rr = document.getElementById('rr');
+
+  return (pag && pag.classList.contains('active')) || 
+         (seg && seg.classList.contains('active')) ||
+         (fcfs && fcfs.classList.contains('active'))||
+         (sjf && sjf.classList.contains('active'))||
+         (srtf && srtf.classList.contains('active'))||
+         (rr && rr.classList.contains('active'));
 }
 
 // ------------------------------------------------------
@@ -114,6 +124,60 @@ function generarTablaSegmentos(pid) {
 }
 
 // ------------------------------------------------------
+// Función para generar tabla para FCFS, SJF, SRTF y RR
+// ------------------------------------------------------
+function generarTablaPlanificacion(pid) {
+  let lista = window.procesos; // ahora es un array
+  console.log("Procesos: ", window.procesos);
+  console.log("Lista: ", lista);
+
+  if (!Array.isArray(lista) || lista.length === 0)
+    return "<em>No hay datos de planificación</em>";
+
+  const filas = [];
+
+  // 🔥 Recorrido correcto si lista es un ARRAY
+  for (const actual of lista) {
+    if (actual.processID == pid) {
+      filas.push({
+        pid: actual.processID,
+        tiempo_ejecucion: actual.tiempo_ejecucion,
+        inicio_bloqueo: actual.inicio_bloqueo,
+        duracion: actual.duracion
+      });
+    }
+  }
+
+  if (filas.length === 0)
+    return "<em>PID sin datos de planificación</em>";
+
+  let tabla = `<table class="tabla-tooltip">
+                  <thead>
+                    <tr>
+                      <th>PID</th>
+                      <th>Tiempo ejecución</th>
+                      <th>Inicio bloqueo</th>
+                      <th>Duración</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+
+  for (const f of filas) {
+    tabla += `<tr>
+                <td>${f.pid}</td>
+                <td>${f.tiempo_ejecucion}</td>
+                <td>${f.inicio_bloqueo}</td>
+                <td>${f.duracion}</td>
+              </tr>`;
+  }
+
+  tabla += "</tbody></table>";
+  return tabla;
+}
+
+
+
+// ------------------------------------------------------
 // Delegación de eventos sobre el tbody de la tabla
 // ------------------------------------------------------
 const tbodyProcesos = document.querySelector('#tabla-procesos tbody');
@@ -131,14 +195,26 @@ if (tbodyProcesos) {
     const pid = td.dataset.pid || td.textContent.trim();
     const pag = document.getElementById('paginacion');
     const seg = document.getElementById('segmentacion');
+    const fcfs = document.getElementById('fcfs');
+    const sjf = document.getElementById('sjf');
+    const srtf = document.getElementById('srtf');
+    const rr = document.getElementById('rr');
 
     if (pag && pag.classList.contains('active')) {
       tooltip.innerHTML = generarTablaPaginas(pid);
     } else if (seg && seg.classList.contains('active')) {
       tooltip.innerHTML = generarTablaSegmentos(pid);
+    } else if (
+      (fcfs && fcfs.classList.contains('active')) ||
+      (sjf && sjf.classList.contains('active')) ||
+      (srtf && srtf.classList.contains('active')) ||
+      (rr && rr.classList.contains('active'))
+    ) {
+      tooltip.innerHTML = generarTablaPlanificacion(pid);
     } else {
       return;
     }
+
 
     // Calcular posición inicial solo una vez
     const tooltipRect = tooltip.getBoundingClientRect();
