@@ -10,7 +10,7 @@ class RR {
     }
 
     startProcess(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo) {
-        this.await_queue.push(
+        this.await_queue.pushRR(
             prioridad, pid,
             tiempoEjecucion, inicioBloqueo,
             duracionBloqueo, duracionBloqueo,
@@ -20,7 +20,7 @@ class RR {
 
     processLogic() {
 
-        this.blocked.clock(this.await_queue);
+        this.blocked.clockRR(this.await_queue);
 
         if (this.nodo_exec) {
 
@@ -30,7 +30,7 @@ class RR {
 
             if (this.nodo_exec.tiempoEjecucionActual == this.nodo_exec.inicioBloqueo) { //Si se debe bloquear
                 this.blocked.add(
-                    window.clockRR, this.nodo_exec.pid,
+                    window.clockRR+this.nodo_exec.duracionBloqueo, this.nodo_exec.pid,
                     this.nodo_exec.tiempoEjecucion, this.nodo_exec.inicioBloqueo,
                     this.nodo_exec.duracionBloqueo, this.nodo_exec.tiempoEjecucionActual
                 );
@@ -54,7 +54,7 @@ class RR {
                 
             } else if (this.ciclo == this.quantums){
                 if(this.nodo_exec.pid != "Dispatcher"){
-                    this.await_queue.push(
+                    this.await_queue.pushRR(
                         clockRR, this.nodo_exec.pid,
                         this.nodo_exec.tiempoEjecucion, this.nodo_exec.inicioBloqueo,
                         this.nodo_exec.duracionBloqueo, this.nodo_exec.duracionBloqueo,
@@ -71,7 +71,7 @@ class RR {
 
         } else {
             if(this.await_queue){
-                if(window.clockRR != 1){
+                if(window.clockRR != 0){
                     window.rr.startProcess(-1, "Dispatcher", 1, -1, 0)
                     this.ciclo = 0
                 }

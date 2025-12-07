@@ -72,6 +72,54 @@ class ColaPrioridad{
         this.ultimo = nuevoNodo;
     }
 
+    pushRR(prioridad, pid, tiempoEjecucion, inicioBloqueo, duracionBloqueo, duracionBloqueoActual, tiempoEjecucionActual) {
+        const nuevoNodo = new NodoPlanificacion(
+            prioridad, pid, tiempoEjecucion, inicioBloqueo,
+            duracionBloqueo, duracionBloqueoActual, "await",
+            tiempoEjecucionActual
+        );
+
+        // CASO 1: Lista vacía
+        if (!this.head) {
+            this.head = nuevoNodo;
+            this.ultimo = nuevoNodo;
+            return;
+        }
+
+        // CASO 2: Insertar al inicio
+        if (prioridad < this.head.prioridad) {
+            nuevoNodo.back = this.head;
+            this.head.front = nuevoNodo;
+            this.head = nuevoNodo;
+            return;
+        }
+
+        // CASO 3: Entre la lista
+        let actual = this.head.back;
+
+        while (actual) {
+
+            let anterior = actual.front;
+
+            if (prioridad < actual.prioridad) {
+                // Insertar antes de "actual"
+
+                nuevoNodo.front = anterior;
+                nuevoNodo.back = actual;
+
+                anterior.back = nuevoNodo;
+                actual.front = nuevoNodo;
+                return;
+            }
+
+            actual = actual.back;
+        }
+
+        // CASO 4: Insertar al final
+        this.ultimo.back = nuevoNodo;
+        nuevoNodo.front = this.ultimo;
+        this.ultimo = nuevoNodo;
+    }
 
     pop() {
         if (!this.head) return null; // lista vacía

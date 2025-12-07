@@ -73,4 +73,8 @@ window.selectOption = function(option, event) {
     if (option === "Resultados") {
         generarTablaResultados(window.gridColorMap);
     }
+
+    if (option === "ResultadosRR"){
+        generarTablaResultadosRR(window.gridColorMap);
+    }
 };
