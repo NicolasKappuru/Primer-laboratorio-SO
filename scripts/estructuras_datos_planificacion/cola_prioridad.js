@@ -134,4 +134,12 @@ class ColaPrioridad{
         }
     }
 
+    reportRR(clockActual){
+        let apuntador = this.head
+        while (apuntador){
+            agregarColorNodo(clockActual, apuntador.pid+1, "gray")
+            apuntador = apuntador.back
+        }
+    }
+
 }

@@ -65,5 +65,12 @@ class ListaBloqueo{
         }
     }
 
+    reportRR(clockActual){
+        let apuntador = this.head
+        while (apuntador){
+            agregarColorNodo(clockActual, apuntador.pid+1, "red")
+            apuntador = apuntador.back
+        }
+    }
 
 }

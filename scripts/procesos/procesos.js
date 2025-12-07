@@ -168,6 +168,7 @@ function iniciarProceso(id_program, panelActual){
 
     case "rr":
       window.registrarProcesoVertical(pidProceso);
+      window.rr.startProcess(window.clockRR, pidProceso, tiempoEjecucion, inicioBloqueo, duracion)
     break; 
 
   }

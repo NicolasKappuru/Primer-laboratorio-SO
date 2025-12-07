@@ -42,7 +42,12 @@ window.incrementClockFor = function (algoritmo) {
   if (algoritmo === "rr") {
       window.clockRR++;
       addClockColumn(window.clockRR);
+
+      window.rr.processLogic();
+      window.rr.report();
+
       pintarDesdeEstructura();
+      window.imprimirGridColorMap()
   }
 };
 

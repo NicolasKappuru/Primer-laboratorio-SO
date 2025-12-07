@@ -258,6 +258,9 @@
         <!-- Panel 10: (RR – Round Robin) -->
         <div id="rr" class="panel">
           <h2>Turno rotatorio o cíclico </h2>
+
+          <input type="number" id="quantums" placeholder="Número de quantums">
+          <button onclick="sendQuantums()">Enviar quantums</button>
           <button onclick="selectOption('ClockRR', event)" id="btnClockRR">Clock RR</button>
           <button onclick="selectOption('Prueba', event)" id="btnPrueba">Prueba</button>
           <div id="grid-rr">
@@ -331,6 +334,7 @@
   <script src="../scripts/planificacion/fcfs.js" ></script>
   <script src="../scripts/planificacion/sfj.js"></script>
   <script src="../scripts/planificacion/srtf.js"></script>
+  <script src="../scripts/planificacion/rr.js"></script>
 
 
   <script src="../scripts/procesos/vista_memoria.js"></script>
